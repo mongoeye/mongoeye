@@ -1,0 +1,592 @@
+package helpers
+
+import (
+	"github.com/stretchr/testify/assert"
+	"gopkg.in/mgo.v2/bson"
+	"testing"
+)
+
+func TestMin_T(t *testing.T) {
+	assert.Equal(
+		t,
+		bson.ObjectIdHex("57605d5dc3d5a2429db0bd09"),
+		MinT("objectId",
+			bson.ObjectIdHex("57605d5dc3d5a2429db0bd09"),
+			bson.ObjectIdHex("57605d5dc3d5a2429db0bd10"),
+		),
+	)
+	assert.Equal(
+		t,
+		"abc",
+		MinT("string",
+			"abc",
+			"def",
+		),
+	)
+	assert.Equal(
+		t,
+		101.5,
+		MinT("double",
+			101.5,
+			104.2,
+		),
+	)
+	assert.Equal(
+		t,
+		false,
+		MinT("bool",
+			true,
+			false,
+		),
+	)
+	assert.Equal(
+		t,
+		ParseDate("2015-01-15T10:04:05+00:00"),
+		MinT("date",
+			ParseDate("2015-01-15T10:04:05+00:00"),
+			ParseDate("2015-01-15T11:04:05+00:00"),
+		),
+	)
+	assert.Equal(
+		t,
+		bson.MongoTimestamp(1234598),
+		MinT("timestamp",
+			bson.MongoTimestamp(1234598),
+			bson.MongoTimestamp(1234599),
+		),
+	)
+	assert.Equal(
+		t,
+		int64(1234598),
+		MinT("long",
+			int64(1234598),
+			int64(1234599),
+		),
+	)
+	assert.Equal(
+		t,
+		int(1234598),
+		MinT("int",
+			int(1234598),
+			int(1234599),
+		),
+	)
+	assert.Equal(
+		t,
+		ParseDecimal("123.45"),
+		MinT("decimal",
+			ParseDecimal("124.15"),
+			ParseDecimal("123.45"),
+		),
+	)
+	assert.Panics(t, func() {
+		MinT("invalid",
+			ParseDecimal("124.15"),
+			ParseDecimal("123.45"),
+		)
+	})
+}
+
+func TestMax_T(t *testing.T) {
+	assert.Equal(
+		t,
+		bson.ObjectIdHex("57605d5dc3d5a2429db0bd10"),
+		MaxT("objectId",
+			bson.ObjectIdHex("57605d5dc3d5a2429db0bd09"),
+			bson.ObjectIdHex("57605d5dc3d5a2429db0bd10"),
+		),
+	)
+	assert.Equal(
+		t,
+		"def",
+		MaxT("string",
+			"abc",
+			"def",
+		),
+	)
+	assert.Equal(
+		t,
+		104.2,
+		MaxT("double",
+			101.5,
+			104.2,
+		),
+	)
+	assert.Equal(
+		t,
+		true,
+		MaxT("bool",
+			true,
+			false,
+		),
+	)
+	assert.Equal(
+		t,
+		ParseDate("2015-01-15T11:04:05+00:00"),
+		MaxT("date",
+			ParseDate("2015-01-15T10:04:05+00:00"),
+			ParseDate("2015-01-15T11:04:05+00:00"),
+		),
+	)
+	assert.Equal(
+		t,
+		bson.MongoTimestamp(1234599),
+		MaxT("timestamp",
+			bson.MongoTimestamp(1234598),
+			bson.MongoTimestamp(1234599),
+		),
+	)
+	assert.Equal(
+		t,
+		int64(1234599),
+		MaxT("long",
+			int64(1234598),
+			int64(1234599),
+		),
+	)
+	assert.Equal(
+		t,
+		int(1234599),
+		MaxT("int",
+			int(1234598),
+			int(1234599),
+		),
+	)
+	assert.Equal(
+		t,
+		ParseDecimal("124.15"),
+		MaxT("decimal",
+			ParseDecimal("124.15"),
+			ParseDecimal("123.45"),
+		),
+	)
+	assert.Panics(t, func() {
+		MaxT("invalid",
+			ParseDecimal("124.15"),
+			ParseDecimal("123.45"),
+		)
+	})
+}
+
+func TestMin_ObjectId(t *testing.T) {
+	assert.Equal(
+		t,
+		bson.ObjectIdHex("57605d5dc3d5a2429db0bd09"),
+		MinObjectId(
+			bson.ObjectIdHex("57605d5dc3d5a2429db0bd09"),
+			bson.ObjectIdHex("57605d5dc3d5a2429db0bd10"),
+		),
+	)
+	assert.Equal(
+		t,
+		bson.ObjectIdHex("57605d5dc3d5a2429db0bd09"),
+		MinObjectId(
+			bson.ObjectIdHex("57605d5dc3d5a2429db0bd10"),
+			bson.ObjectIdHex("57605d5dc3d5a2429db0bd09"),
+		),
+	)
+}
+
+func TestMax_ObjectId(t *testing.T) {
+	assert.Equal(
+		t,
+		bson.ObjectIdHex("57605d5dc3d5a2429db0bd10"),
+		MaxObjectId(
+			bson.ObjectIdHex("57605d5dc3d5a2429db0bd09"),
+			bson.ObjectIdHex("57605d5dc3d5a2429db0bd10"),
+		),
+	)
+	assert.Equal(
+		t,
+		bson.ObjectIdHex("57605d5dc3d5a2429db0bd10"),
+		MaxObjectId(
+			bson.ObjectIdHex("57605d5dc3d5a2429db0bd10"),
+			bson.ObjectIdHex("57605d5dc3d5a2429db0bd09"),
+		),
+	)
+}
+
+func TestMin_String(t *testing.T) {
+	assert.Equal(
+		t,
+		"abc",
+		MinString(
+			"abc",
+			"def",
+		),
+	)
+	assert.Equal(
+		t,
+		"abc",
+		MinString(
+			"def",
+			"abc",
+		),
+	)
+}
+
+func TestMax_String(t *testing.T) {
+	assert.Equal(
+		t,
+		"def",
+		MaxString(
+			"abc",
+			"def",
+		),
+	)
+	assert.Equal(
+		t,
+		"def",
+		MaxString(
+			"def",
+			"abc",
+		),
+	)
+}
+
+func TestMin_Double(t *testing.T) {
+	assert.Equal(
+		t,
+		10.1,
+		MinDouble(
+			10.1,
+			10.2,
+		),
+	)
+	assert.Equal(
+		t,
+		10.1,
+		MinDouble(
+			10.2,
+			10.1,
+		),
+	)
+}
+
+func TestMax_Double(t *testing.T) {
+	assert.Equal(
+		t,
+		10.2,
+		MaxDouble(
+			10.1,
+			10.2,
+		),
+	)
+	assert.Equal(
+		t,
+		10.2,
+		MaxDouble(
+			10.2,
+			10.1,
+		),
+	)
+}
+
+func TestMin_Bool(t *testing.T) {
+	assert.Equal(
+		t,
+		false,
+		MinBool(
+			true,
+			false,
+		),
+	)
+	assert.Equal(
+		t,
+		true,
+		MinBool(
+			true,
+			true,
+		),
+	)
+}
+
+func TestMax_Bool(t *testing.T) {
+	assert.Equal(
+		t,
+		true,
+		MaxBool(
+			false,
+			true,
+		),
+	)
+	assert.Equal(
+		t,
+		false,
+		MaxBool(
+			false,
+			false,
+		),
+	)
+}
+
+func TestMin_Date(t *testing.T) {
+	assert.Equal(
+		t,
+		ParseDate("2015-01-15T10:04:05+00:00"),
+		MinDate(
+			ParseDate("2015-01-15T10:04:05+00:00"),
+			ParseDate("2015-01-15T11:04:05+00:00"),
+		),
+	)
+	assert.Equal(
+		t,
+		ParseDate("2015-01-15T10:04:05+00:00"),
+		MinDate(
+			ParseDate("2015-01-15T11:04:05+00:00"),
+			ParseDate("2015-01-15T10:04:05+00:00"),
+		),
+	)
+}
+
+func TestMax_Date(t *testing.T) {
+	assert.Equal(
+		t,
+		ParseDate("2015-01-15T11:04:05+00:00"),
+		MaxDate(
+			ParseDate("2015-01-15T10:04:05+00:00"),
+			ParseDate("2015-01-15T11:04:05+00:00"),
+		),
+	)
+	assert.Equal(
+		t,
+		ParseDate("2015-01-15T11:04:05+00:00"),
+		MaxDate(
+			ParseDate("2015-01-15T11:04:05+00:00"),
+			ParseDate("2015-01-15T10:04:05+00:00"),
+		),
+	)
+}
+
+func TestMin_Timestamp(t *testing.T) {
+	assert.Equal(
+		t,
+		bson.MongoTimestamp(1234598),
+		MinTimestamp(
+			bson.MongoTimestamp(1234598),
+			bson.MongoTimestamp(1234599),
+		),
+	)
+	assert.Equal(
+		t,
+		bson.MongoTimestamp(1234598),
+		MinTimestamp(
+			bson.MongoTimestamp(1234599),
+			bson.MongoTimestamp(1234598),
+		),
+	)
+}
+
+func TestMax_Timestamp(t *testing.T) {
+	assert.Equal(
+		t,
+		bson.MongoTimestamp(1234599),
+		MaxTimestamp(
+			bson.MongoTimestamp(1234598),
+			bson.MongoTimestamp(1234599),
+		),
+	)
+	assert.Equal(
+		t,
+		bson.MongoTimestamp(1234599),
+		MaxTimestamp(
+			bson.MongoTimestamp(1234599),
+			bson.MongoTimestamp(1234598),
+		),
+	)
+}
+
+func TestMin_Long(t *testing.T) {
+	assert.Equal(
+		t,
+		int64(1234598),
+		MinLong(
+			int64(1234598),
+			int64(1234599),
+		),
+	)
+	assert.Equal(
+		t,
+		int64(1234598),
+		MinLong(
+			int64(1234599),
+			int64(1234598),
+		),
+	)
+}
+
+func TestMax_Long(t *testing.T) {
+	assert.Equal(
+		t,
+		int64(1234599),
+		MaxLong(
+			int64(1234598),
+			int64(1234599),
+		),
+	)
+	assert.Equal(
+		t,
+		int64(1234599),
+		MaxLong(
+			int64(1234599),
+			int64(1234598),
+		),
+	)
+}
+
+func TestMin_Int(t *testing.T) {
+	assert.Equal(
+		t,
+		int(1234598),
+		MinInt(
+			int(1234598),
+			int(1234599),
+		),
+	)
+	assert.Equal(
+		t,
+		int(1234598),
+		MinInt(
+			int(1234599),
+			int(1234598),
+		),
+	)
+}
+
+func TestMax_Int(t *testing.T) {
+	assert.Equal(
+		t,
+		int(1234599),
+		MaxInt(
+			int(1234598),
+			int(1234599),
+		),
+	)
+	assert.Equal(
+		t,
+		int(1234599),
+		MaxInt(
+			int(1234599),
+			int(1234598),
+		),
+	)
+}
+
+func TestMin_Int32(t *testing.T) {
+	assert.Equal(
+		t,
+		int32(1234598),
+		MinInt32(
+			int32(1234598),
+			int32(1234599),
+		),
+	)
+	assert.Equal(
+		t,
+		int32(1234598),
+		MinInt32(
+			int32(1234599),
+			int32(1234598),
+		),
+	)
+}
+
+func TestMax_Int32(t *testing.T) {
+	assert.Equal(
+		t,
+		int32(1234599),
+		MaxInt32(
+			int32(1234598),
+			int32(1234599),
+		),
+	)
+	assert.Equal(
+		t,
+		int32(1234599),
+		MaxInt32(
+			int32(1234599),
+			int32(1234598),
+		),
+	)
+}
+
+func TestMin_UInt(t *testing.T) {
+	assert.Equal(
+		t,
+		uint(1234598),
+		MinUInt(
+			uint(1234598),
+			uint(1234599),
+		),
+	)
+	assert.Equal(
+		t,
+		uint(1234598),
+		MinUInt(
+			uint(1234599),
+			uint(1234598),
+		),
+	)
+}
+
+func TestMax_UInt(t *testing.T) {
+	assert.Equal(
+		t,
+		uint(1234599),
+		MaxUInt(
+			uint(1234598),
+			uint(1234599),
+		),
+	)
+	assert.Equal(
+		t,
+		uint(1234599),
+		MaxUInt(
+			uint(1234599),
+			uint(1234598),
+		),
+	)
+}
+
+func TestMin_Decimal(t *testing.T) {
+	assert.Equal(
+		t,
+		ParseDecimal("123.45"),
+		MinDecimal(
+			ParseDecimal("123.45"),
+			ParseDecimal("124.15"),
+		),
+	)
+	assert.Equal(
+		t,
+		ParseDecimal("123.45"),
+		MinDecimal(
+			ParseDecimal("124.15"),
+			ParseDecimal("123.45"),
+		),
+	)
+}
+
+func TestMax_Decimal(t *testing.T) {
+	assert.Equal(
+		t,
+		ParseDecimal("124.15"),
+		MaxDecimal(
+			ParseDecimal("123.45"),
+			ParseDecimal("124.15"),
+		),
+	)
+	assert.Equal(
+		t,
+		ParseDecimal("124.15"),
+		MaxDecimal(
+			ParseDecimal("124.15"),
+			ParseDecimal("123.45"),
+		),
+	)
+}
+
+func TestInStringSlice(t *testing.T) {
+	assert.Equal(t, true, InStringSlice("test", []string{"test", "abcd", "efgh"}))
+	assert.Equal(t, false, InStringSlice("jkl", []string{"test", "abcd", "efgh"}))
+}
