@@ -167,6 +167,7 @@ Instead of the `--count-unique` flag, for example, you can use `export MONGOEYE_
 ## TODO
 
 * Create a shared library for integration into other languages.
+* TLS/SSL support
 * Optimize local and aggregation framework algorithms.
 * Create a [web interface](https://github.com/mongoeye/mongoeye-ui).
 
@@ -180,6 +181,10 @@ If is this tool useful to you, so feel free to support its further development.
 ## License
 
 Mongoeye is under the GPL-3.0 license. See the [LICENSE](LICENSE.md) file for details.
+
+<sub title="Ad maiorem Dei gloriam. - To the greater glory of God."><sub>
+AMDG
+</sub></sub>
 
 
 
