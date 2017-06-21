@@ -48,6 +48,10 @@ $ go get github.com/mongoeye/mongoeye
 $ cd $GOPATH/src/github.com/mongoeye/mongoeye
 $ make
 ```
+### Requirements
+* go1.8
+* richgo [https://github.com/kyoh86/richgo](https://github.com/kyoh86/richgo)
+* lint [https://github.com/golang/lint](https://github.com/golang/lint)
 
 ## Usage
 
