@@ -20,6 +20,7 @@ matrix:
   - env: MONGODB_VERSION=unstable
 
 install:
+  - go get github.com/kyoh86/richgo github.com/mattn/goveralls
   - make get-deps
 
 before_script:

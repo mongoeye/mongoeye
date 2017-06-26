@@ -6,7 +6,7 @@ DIRS = $(shell go list ./... | grep -v /vendor/ | sed 's~^github.com/mongoeye/mo
 all: fmt-fix lint test build
 
 get-deps:
-	go get github.com/kardianos/govendor github.com/alecthomas/gometalinter github.com/kyoh86/richgo github.com/mattn/goveralls
+	go get github.com/kardianos/govendor github.com/kyoh86/richgo github.com/golang/lint github.com/alecthomas/gometalinter
 	gometalinter --install
 
 fmt-check:
@@ -29,7 +29,7 @@ benchmark:
 
 benchmark-stages:
 	go test -v -run=^$$ -bench=Full$$ -count=2 -benchtime=1s -benchmem -parallel=1 $(PACKAGES)
-	
+
 build: build-cross build-tar build-zip
 
 build-cross:
