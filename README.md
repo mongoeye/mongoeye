@@ -31,23 +31,27 @@ The speed of the analysis was compared with similar tools on the [test collectio
 
 <a href="https://github.com/mongoeye/mongoeye/blob/master/_misc/comparison.png?raw=true" target="_blank" title="Open image"><img src="https://github.com/mongoeye/mongoeye/blob/master/_misc/comparison.png?raw=true" /></a>
 
-* [Studio3T](https://studio3t.com)
-* [MongoDB Compass](https://www.mongodb.com/products/compass)
-* [Variety.js](https://github.com/variety/variety)
-* [Schema.js](https://github.com/skratchdot/mongodb-schema)
+Links: [Studio3T](https://studio3t.com), [MongoDB Compass](https://www.mongodb.com/products/compass), [Variety.js](https://github.com/variety/variety), [Schema.js](https://github.com/skratchdot/mongodb-schema)
 
-## Installing
+## Installation
 
 Mongoeye is one executable binary file. 
 
 You can download the archive from [GitHub releases page](https://github.com/mongoeye/mongoeye/releases) and extract the binary file for your platform.
 
-Or you can compile binary file from sources:
+## Compilation
+
+It is required to have [Go 1.8](https://golang.org). All external dependencies are part of the project in the [vendor](https://github.com/mongoeye/mongoeye/tree/master/vendor) directory.
+
+Compilation process:
 ```
 $ go get github.com/mongoeye/mongoeye
 $ cd $GOPATH/src/github.com/mongoeye/mongoeye
-$ make
+$ make build
 ```
+To run tests or make modifications, you need additional dependencies that you can install using `make get-deps`. 
+
+For development actions, see [Makefile](https://github.com/mongoeye/mongoeye/blob/master/Makefile).
 
 ## Usage
 
@@ -96,7 +100,7 @@ Use `--format json` or `--format yaml` flags to set these formats.
 
 For output to a file use the option `-F /path/to/file`.
 
-### All flags
+### Flags
 
 #### Connection options
 ```
