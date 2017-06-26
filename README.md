@@ -49,9 +49,12 @@ $ go get github.com/mongoeye/mongoeye
 $ cd $GOPATH/src/github.com/mongoeye/mongoeye
 $ make build
 ```
-To run tests or make modifications, you need additional dependencies that you can install using `make get-deps`. 
+ 
+For development, you need additional dependencies that can be installed using `make get-deps`.
 
-For development actions, see [Makefile](https://github.com/mongoeye/mongoeye/blob/master/Makefile).
+The test architecture uses the [Docker](https://www.docker.com) to create the testing MongoDB database.
+
+If you want to contribute to this project, see the actions in [Makefile](https://github.com/mongoeye/mongoeye/blob/master/Makefile) and the [_contrib](https://github.com/mongoeye/mongoeye/tree/master/_contrib) directory.
 
 ## Usage
 
