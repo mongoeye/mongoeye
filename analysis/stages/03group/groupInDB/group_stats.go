@@ -77,17 +77,24 @@ func GroupStats(p *expr.Pipeline, groupOptions *group.Options) {
 	)
 
 	// ValuesHistogram
+	var dateTypeCondition interface{}
+	if groupOptions.ProcessObjectIdAsDate {
+		dateTypeCondition = expr.In(expr.Field(analysis.BsonId, analysis.BsonFieldType), []interface{}{"objectId", "date"})
+	} else {
+		dateTypeCondition = expr.Eq(expr.Field(analysis.BsonId, analysis.BsonFieldType), "date")
+	}
+
 	sw.AddBranch(
 		expr.Eq(statType, valueHistogram),
 		bson.M{
 			analysis.BsonValueHistogram: bson.M{
 				analysis.BsonHistogramStart: expr.Cond(
-					expr.Eq(expr.Field(analysis.BsonId, analysis.BsonFieldType), "date"),
+					dateTypeCondition,
 					expr.TimestampToDate(expr.Field(analysis.BsonHistogramStart)),
 					expr.Field(analysis.BsonHistogramStart),
 				),
 				analysis.BsonHistogramEnd: expr.Cond(
-					expr.Eq(expr.Field(analysis.BsonId, analysis.BsonFieldType), "date"),
+					dateTypeCondition,
 					expr.TimestampToDate(expr.Field(analysis.BsonHistogramEnd)),
 					expr.Field(analysis.BsonHistogramEnd),
 				),

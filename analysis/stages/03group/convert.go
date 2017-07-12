@@ -69,6 +69,7 @@ func NormalizeType(t *analysis.Type, location *time.Location) {
 				t.ValueHistogram.Start = int64(helpers.ToDouble(t.ValueHistogram.Start))
 				t.ValueHistogram.End = int64(helpers.ToDouble(t.ValueHistogram.End))
 			}
+		case "objectId":
 		case "date":
 			{
 				t.ValueHistogram.Start = helpers.SafeToDate(t.ValueHistogram.Start).In(location)

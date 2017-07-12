@@ -10,15 +10,25 @@ import (
 )
 
 // DateWeekdayHistogram returns weekday histogram calculation pipeline.
-func DateWeekdayHistogram(location *time.Location) *expr.Pipeline {
+func DateWeekdayHistogram(location *time.Location, options *group.Options) *expr.Pipeline {
 	p := expr.NewPipeline()
 
 	nameField := expr.Field(analysis.BsonId, group.BsonFieldName)
 	typeField := expr.Field(analysis.BsonId, analysis.BsonFieldType)
 
-	p.AddStage("match", bson.M{
-		(analysis.BsonId + "." + analysis.BsonFieldType): "date",
-	})
+	// Allows objectId to be processed as a date,
+	// value is converted in "prepareFields" function
+	if options.ProcessObjectIdAsDate {
+		p.AddStage("match", bson.M{
+			(analysis.BsonId + "." + analysis.BsonFieldType): bson.M{
+				"$in": []interface{}{"objectId", "date"},
+			},
+		})
+	} else {
+		p.AddStage("match", bson.M{
+			(analysis.BsonId + "." + analysis.BsonFieldType): "date",
+		})
+	}
 
 	p.AddStage("project", bson.M{
 		analysis.BsonId: 1,

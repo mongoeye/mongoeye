@@ -119,6 +119,29 @@ func TestDivide(t *testing.T) {
 	assert.Equal(t, 12.345, out["result"])
 }
 
+func TestDivideInt(t *testing.T) {
+	tests.SkipTIfNotSupportAggregationAlgorithm(t)
+
+	c := tests.SetupTestCol()
+	defer tests.TearDownTestCol(c)
+
+	c.Insert(bson.M{
+		"f1": 123.45,
+		"f2": 10,
+	})
+
+	p := NewPipeline()
+	p.AddStage("project", bson.M{
+		"_id":    0,
+		"result": DivideInt(Field("f1"), Field("f2")),
+	})
+
+	out := bson.M{}
+	p.GetPipe(c).One(&out)
+
+	assert.Equal(t, 12.0, out["result"])
+}
+
 func TestLog10(t *testing.T) {
 	tests.SkipTIfNotSupportAggregationAlgorithm(t)
 

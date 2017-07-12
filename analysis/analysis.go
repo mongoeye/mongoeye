@@ -13,11 +13,17 @@ const NameSeparator = "."
 // ArrayItemMark represents array item in full field name
 const ArrayItemMark = "[]"
 
-// AggregationMinVersion  is minimal MongoDB version that allows analysis using aggregation framework
-var AggregationMinVersion = []int{3, 5, 6}
+// AggregationMinVersion is minimal MongoDB version that allows analysis using aggregation framework
+var AggregationMinVersion = []int{3, 5, 9}
+
+// AggregationMinVersionStr (string) is minimal MongoDB version that allows analysis using aggregation framework
+var AggregationMinVersionStr = "3.5.9"
 
 // RandomSampleMinVersion is minimal MongoDB version that allows analysis using random samples
 var RandomSampleMinVersion = []int{3, 2, 0}
+
+// RandomSampleMinVersionStr (string) is minimal MongoDB version that allows analysis using random samples
+var RandomSampleMinVersionStr = "3.2.0"
 
 // Analysis consists of the options, target collection and the four contiguous stages.
 type Analysis struct {

@@ -12,12 +12,19 @@ import (
 func ValuesHistogram(options *group.Options) *expr.Pipeline {
 	p := expr.NewPipeline()
 
+	allowedTypes := group.ValueHistogramTypes[:]
+	// Allows objectId to be processed as a date,
+	// value is converted in "prepareFields" function
+	if options.ProcessObjectIdAsDate {
+		allowedTypes = append(allowedTypes, "objectId")
+	}
+
 	typeField := analysis.BsonId + "." + analysis.BsonFieldType
 	p.AddStage("match", bson.M{
-		typeField: bson.M{"$in": group.ValueHistogramTypes},
+		typeField: bson.M{"$in": allowedTypes},
 	})
 
-	generateHistogram(p, analysis.BsonValueHistogram, analysis.BsonMinValue, analysis.BsonMaxValue, expand.BsonValue, expr.Field(typeField), options.ValueHistogramMaxRes)
+	generateHistogram(p, analysis.BsonValueHistogram, analysis.BsonMinValue, analysis.BsonMaxValue, expand.BsonValue, expr.Field(typeField), options.ValueHistogramMaxRes, options.ProcessObjectIdAsDate)
 
 	return p
 }

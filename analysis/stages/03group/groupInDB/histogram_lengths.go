@@ -17,7 +17,7 @@ func LengthsHistogram(options *group.Options) *expr.Pipeline {
 		fieldType: bson.M{"$in": group.LengthHistogramTypes},
 	})
 
-	generateHistogram(p, analysis.BsonLengthHistogram, analysis.BsonMinLength, analysis.BsonMaxLength, expand.BsonLength, "int", options.LengthHistogramMaxRes)
+	generateHistogram(p, analysis.BsonLengthHistogram, analysis.BsonMinLength, analysis.BsonMaxLength, expand.BsonLength, "int", options.LengthHistogramMaxRes, false)
 
 	return p
 }

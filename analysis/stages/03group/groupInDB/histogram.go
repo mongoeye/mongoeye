@@ -7,20 +7,29 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-func generateHistogram(p *expr.Pipeline, histogramType string, minField string, maxField string, valueField string, valueType string, resolution uint) {
+func generateHistogram(p *expr.Pipeline, histogramType string, minField string, maxField string, valueField string, valueType string, resolution uint, processObjectIdAsDate bool) {
 	nameField := analysis.BsonId + "." + group.BsonFieldName
 	typeField := analysis.BsonId + "." + analysis.BsonFieldType
+
+	var dateTypeCondition interface{}
+	// Allows objectId to be processed as a date,
+	// value is converted in "prepareFields" function
+	if processObjectIdAsDate {
+		dateTypeCondition = expr.In(valueType, []interface{}{"objectId", "date"})
+	} else {
+		dateTypeCondition = expr.Eq(valueType, "date")
+	}
 
 	// Convert min/max date values to timestamp
 	p.AddStage("project", bson.M{
 		analysis.BsonId: 1,
 		minField: expr.Cond(
-			expr.Eq(valueType, "date"),
+			dateTypeCondition,
 			expr.DateToTimestamp(expr.Field(minField)),
 			expr.Field(minField),
 		),
 		maxField: expr.Cond(
-			expr.Eq(valueType, "date"),
+			dateTypeCondition,
 			expr.DateToTimestamp(expr.Field(maxField)),
 			expr.Field(maxField),
 		),
@@ -29,7 +38,7 @@ func generateHistogram(p *expr.Pipeline, histogramType string, minField string, 
 
 	// range = max - min
 	p.AddStage("addFields", bson.M{
-		analysis.BsonHistogramRange: expr.Subtract("$"+maxField, "$"+minField),
+		analysis.BsonHistogramRange: expr.Subtract(expr.Field(maxField), expr.Field(minField)),
 	})
 
 	// Skip if range == 0
@@ -38,7 +47,7 @@ func generateHistogram(p *expr.Pipeline, histogramType string, minField string, 
 	})
 
 	// Calculate histogram constants (step, range, ...)
-	calcHistogramConstants(p, minField, maxField, valueType, resolution)
+	calcHistogramConstants(p, minField, maxField, valueType, resolution, dateTypeCondition)
 
 	// Map values to interval
 	p.AddStage("project", bson.M{
@@ -48,7 +57,7 @@ func generateHistogram(p *expr.Pipeline, histogramType string, minField string, 
 		analysis.BsonHistogramRange:      expr.Field(histogramConstants, analysis.BsonHistogramRange),
 		analysis.BsonHistogramStep:       expr.Field(histogramConstants, analysis.BsonHistogramStep),
 		analysis.BsonHistogramNumOfSteps: expr.Field(histogramConstants, analysis.BsonHistogramNumOfSteps),
-		bsonAllValues:                    mapValueToInterval(valueField, valueType),
+		bsonAllValues:                    mapValueToInterval(valueField, valueType, dateTypeCondition),
 	})
 
 	p.AddStage("unwind", expr.Field(bsonAllValues))
@@ -92,7 +101,7 @@ func generateHistogram(p *expr.Pipeline, histogramType string, minField string, 
 }
 
 // Calculate histogram constants (step, range, ...) and store them to CONSTANTS field.
-func calcHistogramConstants(p *expr.Pipeline, minField string, maxField string, valueType string, resolution uint) {
+func calcHistogramConstants(p *expr.Pipeline, minField string, maxField string, valueType string, resolution uint, dateTypeCondition interface{}) {
 	// Corresponding GO code:
 	// density := (_resolution - 1) / _range
 	// shift := math.Pow10(int(math.Floor(math.Log10(density))))
@@ -100,20 +109,20 @@ func calcHistogramConstants(p *expr.Pipeline, minField string, maxField string, 
 	// divisor := calcDivisorFromNormDensity(normDensity)
 	// histogram := group.Histogram{}
 	// histogram.Step = 1 / (divisor * shift)
-	//if t == "int" ||  t == "int" ||  t == "long" {
+	// if t == "int" ||  t == "int" ||  t == "long" {
 	//	// Decimal steps do not make sense for numbers
 	//	histogram.Step = math.Ceil(histogram.Step)
-	//} else if t == "date" {
+	// } else if t == "date" {
 	//	// 1,2,5,10,15,30,60 seconds/minutes ... , 1-24 hours ..., x days
 	//	histogram.Step = ceilDateStep(histogram.Step)
-	//}
-	//start := helpers.FloorWithStep(min, histogram.Step)
-	//end   := helpers.CeilWithStep(max, histogram.Step) + histogram.Step
+	// }
+	// start := helpers.FloorWithStep(min, histogram.Step)
+	// end   := helpers.CeilWithStep(max, histogram.Step) + histogram.Step
 	//
-	//histogram.Start = fromDoubleTo(t, start, groupOptions)
-	//histogram.End   = fromDoubleTo(t, end, groupOptions)
-	//histogram.Range = end - start
-	//histogram.NumberOfSteps = uint(histogram.Range / histogram.Step)
+	// histogram.Start = fromDoubleTo(t, start, groupOptions)
+	// histogram.End   = fromDoubleTo(t, end, groupOptions)
+	// histogram.Range = end - start
+	// histogram.NumberOfSteps = uint(histogram.Range / histogram.Step)
 	p.AddStage("addFields", bson.M{
 		histogramConstants: expr.Let(
 			bson.M{histogramDensity: expr.Divide(resolution-1, expr.Field(analysis.BsonHistogramRange))},
@@ -126,7 +135,7 @@ func calcHistogramConstants(p *expr.Pipeline, minField string, maxField string, 
 						expr.Let(
 							bson.M{analysis.BsonHistogramStep: expr.Divide(1, expr.Multiply(expr.Var(histogramDivisor), expr.Var(histogramShift)))},
 							expr.Let(
-								bson.M{analysis.BsonHistogramStep: ceilStep(expr.Var(analysis.BsonHistogramStep), valueType)},
+								bson.M{analysis.BsonHistogramStep: ceilStep(expr.Var(analysis.BsonHistogramStep), valueType, dateTypeCondition)},
 								expr.Let(
 									bson.M{
 										analysis.BsonHistogramStart: expr.FloorWithStep(expr.Field(minField), expr.Var(analysis.BsonHistogramStep)),
@@ -153,7 +162,7 @@ func calcHistogramConstants(p *expr.Pipeline, minField string, maxField string, 
 }
 
 // Map value to interval according histogram CONSTANTS
-func mapValueToInterval(valueField string, valueType string) bson.M {
+func mapValueToInterval(valueField string, valueType string, dateTypeCondition interface{}) bson.M {
 	if valueType == "int" {
 		return expr.Map(
 			expr.Field(bsonAllValues),
@@ -168,7 +177,7 @@ func mapValueToInterval(valueField string, valueType string) bson.M {
 	}
 
 	return expr.Cond(
-		expr.Eq(valueType, "date"),
+		dateTypeCondition,
 		// Date
 		expr.Map(
 			expr.Field(bsonAllValues),
@@ -194,7 +203,7 @@ func mapValueToInterval(valueField string, valueType string) bson.M {
 	)
 }
 
-func ceilStep(step interface{}, t interface{}) bson.M {
+func ceilStep(step interface{}, t interface{}, dateTypeCondition interface{}) bson.M {
 	//if t == "int" ||  t == "int" ||  t == "long" {
 	//	// Decimal steps do not make sense for numbers
 	//	histogram.Step = math.Ceil(histogram.Step)
@@ -219,7 +228,7 @@ func ceilStep(step interface{}, t interface{}) bson.M {
 
 	// date
 	sw.AddBranch(
-		expr.Eq(t, "date"),
+		dateTypeCondition,
 		expr.CeilDateSeconds(step),
 	)
 

@@ -1363,9 +1363,5 @@ func RunTestObjectIdAsDate(t *testing.T, stageFactory group.StageFactory) {
 
 	stage := stageFactory(&options)
 
-	if stage.Processor == nil {
-		t.Skip("Aggregate framework don't support casting ObjectId to Date.")
-	}
-
 	testStage(t, c, time.UTC, stage, expected)
 }

@@ -26,8 +26,15 @@ import (
 func ValueExtremesComputation(options *group.Options) *expr.Pipeline {
 	p := expr.NewPipeline()
 
+	allowedTypes := group.StoreMinMaxValueTypes[:]
+	// Allows objectId to be processed as a date,
+	// value is converted in "prepareFields" function
+	if options.ProcessObjectIdAsDate {
+		allowedTypes = append(allowedTypes, "objectId")
+	}
+
 	p.AddStage("match", bson.M{
-		(analysis.BsonId + "." + analysis.BsonFieldType): bson.M{"$in": group.StoreMinMaxValueTypes},
+		(analysis.BsonId + "." + analysis.BsonFieldType): bson.M{"$in": allowedTypes},
 	})
 
 	project := bson.M{

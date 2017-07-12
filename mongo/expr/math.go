@@ -22,6 +22,11 @@ func Divide(a interface{}, b interface{}) bson.M {
 	return bson.M{"$divide": []interface{}{a, b}}
 }
 
+// DivideInt provides integer divide.
+func DivideInt(a interface{}, b interface{}) bson.M {
+	return Floor(Divide(a, b))
+}
+
 // Log10 encapsulates MongoDB operation $log10.
 func Log10(a interface{}) bson.M {
 	return bson.M{"$log10": a}

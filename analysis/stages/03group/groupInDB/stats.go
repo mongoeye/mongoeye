@@ -55,11 +55,11 @@ func ComputeStats(p *expr.Pipeline, groupOptions *group.Options, analysisOptions
 	}
 
 	if groupOptions.StoreWeekdayHistogram {
-		f.AddField(weekdayHistogram, DateWeekdayHistogram(analysisOptions.Location))
+		f.AddField(weekdayHistogram, DateWeekdayHistogram(analysisOptions.Location, groupOptions))
 	}
 
 	if groupOptions.StoreHourHistogram {
-		f.AddField(hourHistogram, DateHourHistogram(analysisOptions.Location))
+		f.AddField(hourHistogram, DateHourHistogram(analysisOptions.Location, groupOptions))
 	}
 
 	p.AddStage("facet", f.GetMap())

@@ -29,7 +29,7 @@ import (
 //		...
 //	]
 func GroupValues(p *expr.Pipeline, options *group.Options) {
-	filterOutUnnecessaryFields(p, options)
+	prepareFields(p, options)
 
 	fields := bson.M{
 		analysis.BsonId: bson.M{
@@ -83,7 +83,10 @@ func GroupValues(p *expr.Pipeline, options *group.Options) {
 	p.AddStage("group", fields)
 }
 
-// Deletes fields that will no longer be needed according to group.Options.
+// Prepare fields for grouping:
+//  - converts the values to the desired format
+//  - deletes fields that will no longer be needed according to group.Options.
+//
 // Example results:
 //	[
 //		{
@@ -94,7 +97,7 @@ func GroupValues(p *expr.Pipeline, options *group.Options) {
 //		}
 //		...
 //	]
-func filterOutUnnecessaryFields(p *expr.Pipeline, options *group.Options) {
+func prepareFields(p *expr.Pipeline, options *group.Options) {
 	var valueProject interface{}
 	if options.StoreMinMaxAvgValue ||
 		options.StoreWeekdayHistogram ||
@@ -104,18 +107,30 @@ func filterOutUnnecessaryFields(p *expr.Pipeline, options *group.Options) {
 		options.StoreBottomNValues > 0 ||
 		options.ValueHistogramMaxRes > 0 {
 
+		typeSw := expr.Switch()
+		typeSw.SetDefault(expr.Field(expand.BsonValue))
+
+		// Convert boolean to 1 or 0 values for average calculation
+		typeSw.AddBranch(
+			expr.Eq(expr.Field(expand.BsonFieldType), "bool"),
+			expr.Cond(
+				expr.Eq(expr.Field(expand.BsonValue), true),
+				1,
+				0,
+			),
+		)
+
+		// Convert objectId to date
+		if options.ProcessObjectIdAsDate {
+			typeSw.AddBranch(
+				expr.Eq(expr.Field(expand.BsonFieldType), "objectId"),
+				expr.ObjectIdToDate(expr.Field(expand.BsonValue)),
+			)
+		}
+
 		valueProject = expr.Cond(
 			expr.In(expr.Field(expand.BsonFieldType), group.StoreValueTypes),
-			expr.Cond(
-				// If bool, convert bool value to int for AVG calculation
-				expr.Eq(expr.Field(expand.BsonFieldType), "bool"),
-				expr.Cond(
-					expr.Eq(expr.Field(expand.BsonValue), true),
-					1,
-					0,
-				),
-				expr.Field(expand.BsonValue),
-			),
+			typeSw.Bson(),
 			expr.Var("REMOVE"), // remove if no longer needed
 		)
 	} else {
