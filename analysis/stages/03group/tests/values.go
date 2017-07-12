@@ -1273,6 +1273,8 @@ func RunTestObjectIdAsDate(t *testing.T, stageFactory group.StageFactory) {
 	options.StoreMinMaxAvgValue = true
 	options.StoreWeekdayHistogram = true
 	options.StoreHourHistogram = true
+	options.StoreTopNValues = 3
+	options.StoreBottomNValues = 3
 	options.ValueHistogramMaxRes = 1000
 
 	expected := []interface{}{
@@ -1284,6 +1286,34 @@ func RunTestObjectIdAsDate(t *testing.T, stageFactory group.StageFactory) {
 				ValueExtremes: &analysis.ValueExtremes{
 					Min: helpers.ParseDate("2017-04-16T23:59:59+00:00"),
 					Max: helpers.ParseDate("2017-04-25T21:57:13+00:00"),
+				},
+				TopNValues: analysis.ValueFreqSlice{
+					{
+						Count: 1,
+						Value: helpers.ParseDate("2017-04-16T23:59:59+00:00"),
+					},
+					{
+						Count: 1,
+						Value: helpers.ParseDate("2017-04-24T12:54:57+00:00"),
+					},
+					{
+						Count: 1,
+						Value: helpers.ParseDate("2017-04-25T21:57:13+00:00"),
+					},
+				},
+				BottomNValues: analysis.ValueFreqSlice{
+					{
+						Count: 1,
+						Value: helpers.ParseDate("2017-04-20T05:45:57+00:00"),
+					},
+					{
+						Count: 1,
+						Value: helpers.ParseDate("2017-04-17T00:00:01+00:00"),
+					},
+					{
+						Count: 1,
+						Value: helpers.ParseDate("2017-04-18T10:00:00+00:00"),
+					},
 				},
 				WeekdayHistogram: &analysis.WeekdayHistogram{
 					1, // sunday

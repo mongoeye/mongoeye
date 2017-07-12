@@ -29,8 +29,15 @@ func ValueFreqComputation(options *group.Options) *expr.Pipeline {
 	nameField := expr.Field(analysis.BsonId, group.BsonFieldName)
 	typeField := expr.Field(analysis.BsonId, analysis.BsonFieldType)
 
+	allowedTypes := group.TopBottomValuesTypes[:]
+	// Allows objectId to be processed as a date,
+	// value is converted in "prepareFields" function
+	if options.ProcessObjectIdAsDate {
+		allowedTypes = append(allowedTypes, "objectId")
+	}
+
 	p.AddStage("match", bson.M{
-		(analysis.BsonId + "." + analysis.BsonFieldType): bson.M{"$in": group.TopBottomValuesTypes},
+		(analysis.BsonId + "." + analysis.BsonFieldType): bson.M{"$in": allowedTypes},
 	})
 
 	//if options.MaxItemsForFreqAnalysis > 0 {
