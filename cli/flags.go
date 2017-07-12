@@ -1,6 +1,8 @@
 package cli
 
 import (
+	"fmt"
+	"github.com/mongoeye/mongoeye/analysis"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -54,7 +56,7 @@ func InitFlags(cmd *cobra.Command, v *viper.Viper, envPrefix string) {
 	s = flags.AddSection("authentication").Set
 	s.StringP("user", "u", "admin", "username for authentication")
 	s.StringP("password", "p", "", "password for authentication")
-	s.String("auth-db", "admin", "auth database")
+	s.String("auth-db", "", "auth database (default: same as the working db)")
 	s.String("auth-mech", "", "auth mechanism")
 
 	// analysis options
@@ -85,7 +87,7 @@ func InitFlags(cmd *cobra.Command, v *viper.Viper, envPrefix string) {
 	// other options
 	s = flags.AddSection("other options").Set
 	s.StringP("timezone", "t", "local", "timezone, eg. UTC, Europe/Berlin")
-	s.Bool("use-aggregation", false, "analyze with aggregation framework (mongodb 3.5.6+)")
+	s.Bool("use-aggregation", false, fmt.Sprintf("analyze with aggregation framework (mongodb %s+)", analysis.AggregationMinVersionStr))
 	s.Uint("string-max-length", 100, "max string length")
 	s.Uint("array-max-length", 20, "analyze only first N array elements")
 	s.Uint("concurrency", 0, "number of local processes (default 0 = auto)")

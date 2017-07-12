@@ -239,6 +239,11 @@ func GetConfig(v *viper.Viper) (*Config, error) {
 		}
 	}
 
+	// Default auth database to working database
+	if config.AuthDatabase == "" {
+		config.AuthDatabase = config.Database
+	}
+
 	err = config.validate()
 	if err != nil {
 		return nil, err

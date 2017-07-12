@@ -33,7 +33,7 @@ func TestGetConfig_Default(t *testing.T) {
 	assert.Equal(t, "localhost:27017", c.Host)
 	assert.Equal(t, "admin", c.User)
 	assert.Equal(t, "", c.Password)
-	assert.Equal(t, "admin", c.AuthDatabase)
+	assert.Equal(t, "", c.AuthDatabase)
 	assert.Equal(t, "", c.AuthMechanism)
 	assert.Equal(t, "", c.Database)
 	assert.Equal(t, "", c.Collection)

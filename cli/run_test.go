@@ -730,8 +730,8 @@ func Test_checkCompatibility(t *testing.T) {
 	}
 
 	info := mgo.BuildInfo{
-		Version:      "3.5.6",
-		VersionArray: []int{3, 5, 6},
+		Version:      analysis.AggregationMinVersionStr,
+		VersionArray: analysis.AggregationMinVersion,
 	}
 
 	assert.Equal(t, nil, checkCompatibility(config, info))
