@@ -1,25 +1,25 @@
 <a href="https://raw.githubusercontent.com/mongoeye/mongoeye/master/_misc/logo_name_small.png?v1" title="logo"><img src="https://raw.githubusercontent.com/mongoeye/mongoeye/master/_misc/logo_name_small.png?v1" width="300"/></a>
 
 
-Console exploration tool for MongoDB written in [Go](https://golang.org).
+Schema and data analyzer for [MongoDB](https://www.mongodb.com) written in [Go](https://golang.org).
 
-[![GoDoc](https://godoc.org/github.com/golang/gddo?status.svg)](http://godoc.org/github.com/mongoeye/mongoeye)
+[![GoDoc](https://godoc.org/github.com/golang/gddo?status.svg)](https://godoc.org/github.com/mongoeye/mongoeye)
 [![Coverage Status](https://coveralls.io/repos/github/mongoeye/mongoeye/badge.svg?branch=master)](https://coveralls.io/github/mongoeye/mongoeye?branch=master)
 [![Build Status](https://travis-ci.org/mongoeye/mongoeye.svg?branch=master)](https://travis-ci.org/mongoeye/mongoeye)
 [![Go Report Card](https://goreportcard.com/badge/github.com/mongoeye/mongoeye)](https://goreportcard.com/report/github.com/mongoeye/mongoeye)
 
 ## Overview
 
-This tool helps you get an overview of the data stored in the MongoDB database. Allows quick schema analysis and some other calculations. The analysis can run locally or in a database using the aggregation framework (require MongoDB 3.5.6+).
+Mongoeye is a tool for getting a quick overview of data in your MongoDB database.
 
 ### Key features
 
 * *Fast:*&nbsp; the fastest tool for analyzing the MongoDB scheme
 * *Single binary:*&nbsp; pre-built [binaries](https://github.com/mongoeye/mongoeye/releases) for Windows, Linux, and MacOS (Darwin)
 * *Local analysis:*&nbsp; quick local analysis using a parallel algorithm (MongoDB 2.0+)
-* *Analysis in database:*&nbsp; using the aggregation framework (MongoDB 3.5.6+)
-* *Rich features:*&nbsp; **histograms** (value, length, weekday, hour), most frequent values, ... 
-* *Integrable:*&nbsp; table, JSON and YAML output
+* *Analysis in database:*&nbsp; using the aggregation framework (MongoDB 3.5.9+)
+* *Rich features:*&nbsp; generates a [histogram](https://en.wikipedia.org/wiki/Histogram) (value, length, weekday, hour), most frequent values, ... 
+* *Integrable:*&nbsp; table, JSON or YAML output
 
 ## Demo
 
@@ -66,29 +66,29 @@ The command `mongoeye --help` lists all available options.
 
 ### Table output
 
-Default output format is table that shows only documents schema.
+Default output format is table. It shows only schema without other analyzes.
 
-It does not show histograms and other analysis. Example table output:
+Example table output:
 ```
-            KEY           │ COUNT  │   %    
+            KEY            │ COUNT  │   %    
 ────────────────────────────────────────────
-  all documents           │ 2548   │        
-  analyzed documents      │ 1000   │  39.2  
-                          │        │        
-  _id ➜ objectId          │ 1000   │ 100.0  
-  address                 │ 1000   │ 100.0  
-  │ ➜ int                 │    1   │   0.1  
-  └╴➜ string              │  999   │  99.9  
-  address line 2 ➜ string │ 1000   │ 100.0  
-  name ➜ string           │ 1000   │ 100.0  
-  outcode ➜ string        │ 1000   │ 100.0  
-  postcode ➜ string       │ 1000   │ 100.0  
-  rating                  │ 1000   │ 100.0  
-  │ ➜ int                 │  523   │  52.3  
-  │ ➜ double              │  451   │  45.1  
-  └╴➜ string              │   26   │   2.6  
-  type_of_food ➜ string   │ 1000   │ 100.0  
-  URL ➜ string            │ 1000   │ 100.0  
+  all documents            │ 2548   │        
+  analyzed documents       │ 1000   │  39.2  
+                           │        │        
+  _id -> objectId          │ 1000   │ 100.0  
+  address                  │ 1000   │ 100.0  
+  │ -> int                 │    1   │   0.1  
+  └╴-> string              │  999   │  99.9  
+  address line 2 -> string │ 1000   │ 100.0  
+  name -> string           │ 1000   │ 100.0  
+  outcode -> string        │ 1000   │ 100.0  
+  postcode -> string       │ 1000   │ 100.0  
+  rating                   │ 1000   │ 100.0  
+  │ -> int                 │  523   │  52.3  
+  │ -> double              │  451   │  45.1  
+  └╴-> string              │   26   │   2.6  
+  type_of_food -> string   │ 1000   │ 100.0  
+  URL -> string            │ 1000   │ 100.0  
 
 OK  0.190s (local analysis)
     1000/2548 docs (39.2%)
