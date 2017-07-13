@@ -80,6 +80,9 @@ dbExists "restaurant"     || importJSON    "../dataset/restaurant.json" "restaur
 dbExists "student"        || importJSON    "../dataset/students.json" "student" "student"
 dbExists "people"         || importArchive "../dataset/people.bson.gz" "people" "people"
 
+# Dataset for demo
+dbExists "db"     || importJSON    "../dataset/restaurant.json" "db" "col"
+
 createAdminUser
 
 printf "\nOK\n\n"
