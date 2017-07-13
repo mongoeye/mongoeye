@@ -44,3 +44,5 @@ build-tar:
 
 build-zip:
 	cd _release; zip -r mongoeye.zip mongoeye
+
+demo-gif:
