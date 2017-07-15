@@ -57,7 +57,7 @@ func TestConnect_InvalidDb(t *testing.T) {
 
 	_, _, _, err := Connect(config)
 	assert.NotEqual(t, nil, err)
-	assert.Equal(t, "The database 'db' does not exist.\nPlease enter the name of the existing database.\n", err.Error())
+	assert.Equal(t, "The database 'invalidDb' does not exist.\nPlease enter the name of the existing database.\n", err.Error())
 }
 
 func TestConnect_InvalidCol(t *testing.T) {
