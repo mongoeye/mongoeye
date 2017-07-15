@@ -19,8 +19,8 @@ URxvt.internalBorder: 16
 *color1: #ff0000
 *color9: #ff0000
 !! green dark/light
-*color2: #8FDE21
-*color10: #77D01E
+*color2: #83DE21
+*color10: #71D01E
 !! yellow dark/light
 *color3: #FFE50A
 *color11: #EDC809

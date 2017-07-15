@@ -46,3 +46,4 @@ build-zip:
 	cd _release; zip -r mongoeye.zip mongoeye
 
 demo-gif:
+    bash -c "source _contrib/docker/env.sh && _contrib/demo/headless.sh"
