@@ -19,7 +19,7 @@ services:
 env:
   matrix:
     - MONGODB_VERSION=unstable
-    - MONGODB_VERSION=3.5.9 COVERALLS="-service=travis-ci" BUILD=true DEMO=true
+    - MONGODB_VERSION=3.5.9 COVERALLS="-service=travis-ci" BUILD=true DEMO-GIF=true
     - MONGODB_VERSION=3.4
     - MONGODB_VERSION=3.2
     - MONGODB_VERSION=3.0
@@ -53,7 +53,7 @@ script:
   - make lint
   # Cross compilation
   - if [ -n "$BUILD" ]; then make build; fi
-  - if [ -n "$DEMO" ];  then make demo-gif; fi
+  - if [ -n "$DEMO-GIF" ];  then make demo-gif; fi
 
 deploy:
   provider: releases
