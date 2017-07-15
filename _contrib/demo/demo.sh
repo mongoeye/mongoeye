@@ -23,12 +23,12 @@ run() {
 example () {
     clear
     p "${BOLD}Example $1:${NORMAL} $2"
-    sleep 0.7
+    sleep 0.5
 }
 
 comment () {
     echo
-    sleep 0.5
+    sleep 0.3
     p "${BOLD}Comment:${NORMAL} $1"
 }
 
@@ -48,13 +48,6 @@ PAUSE_AFTER_EXAMPLE=8
 # Clear
 clear
 sleep 1
-
-echo "second 1"
-sleep 1
-echo "second 2"
-sleep 1
-echo "bye"
-exit 0
 
 # EXAMPLE 1
 example 1 'Basic usage'
