@@ -10,7 +10,7 @@ Schema and data analyzer for [MongoDB](https://www.mongodb.com) written in [Go](
 
 ## Overview
 
-Mongoeye is a tool for getting a quick overview of data in your MongoDB database.
+Mongoose provides a quick overview of the data in your MongoDB database.
 
 ### Key features
 
@@ -18,7 +18,7 @@ Mongoeye is a tool for getting a quick overview of data in your MongoDB database
 * *Single binary:*&nbsp; pre-built [binaries](https://github.com/mongoeye/mongoeye/releases) for Windows, Linux, and MacOS (Darwin)
 * *Local analysis:*&nbsp; quick local analysis using a parallel algorithm (MongoDB 2.0+)
 * *Analysis in database:*&nbsp; using the aggregation framework (MongoDB 3.5.9+)
-* *Rich features:*&nbsp; generates a [histogram](https://en.wikipedia.org/wiki/Histogram) (value, length, weekday, hour), most frequent values, ... 
+* *Rich features:*&nbsp; generates [histogram](https://en.wikipedia.org/wiki/Histogram) (value, length, weekday, hour), most frequent values, ... 
 * *Integrable:*&nbsp; table, JSON or YAML output
 
 ## Demo
