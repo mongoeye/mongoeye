@@ -10,7 +10,7 @@ Schema and data analyzer for [MongoDB](https://www.mongodb.com) written in [Go](
 
 ## Overview
 
-Mongoose provides a quick overview of the data in your MongoDB database.
+Mongoeye provides a quick overview of the data in your MongoDB database.
 
 ### Key features
 
