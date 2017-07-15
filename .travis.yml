@@ -10,6 +10,7 @@ addons:
       # Dependencies for demo gif generation
       - xvfb
       - rxvt-unicode
+      - fonts-liberation
       - byzanz
 
 services:

@@ -9,7 +9,7 @@ URxvt.internalBorder: 16
 
 ! special
 *.foreground:   #ffffff
-*.background:   #1a1a1a
+*.background:   #121212
 *.cursorColor:  #ffffff
 
 ! black
