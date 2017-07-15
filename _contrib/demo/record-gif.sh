@@ -3,11 +3,20 @@
 # Exit on error
 set -e
 
+# Hide job control messages
+set +m
+
 # Stop Xvfb on exit
 clean_up () {
     CODE=$?
-    kill "${unclutterPid}" 2>&1 > /dev/null  || true
-    start-stop-daemon --verbose --stop  --pidfile /tmp/custom_xvfb_99.pid 2>&1 > /dev/null || true
+
+    # Kill unclutter
+    kill %1 || true
+    wait %1 2>/dev/null || true
+
+    # Stop Xvfb
+    start-stop-daemon --stop  --pidfile /tmp/custom_xvfb_99.pid
+
     exit "${CODE}"
 }
 trap clean_up EXIT
@@ -22,14 +31,15 @@ export height="920"
 export geometry="${width}x${height}"
 export DISPLAY=:99
 export XENVIRONMENT=./.Xdefaults
+export NO_AT_BRIDGE=1 # https://gist.github.com/jeffcogswell/62395900725acef1c0a5a608f7eb7a05
 
-# Run Xvfb
-start-stop-daemon --verbose --start --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -once -nocursor -dpms -ac -screen 0 "${geometry}x24+32"
-sleep 3
+# Start Xvfb
+start-stop-daemon --start --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -once -nocursor -dpms -ac -screen 0 "${geometry}x24+32"
+sleep 1
 
 # Hide mouse
-unclutter -idle 0.01 -root &
-unclutterPid=$!
+unclutter -idle 0 -root &
+sleep 1
 
 # Run demo
 termCmd="urxvt -geometry ${geometry} -e ./demo.sh"

@@ -49,6 +49,13 @@ PAUSE_AFTER_EXAMPLE=8
 clear
 sleep 1
 
+echo "second 1"
+sleep 1
+echo "second 2"
+sleep 1
+echo "bye"
+exit 0
+
 # EXAMPLE 1
 example 1 'Basic usage'
 run
