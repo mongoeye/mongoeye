@@ -108,6 +108,3 @@ pauseAfterExample
 clear
 comment "For other uses, see help: ${BOLD}mongoeye --help${NORMAL}"
 pauseAfterExample
-
-# END
-wait

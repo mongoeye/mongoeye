@@ -26,6 +26,10 @@ export XENVIRONMENT=./.Xdefaults
 start-stop-daemon --verbose --start --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -once -nocursor -dpms -ac -screen 0 "${geometry}x24+32"
 sleep 3
 
+# Hide mouse
+unclutter -idle 0.01 -root
+
 # Run demo
-urxvt -geometry "${geometry}" -e ./demo.sh
-byzanz-record -v -w "${width}" -h "${height}" -x 0 -y 0 -c -e ./demo.sh "${DIR}/../../_release/demo.gif"
+termCmd="urxvt -geometry ${geometry} -e ./demo.sh"
+echo "Running: ${termCmd}"
+byzanz-record -v -w "${width}" -h "${height}" -x 0 -y 0 -c -e "${termCmd}" "${DIR}/../../_release/demo.gif"

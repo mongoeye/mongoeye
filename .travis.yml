@@ -12,6 +12,7 @@ addons:
       - xvfb
       - rxvt-unicode
       - fonts-liberation
+      - unclutter
       - byzanz
 
 services:
