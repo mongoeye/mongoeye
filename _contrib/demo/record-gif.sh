@@ -6,7 +6,8 @@ set -e
 # Stop Xvfb on exit
 clean_up () {
     CODE=$?
-    start-stop-daemon --verbose --stop  --pidfile /tmp/custom_xvfb_99.pid || true
+    kill "${unclutterPid}" 2>&1 > /dev/null  || true
+    start-stop-daemon --verbose --stop  --pidfile /tmp/custom_xvfb_99.pid 2>&1 > /dev/null || true
     exit "${CODE}"
 }
 trap clean_up EXIT
@@ -27,7 +28,8 @@ start-stop-daemon --verbose --start --pidfile /tmp/custom_xvfb_99.pid --make-pid
 sleep 3
 
 # Hide mouse
-unclutter -idle 0.01 -root
+unclutter -idle 0.01 -root &
+unclutterPid=$!
 
 # Run demo
 termCmd="urxvt -geometry ${geometry} -e ./demo.sh"
