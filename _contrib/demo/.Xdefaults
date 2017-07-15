@@ -8,7 +8,7 @@ URxvt.internalBorder: 16
 *boldFont: xft:LiberationMono:bold:pixelsize=22:antialias=true:hinting=true
 
 ! Solarized dark theme
-*background: #000e12
+*background: #141411
 *foreground: #ffffff
 *fadeColor: #002b36
 *cursorColor: #ffffff
