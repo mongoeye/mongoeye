@@ -19,10 +19,10 @@ lint:
 	golint -min_confidence 0.85 -set_exit_status $(DIRS)
 
 test:
-	bash -c "source _contrib/docker/env.sh && _contrib/test_all.sh"
+	bash -c "source _contrib/docker/env.sh && _contrib/test.sh"
 
 coverage:
-	bash -c "source _contrib/docker/env.sh && _contrib/coverage_all.sh"
+	bash -c "source _contrib/docker/env.sh && _contrib/coverage.sh"
 
 benchmark:
 	go test -v -run=^$$ -bench=. -count=2 -benchtime=1s -benchmem -parallel=1 $(PACKAGES)

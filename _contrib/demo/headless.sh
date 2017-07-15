@@ -12,5 +12,5 @@ export height="920"
 export geometry="${width}x${height}"
 
 # Run
-termCmd="XENVIRONMENT=./.Xdefaults urxvt -geometry ${geometry} -e ./make-gif.sh"
+termCmd="XENVIRONMENT=./.Xdefaults urxvt -geometry ${geometry} -e ./record.sh"
 xvfb-run -n 99 --server-args="-once -nocursor -dpms -ac -screen 0 ${geometry}x24+32" bash -c "${termCmd}"

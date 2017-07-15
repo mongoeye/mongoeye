@@ -2,8 +2,6 @@
 
 set -e
 
-# ttf-liberation
-
 # Get script directory
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "${DIR}"
