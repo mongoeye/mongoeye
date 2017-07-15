@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#urxvt
+
 # Get script directory
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "${DIR}"
@@ -41,7 +43,7 @@ TYPE_SPEED=10
 NO_WAIT=true
 DEMO_DB=db
 DEMO_COL=col
-PAUSE_AFTER_EXAMPLE=7
+PAUSE_AFTER_EXAMPLE=8
 
 # Clear
 clear
@@ -53,59 +55,59 @@ run
 comment 'The default scope is random sample of 1000 documents.'
 pauseAfterExample
 
-## EXAMPLE 2
-#example 2 'Analyze in the database with the aggregation framework'
-#run '--use-aggregation'
-#comment "By default, analysis runs locally."
-#comment "Flag ${BOLD}--use-aggregation${NORMAL} serve to run analysis directly in database."
-#pauseAfterExample
-#
-## EXAMPLE 3
-#example 3 'Analysis of all documents'
-#run '--scope all'
-#comment "Flag ${BOLD}--scope all${NORMAL} can be used to analyze all documents."
-#pauseAfterExample
-#
-## EXAMPLE 4
-#example 4 'Analysis of first 100 documents'
-#run '--scope first:100'
-#comment "For all supported scopes, see the help: ${BOLD}mongoeye --help${NORMAL}"
-#pauseAfterExample
-#
-## EXAMPLE 5
-#example 5 'YAML output'
-#run '--format yaml | head -n 29'
-#comment "Use flag ${BOLD}--format yaml${NORMAL} to get results in YAML format."
-#pauseAfterExample
-#
-## EXAMPLE 6
-#example 6 'JSON output piped to external tool'
-#run "--format json | jq '.fields[] | select(.name == \"rating\")'"
-#comment "JSON output can be easily processed by external tools."
-#pauseAfterExample
-#
-## EXAMPLE 7
-#example 7 'The frequency of values'
-#run "--most-freq 3 --least-freq 2 --format json |\njq '.fields[] | select(.name == \"rating\") | .types[] | select(.type == \"double\")'"
-#comment "Flags ${BOLD}--most-freq N${NORMAL} and ${BOLD}--least-freq N${NORMAL} return the most and least frequent values."
-#pauseAfterExample
-#
-## EXAMPLE 8
-#example 8 'Histogram of values'
-#run "--value-hist --value-hist-steps 10 --format json |\njq '.fields[] | select(.name == \"rating\") | .types[] | select(.type == \"double\") | .valueHistogram'"
-#comment "Flag ${BOLD}--value-hist-steps N${NORMAL} set the maximum number of steps. Real step value is rounded."
-#pauseAfterExample
-#
-## EXAMPLE 9
-#example 9 'Histogram of weekdays'
-#run "--weekday-hist --format json |\njq '.fields[] | select(.name == \"_id\") | .types[]'"
-#comment "ObjectId fields are processed as dates."
-#comment "Flags ${BOLD}--hour-hist${NORMAL} and ${BOLD}--weekday-hist${NORMAL} serve to create a histogram of hours or weekdays."
-#pauseAfterExample
-#
-#clear
-#comment "For other uses, see help: ${BOLD}mongoeye --help${NORMAL}"
-#pauseAfterExample
-#
-## END
-#wait
+# EXAMPLE 2
+example 2 'Analysis using the aggregation framework'
+run '--use-aggregation'
+comment "By default, analysis runs locally."
+comment "Flag ${BOLD}--use-aggregation${NORMAL} serve to run analysis directly in database."
+pauseAfterExample
+
+# EXAMPLE 3
+example 3 'Analysis of all documents'
+run '--scope all'
+comment "Flag ${BOLD}--scope all${NORMAL} can be used to analyze all documents."
+pauseAfterExample
+
+# EXAMPLE 4
+example 4 'Analysis of first 100 documents'
+run '--scope first:100'
+comment "For other options, see the flags ${BOLD}--query${NORMAL} and ${BOLD}--scope${NORMAL} in the help."
+pauseAfterExample
+
+# EXAMPLE 5
+example 5 'YAML output'
+run '--format yaml | head -n 29'
+comment "Use flag ${BOLD}--format yaml${NORMAL} to get results in YAML format."
+pauseAfterExample
+
+# EXAMPLE 6
+example 6 'JSON output piped to an external tool'
+run "--format json | jq '.fields[] | select(.name == \"rating\")'"
+comment "JSON output can be easily processed using external tools."
+pauseAfterExample
+
+# EXAMPLE 7
+example 7 'The frequency of values'
+run "--most-freq 3 --least-freq 2 --format json |\njq '.fields[] | select(.name == \"rating\") | .types[] | select(.type == \"double\")'"
+comment "Flags ${BOLD}--most-freq N${NORMAL} and ${BOLD}--least-freq N${NORMAL} return the most and least frequent values."
+pauseAfterExample
+
+# EXAMPLE 8
+example 8 'Histogram of values'
+run "--value-hist --value-hist-steps 10 --format json |\njq '.fields[] | select(.name == \"rating\") | .types[] | select(.type == \"double\") | .valueHistogram'"
+comment "Flag ${BOLD}--value-hist-steps N${NORMAL} set the maximum number of steps. Real step value is rounded."
+pauseAfterExample
+
+# EXAMPLE 9
+example 9 'Histogram of weekdays'
+run "--weekday-hist --format json |\njq '.fields[] | select(.name == \"_id\") | .types[]'"
+comment "ObjectId fields are processed as dates."
+comment "Flags ${BOLD}--hour-hist${NORMAL} and ${BOLD}--weekday-hist${NORMAL} serve to create a histogram of hours or weekdays."
+pauseAfterExample
+
+clear
+comment "For other uses, see help: ${BOLD}mongoeye --help${NORMAL}"
+pauseAfterExample
+
+# END
+wait
