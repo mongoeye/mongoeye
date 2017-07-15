@@ -8,6 +8,7 @@ addons:
   apt:
     packages:
       # Dependencies for demo gif generation
+      - pv
       - xvfb
       - rxvt-unicode
       - fonts-liberation
