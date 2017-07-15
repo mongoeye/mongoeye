@@ -8,31 +8,21 @@ URxvt.internalBorder: 16
 *boldFont: xft:LiberationMono:bold:pixelsize=22:antialias=true:hinting=true
 
 ! Solarized dark theme
-*background: #141411
-*foreground: #ffffff
-*fadeColor: #002b36
-*cursorColor: #ffffff
-!! black dark/light
-*color0: #000000
-*color8: #808080
-!! red dark/light
-*color1: #ff0000
-*color9: #ff0000
-!! green dark/light
-*color2: #83DE21
-*color10: #71D01E
-!! yellow dark/light
-*color3: #FFE50A
-*color11: #EDC809
-!! blue dark/light
-*color4: #008FD9
-*color12: #5555FF
-!! magenta dark/light
-*color5: #FF005D
-*color13: #FF55FF
-!! cyan dark/light
-*color6: #00adbb
-*color14: #69ccfa
-!! white dark/light
-*color7: #ffffff
-*color15: #ffffff
+URxvt*background: #0F0F0D
+URxvt*foreground: #ffffff
+URxvt*color0: #101010
+URxvt*color1: #960050
+URxvt*color2: #66aa11
+URxvt*color3: #c47f2c
+URxvt*color4: #30309b
+URxvt*color5: #7e40a5
+URxvt*color6: #3579a8
+URxvt*color7: #9999aa
+URxvt*color8: #303030
+URxvt*color9: #ff0090
+URxvt*color10: #80ff00
+URxvt*color11: #ffba68
+URxvt*color12: #5f5fee
+URxvt*color13: #bb88dd
+URxvt*color14: #4eb4fa
+URxvt*color15: #d0d0d0
