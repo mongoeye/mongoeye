@@ -121,20 +121,20 @@ This chapter explains the Mongoeye features and different results that can be ob
 It is necessary to set `--format json` or `--format yaml` to get these results.
 
 The output of the analysis always contains these basic keys:
-  * **database**: name of database
-  * **collection**: name of collection
-  * **plan**: `local` for local analysis, `db` for analysis using aggregation framework
-  * **duration**: duration of analysis
-  * **allDocs**: number of all documents in collection
-  * **analyzedDocs**: number of analyzed documents from collection
-  * **fieldsCount**: number of found fields
-  * **fields**:  results of the analysis for each field
-    * **name**: name of field
-    * **level**: level of nested field, `0` is root level
-    * **count**: number of occurrences
-    * **types**: results of the analysis for each type of field
-      * **type**: name of type
-      * **count**: number of occurrences of type
+* **database**: name of database
+* **collection**: name of collection
+* **plan**: `local` for local analysis, `db` for analysis using aggregation framework
+* **duration**: duration of analysis
+* **allDocs**: number of all documents in collection
+* **analyzedDocs**: number of analyzed documents from collection
+* **fieldsCount**: number of found fields
+* **fields**:  results of the analysis for each field
+ * **name**: name of field
+ * **level**: level of nested field, `0` is root level
+ * **count**: number of occurrences
+ * **types**: results of the analysis for each type of field
+   * **type**: name of type
+   * **count**: number of occurrences of type
 
 Example result:
 ```yaml
@@ -162,8 +162,8 @@ The following analyzes are processed separately for each type of the field.
 Use flag `--value` or `-v` to enable calculation of minimum, maximum, and average values.
 
 Supported types:
-  * Minimum and maximum: `objectId`, `double`, `string`, `bool`, `date`, `int`, `timestamp`, `long`, `decimal`
-  * Average: `double`, `bool`, `int`, `long`, `decimal`
+* Minimum and maximum: `objectId`, `double`, `string`, `bool`, `date`, `int`, `timestamp`, `long`, `decimal`
+* Average: `double`, `bool`, `int`, `long`, `decimal`
 
 Example result:
 ```yaml
