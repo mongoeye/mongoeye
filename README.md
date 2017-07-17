@@ -205,10 +205,10 @@ leastFrequent:
   count: 3
 ```
 
-### Histogram of value
+### Value histogram
 
 ```yaml
-histogramOfValue:
+valueHistogram:
   start: 2.5
   end: 6
   range: 3.5
@@ -217,10 +217,10 @@ histogramOfValue:
   intervals: [7, 0, 17, 0, 202, 0, 219]
 ```
 
-### Histogram of length
+### Length histogram
 
 ```yaml
-histogramOfLength:
+lengthHistogram:
   start: 0
   end: 300
   range: 300
@@ -229,16 +229,16 @@ histogramOfLength:
   intervals: [96, 78, 3, 1, 1, 0]
 ```
 
-### Histogram of weekday
+### Weekday histogram
 
 ```yaml
-histogramOfWeekday: [5, 48, 23, 124, 45, 15, 87]
+weekdayHistogram: [5, 48, 23, 124, 45, 15, 87]
 ```
 
-### Histogram of hour
+### Hour histogram
 
 ```yaml
-histogramOfHour: [47, 73, 18, 26, 30, 46, 91, 13, 28, 11, 52, 99, 76, 25, 94, 51, 87, 86, 19, 22, 11, 62, 28, 47]
+hourHistogram: [47, 73, 18, 26, 30, 46, 91, 13, 28, 11, 52, 99, 76, 25, 94, 51, 87, 86, 19, 22, 11, 62, 28, 47]
 ```
 
 ## List of flags
