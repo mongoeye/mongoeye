@@ -14,11 +14,11 @@ Mongoeye provides a quick overview of the data in your MongoDB database.
 
 ### Key features
 
-* *Fast:*&nbsp; the fastest tool for analyzing the MongoDB scheme
+* *Fast:*&nbsp; the fastest schema analyzer for MongoDB
 * *Single binary:*&nbsp; pre-built [binaries](https://github.com/mongoeye/mongoeye/releases) for Windows, Linux, and MacOS (Darwin)
 * *Local analysis:*&nbsp; quick local analysis using a parallel algorithm (MongoDB 2.0+)
-* *Analysis in database:*&nbsp; using the aggregation framework (MongoDB 3.5.9+)
-* *Rich features:*&nbsp; generates [histogram](https://en.wikipedia.org/wiki/Histogram) (value, length, weekday, hour), most frequent values, ... 
+* *Remote analysis:*&nbsp; distributed analysis in database using the aggregation framework (MongoDB 3.5.9+)
+* *Rich features:*&nbsp; [histogram](https://en.wikipedia.org/wiki/Histogram) (value, length, weekday, hour), most frequent values, ... 
 * *Integrable:*&nbsp; table, JSON or YAML output
 
 ## Demo
@@ -103,7 +103,111 @@ Use `--format json` or `--format yaml` flags to set these formats.
 
 For output to a file use the option `-F /path/to/file`.
 
-### Flags
+## Description of features
+
+### Base
+
+```yaml
+- name: rating
+  level: 0
+  count: 1000
+  types:
+  - type: int
+    count: 549
+    ...
+```
+
+### Value - min, max, avg
+
+```yaml
+value:
+  min: 11.565586
+  max: 60.206787
+  avg: 38.51128
+```
+
+### Length - min, max, avg
+
+```yaml
+length:
+  min: 29
+  max: 153
+  avg: 112
+```
+
+### Number of unique values
+
+```yaml
+unique: 894
+```
+
+### Frequency of values
+
+```yaml
+mostFrequent:
+- value: USD
+  count: 599
+- value: EUR
+  count: 21
+- value: GBP
+  count: 5
+- value: CAD
+  count: 4
+leastFrequent:
+- value: EUR
+  count: 21
+- value: GBP
+  count: 5
+- value: CAD
+  count: 4
+- value: JPY
+  count: 3
+```
+
+### Histogram of value
+
+```yaml
+histogramOfValue:
+  start: 2.5
+  end: 6
+  range: 3.5
+  step: 0.5
+  numOfSteps: 7
+  intervals:
+  - 7
+  - 0
+  - 17
+  - 0
+  - 202
+  - 0
+  - 219
+
+```
+
+### Histogram of length
+
+```yaml
+histogramOfLength:
+  start: 0
+  end: 300
+  range: 300
+  step: 50
+  numOfSteps: 6
+  intervals:
+  - 96
+  - 78
+  - 3
+  - 1
+  - 1
+  - 0
+```
+
+### Histogram of weekday
+
+### Histogram of hour
+
+
+## Flags
 
 #### Connection options
 ```
@@ -173,9 +277,8 @@ Instead of the `--count-unique` flag, for example, you can use `export MONGOEYE_
 
 ## TODO
 
-* Create a shared library for integration into other languages.
+* Create a shared library for integration into other languages (Python, Node.js, ...)
 * TLS/SSL support
-* Optimize local and aggregation framework algorithms.
 * Create a [web interface](https://github.com/mongoeye/mongoeye-ui).
 
 ## Donation
@@ -189,7 +292,7 @@ If is this tool useful to you, so feel free to support its further development.
 
 Mongoeye is under the GPL-3.0 license. See the [LICENSE](LICENSE.md) file for details.
 
-<sub title="Ad maiorem Dei gloriam. - To the greater glory of God."><sub>
+<sub title="Ad maiorem Dei gloriam. To the greater glory of God."><sub>
 AMDG
 </sub></sub>
 
