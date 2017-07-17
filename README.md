@@ -105,7 +105,7 @@ For output to a file use the option `-F /path/to/file`.
 
 ## Description of features
 
-### Min, max, avg value
+### Value - min, max, avg
 
 ```yaml
 value:
@@ -114,7 +114,7 @@ value:
   avg: 38.51128
 ```
 
-### Min, max, avg length
+### Length - min, max, avg
 
 ```yaml
 length:
