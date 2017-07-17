@@ -160,7 +160,9 @@ The following analyzes are processed separately for each type of the field.
 
 ### Value - min, max, avg
 
-  * Types supporting `min` and `max` values: `objectId`, `double`, `string`, `bool`, `date`, `int`, `timestamp`, `long`, `decimal`
+Types support:
+  * **Minimum and maximum**: `objectId`, `double`, `string`, `bool`, `date`, `int`, `timestamp`, `long`, `decimal`
+  * **Average**: `double`, `bool`, `int`, `long`, `decimal`
 
 
 ```yaml
