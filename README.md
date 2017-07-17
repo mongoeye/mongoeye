@@ -32,7 +32,6 @@ Mongoeye provides a quick overview of the data in your MongoDB database.
     * [Table output](#table-output)
     * [JSON and YAML output](#json-and-yaml-output)
  * [Features](#features)
-    * [Base output](#base-output)
     * [Value - min, max, avg](#value---min-max-avg)
     * [Length - min, max, avg](#length---min-max-avg)
     * [Number of unique values](#number-of-unique-values)
