@@ -8,12 +8,20 @@ Schema and data analyzer for [MongoDB](https://www.mongodb.com) written in [Go](
 [![Build Status](https://travis-ci.org/mongoeye/mongoeye.svg?branch=master)](https://travis-ci.org/mongoeye/mongoeye)
 [![Go Report Card](https://goreportcard.com/badge/github.com/mongoeye/mongoeye)](https://goreportcard.com/report/github.com/mongoeye/mongoeye)
 
-## Table of Contents
+## Overview
 
- * [Overview](#overview)
-    * [Key features](#key-features)
- * [Demo](#demo)
- * [Comparison](#comparison)
+Mongoeye provides a quick overview of the data in your MongoDB database.
+
+### Key features
+
+* *Fast:*&nbsp; the fastest schema analyzer for MongoDB
+* *Single binary:*&nbsp; pre-built [binaries](https://github.com/mongoeye/mongoeye/releases) for Windows, Linux, and MacOS (Darwin)
+* *Local analysis:*&nbsp; quick local analysis using a parallel algorithm (MongoDB 2.0+)
+* *Remote analysis:*&nbsp; distributed analysis in database using the aggregation framework (MongoDB 3.5.9+)
+* *Rich features:*&nbsp; [histogram](https://en.wikipedia.org/wiki/Histogram) (value, length, weekday, hour), most frequent values, ... 
+* *Integrable:*&nbsp; table, JSON or YAML output
+
+## Table of Contents
  * [Installation](#installation)
  * [Compilation](#compilation)
  * [Usage](#usage)
@@ -39,20 +47,7 @@ Schema and data analyzer for [MongoDB](https://www.mongodb.com) written in [Go](
  * [TODO](#todo)
  * [Donation](#donation)
  * [License](#license)
-
-## Overview
-
-Mongoeye provides a quick overview of the data in your MongoDB database.
-
-### Key features
-
-* *Fast:*&nbsp; the fastest schema analyzer for MongoDB
-* *Single binary:*&nbsp; pre-built [binaries](https://github.com/mongoeye/mongoeye/releases) for Windows, Linux, and MacOS (Darwin)
-* *Local analysis:*&nbsp; quick local analysis using a parallel algorithm (MongoDB 2.0+)
-* *Remote analysis:*&nbsp; distributed analysis in database using the aggregation framework (MongoDB 3.5.9+)
-* *Rich features:*&nbsp; [histogram](https://en.wikipedia.org/wiki/Histogram) (value, length, weekday, hour), most frequent values, ... 
-* *Integrable:*&nbsp; table, JSON or YAML output
-
+ 
 ## Demo
 
 <a href="https://asciinema.org/a/129238" target="_blank" title="Open in asciinema.org"><img src="https://github.com/mongoeye/mongoeye/blob/doc/_misc/demo.gif?raw=true" /></a>
