@@ -141,8 +141,8 @@ The output of the analysis contains these basic keys:
 
 Example:
 ```yaml
-database: 
-collection: 
+database: company
+collection: users
 plan: local
 duration: 46.515331ms
 allDocs: 2548
