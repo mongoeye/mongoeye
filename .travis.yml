@@ -4,17 +4,6 @@ language: go
 go:
   - 1.8.x
 
-addons:
-  apt:
-    packages:
-      # Dependencies for demo gif generation
-      - pv
-      - xvfb
-      - rxvt-unicode
-      - fonts-liberation
-      - unclutter
-      - byzanz
-
 services:
   - docker
 
@@ -26,9 +15,6 @@ env:
     - MONGODB_VERSION=3.2
     - MONGODB_VERSION=3.0
     - MONGODB_VERSION=2.7.5
-  global:
-    # GITHUB_TOKEN
-    secure: wIu/rzvFjmLbKHRQXsoepbzIuSXAJ02hbt/8Kk4nLFZqHE3zmLnD3K2MgAjK9t7X2p8m2plYcEDMvxswKsGI5bT7BEYvEH8dbM284gjVkxHzirVJlIiAvSPHfC11le8bUE/3vYFqHlR/smskS+XFOHTh3trKrbm9SgUgvWqnEirHOLxc2fyAeu2e+KMr3bnZG1Iv+p0lklh5B0OBZptBAwvcQvnkBpkh0q2EXCq8PmK6wg+ag85/Jp7lVymmz/chqcP1C7gAqWjIgrTvkqEinsJHQd+S3W360Qp1HAtx3B+fxU/3vHHbuGe+vQDqVXyPHh1IrEGa2yEe0vtlulNbHtSe96N9lPlhu9C3HgsQh5m55kHjZ7t8ELscaCu94ib0Ymtx/IAMOMCRuBXX1Ptq32MzKPPWfcvRjyt+b7XFNmBNek446zyP7BRd4qz+3UGlTy6FFm6tdX7TER2c/lalDUy0ou6bKUYwt+X0U9+4AbTkTwo2yZyZM+wzjarHBeIrJE1JefqUz7htKHx2wTV2pvUl/Ix1053lSpx4qYnqpBL23CuY28zSn//eKy805ibgyX+WqRFGX7ZgxY9nf5r7dwRZ6q7ls11NcMd9hzhBptYahVa70mTwMMHC8YllJbKLiYBEf7HT+v7yAG2jhUbOTs0SwvEiyH4L2YaLuPcJ6Zg=
 
 matrix:
   allow_failures:
