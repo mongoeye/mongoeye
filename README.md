@@ -14,7 +14,7 @@ Mongoeye provides a quick overview of the data in your MongoDB database.
 
 ### Key features
 
-* *Fast:*&nbsp; [the fastest](https://raw.githubusercontent.com/mongoeye/mongoeye/master/_misc/comparison.png) schema analyzer for MongoDB
+* *Fast:*&nbsp; [the fastest](https://github.com/mongoeye/mongoeye/blob/doc/_misc/comparison.png) schema analyzer for MongoDB
 * *Single binary:*&nbsp; pre-built [binaries](https://github.com/mongoeye/mongoeye/releases) for Windows, Linux, and MacOS (Darwin)
 * *Local analysis:*&nbsp; quick local analysis using a parallel algorithm (MongoDB 2.0+)
 * *Remote analysis:*&nbsp; distributed analysis in database using the aggregation framework (MongoDB 3.5.9+)
