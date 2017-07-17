@@ -49,14 +49,15 @@ func TestConnect_InvalidDb(t *testing.T) {
 	v := viper.New()
 	InitFlags(cmd, v, "env")
 	v.Set("host", tests.TestDbUri)
-	v.Set("db", "db")
-	v.Set("col", "col")
+	v.Set("db", "invalidDb")
+	v.Set("col", "invalidCol")
 	v.Set("connection-timeout", 1)
 
 	config, _ := GetConfig(v)
 
 	_, _, _, err := Connect(config)
-	assert.Equal(t, "The database 'db' does not exist.\nPlease enter the name of the existing database.\n", err.Error())
+	assert.NotEqual(t, nil, err)
+	assert.Equal(t, "The database 'invalidDb' does not exist.\nPlease enter the name of the existing database.\n", err.Error())
 }
 
 func TestConnect_InvalidCol(t *testing.T) {
