@@ -121,18 +121,18 @@ This chapter explains the features of Mongoeye and their various outputs.
 Use `--format json` or `--format yaml` to get detailed results, otherwise only the schema table will appear.
 
 The output of the analysis always contains these basic keys:
-* **database**: name of database
-* **collection**: name of collection
+* **database**: database name
+* **collection**: collection name
 * **plan**: `local` for local analysis, `db` for analysis using aggregation framework
 * **duration**: duration of analysis
 * **allDocs**: number of all documents in collection
 * **analyzedDocs**: number of analyzed documents from collection
 * **fieldsCount**: number of found fields
-* **fields**:  results of the analysis for each field
+* **fields**:  result of the analysis for each field
  * **name**: name of field
  * **level**: level of nested field, `0` is root level
  * **count**: number of occurrences
- * **types**: results of the analysis for each type of field
+ * **types**: result of the analysis for each type of field
    * **type**: name of type
    * **count**: number of occurrences of type
 
