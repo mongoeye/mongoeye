@@ -14,12 +14,16 @@ Mongoeye provides a quick overview of the data in your MongoDB database.
 
 ### Key features
 
-* *Fast:*&nbsp; the fastest schema analyzer for MongoDB
+* *Fast:*&nbsp; [the fastest](https://raw.githubusercontent.com/mongoeye/mongoeye/master/_misc/comparison.png) schema analyzer for MongoDB
 * *Single binary:*&nbsp; pre-built [binaries](https://github.com/mongoeye/mongoeye/releases) for Windows, Linux, and MacOS (Darwin)
 * *Local analysis:*&nbsp; quick local analysis using a parallel algorithm (MongoDB 2.0+)
 * *Remote analysis:*&nbsp; distributed analysis in database using the aggregation framework (MongoDB 3.5.9+)
 * *Rich features:*&nbsp; [histogram](https://en.wikipedia.org/wiki/Histogram) (value, length, weekday, hour), most frequent values, ... 
 * *Integrable:*&nbsp; table, JSON or YAML output
+
+## Demo
+
+<a href="https://asciinema.org/a/129238" target="_blank" title="Open in asciinema.org"><img src="https://github.com/mongoeye/mongoeye/blob/doc/_misc/demo.gif?raw=true" /></a>
 
 ## Table of Contents
  * [Installation](#installation)
@@ -39,20 +43,7 @@ Mongoeye provides a quick overview of the data in your MongoDB database.
     * [Histogram of hour](#histogram-of-hour)
  * [List of flags](#list-of-flags)
  * [TODO](#todo)
- * [Donation](#donation)
  * [License](#license)
- 
-## Demo
-
-<a href="https://asciinema.org/a/129238" target="_blank" title="Open in asciinema.org"><img src="https://github.com/mongoeye/mongoeye/blob/doc/_misc/demo.gif?raw=true" /></a>
-
-## Comparison
-
-The speed of the analysis was compared with similar tools on the [test collection](https://github.com/mongoeye/mongoeye/blob/master/_contrib/dataset/companies.json) under the same conditions.
-
-<a href="https://github.com/mongoeye/mongoeye/blob/master/_misc/comparison.png?raw=true" target="_blank" title="Open image"><img src="https://github.com/mongoeye/mongoeye/blob/master/_misc/comparison.png?raw=true" /></a>
-
-Links: [Studio3T](https://studio3t.com), [MongoDB Compass](https://www.mongodb.com/products/compass), [Variety.js](https://github.com/variety/variety), [Schema.js](https://github.com/skratchdot/mongodb-schema)
 
 ## Installation
 
