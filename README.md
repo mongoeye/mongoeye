@@ -105,6 +105,18 @@ For output to a file use the option `-F /path/to/file`.
 
 ## Description of features
 
+### Base
+
+```yaml
+- name: rating
+  level: 0
+  count: 1000
+  types:
+  - type: int
+    count: 549
+    ...
+```
+
 ### Value - min, max, avg
 
 ```yaml
@@ -121,6 +133,12 @@ length:
   min: 29
   max: 153
   avg: 112
+```
+
+### Number of unique values
+
+```yaml
+unique: 894
 ```
 
 ### Frequency of values
