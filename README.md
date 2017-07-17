@@ -105,7 +105,7 @@ For output to a file use the option `-F /path/to/file`.
 
 ## Description of features
 
-### Base
+### Base output
 
 ```yaml
 - name: rating
