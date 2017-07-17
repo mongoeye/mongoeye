@@ -23,7 +23,7 @@ This tool helps you get an overview of the data stored in the MongoDB database. 
 
 ## Demo
 
-<a href="https://asciinema.org/a/129236" target="_blank" title="Open in asciinema.org"><img src="https://github.com/mongoeye/mongoeye/blob/master/_misc/demo.gif?raw=true" /></a>
+<a href="https://asciinema.org/a/129238" target="_blank" title="Open in asciinema.org"><img src="https://github.com/mongoeye/mongoeye/blob/master/_misc/demo.gif?raw=true" /></a>
 
 ## Comparison
 

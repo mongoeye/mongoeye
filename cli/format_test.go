@@ -88,7 +88,7 @@ func TestFormat_JSON(t *testing.T) {
 						"min": "58e20d849d3ae7e1f8eac9a1",
 						"max": "58e20d849d3ae7e1f8eac9c1"
 					},
-					"valueHistogram": {
+					"histogramOfValue": {
 						"start": "2000-01-01T00:00:00Z",
 						"end": "2000-01-10T00:00:00Z",
 						"range": 864000,
@@ -219,7 +219,7 @@ fields:
     value:
       min: 58e20d849d3ae7e1f8eac9a1
       max: 58e20d849d3ae7e1f8eac9c1
-    valueHistogram:
+    histogramOfValue:
       start: 2000-01-01T00:00:00Z
       end: 2000-01-10T00:00:00Z
       range: 864000
