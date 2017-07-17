@@ -105,17 +105,88 @@ For output to a file use the option `-F /path/to/file`.
 
 ## Description of features
 
-### Min, max and average value
+### Min, max, avg value
+
+```yaml
+value:
+  min: -41.565586
+  max: 60.206787
+  avg: 38.51128
+```
+
+### Min, max, avg length
+
+```yaml
+length:
+  min: 29
+  max: 153
+  avg: 112
+```
+
+### Frequency of values
+
+```yaml
+mostFrequent:
+- value: USD
+  count: 599
+- value: EUR
+  count: 21
+- value: GBP
+  count: 5
+- value: CAD
+  count: 4
+leastFrequent:
+- value: EUR
+  count: 21
+- value: GBP
+  count: 5
+- value: CAD
+  count: 4
+- value: JPY
+  count: 3
+```
 
 ### Histogram of value
 
+```yaml
+histogramOfValue:
+  start: 2.5
+  end: 6
+  range: 3.5
+  step: 0.5
+  numOfSteps: 7
+  intervals:
+  - 7
+  - 0
+  - 17
+  - 0
+  - 202
+  - 0
+  - 219
+
+```
+
 ### Histogram of length
+
+```yaml
+histogramOfLength:
+  start: 0
+  end: 300
+  range: 300
+  step: 50
+  numOfSteps: 6
+  intervals:
+  - 96
+  - 78
+  - 3
+  - 1
+  - 1
+  - 0
+```
 
 ### Histogram of weekday
 
 ### Histogram of hour
-
-### The most and least frequent values
 
 
 ## Flags
