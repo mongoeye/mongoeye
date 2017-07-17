@@ -8,16 +8,17 @@ services:
   - docker
 
 env:
-  - MONGODB_VERSION=unstable
-  - MONGODB_VERSION=3.5.9 COVERALLS="-service=travis-ci" BUILD=true
-  - MONGODB_VERSION=3.4
-  - MONGODB_VERSION=3.2
-  - MONGODB_VERSION=3.0
-  - MONGODB_VERSION=2.7.5
+  matrix:
+    - MONGODB_VERSION=unstable
+    - MONGODB_VERSION=3.5.9 COVERALLS="-service=travis-ci" BUILD=true
+    - MONGODB_VERSION=3.4
+    - MONGODB_VERSION=3.2
+    - MONGODB_VERSION=3.0
+    - MONGODB_VERSION=2.7.5
 
 matrix:
   allow_failures:
-  - env: MONGODB_VERSION=unstable
+    - env: MONGODB_VERSION=unstable
 
 install:
   - go get github.com/kyoh86/richgo github.com/mattn/goveralls
