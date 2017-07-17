@@ -155,14 +155,14 @@ fields:
       < other outputs according to settings >
 ```
 
-The following analyzes are processed separately for each type of the field.
+The analyzes in the following subchapters are processed separately for each type in field.
 
 ### Value - min, max, avg
 
-Use flag `--value` or `-v` to enable calculation of minimum, maximum, and average values. 
+Use flag `--value` or `-v` to enable calculation of minimum, maximum, and average values.
 
 **Supported types**:
-* Minimum and maximum: `objectId` (as a date), `double`, `string`, `bool`, `date`, `int`, `timestamp`, `long`, `decimal`
+* Minimum and maximum: `objectId`, `double`, `string`, `bool`, `date`, `int`, `timestamp`, `long`, `decimal`
 * Average: `double`, `bool`, `int`, `long`, `decimal`
 
 Example result:
@@ -175,6 +175,11 @@ value:
 
 ### Length - min, max, avg
 
+Use flag `--length` or `-l` to enable calculation of minimum, maximum, and average lengths.
+
+**Supported types**: `string`, `array`, `object`
+
+Example result:
 ```yaml
 length:
   min: 29
@@ -184,12 +189,22 @@ length:
 
 ### Number of unique values
 
+Use flag `--count-unique` to count all unique values.
+
+**Supported types**: `double`, `string`, `date`, `int`, `timestamp`, `long`, `decimal`
+
+Example result:
 ```yaml
 unique: 894
 ```
 
 ### Frequency of values
 
+Use flag `--most-freq N` or `--least-freq N` to get the most or least occurring values.
+
+**Supported types**: `double`, `string`, `date`, `int`, `timestamp`, `long`, `decimal`
+
+Example result:
 ```yaml
 mostFrequent:
 - value: USD
@@ -213,6 +228,7 @@ leastFrequent:
 
 ### Value histogram
 
+Example result:
 ```yaml
 valueHistogram:
   start: 2.5
@@ -225,6 +241,7 @@ valueHistogram:
 
 ### Length histogram
 
+Example result:
 ```yaml
 lengthHistogram:
   start: 0
@@ -237,12 +254,14 @@ lengthHistogram:
 
 ### Weekday histogram
 
+Example result:
 ```yaml
 weekdayHistogram: [5, 48, 23, 124, 45, 15, 87]
 ```
 
 ### Hour histogram
 
+Example result:
 ```yaml
 hourHistogram: [47, 73, 18, 26, 30, 46, 91, 13, 28, 11, 52, 99, 76, 25, 94, 51, 87, 86, 19, 22, 11, 62, 28, 47]
 ```
