@@ -136,7 +136,7 @@ The output of the analysis always contains these basic keys:
       * **type**: name of type
       * **count**: number of occurrences of type
 
-Example:
+Example result:
 ```yaml
 database: company
 collection: users
@@ -159,11 +159,13 @@ The following analyzes are processed separately for each type of the field.
 
 ### Value - min, max, avg
 
-Types support:
-  * **Minimum and maximum**: `objectId`, `double`, `string`, `bool`, `date`, `int`, `timestamp`, `long`, `decimal`
-  * **Average**: `double`, `bool`, `int`, `long`, `decimal`
+Use flag `--value` or `-v` to enable calculation of minimum, maximum, and average values.
 
+Supported types:
+  * Minimum and maximum: `objectId`, `double`, `string`, `bool`, `date`, `int`, `timestamp`, `long`, `decimal`
+  * Average: `double`, `bool`, `int`, `long`, `decimal`
 
+Example result:
 ```yaml
 value:
   min: 11.565586
