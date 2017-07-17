@@ -93,16 +93,16 @@ comment "Flags ${BOLD}--most-freq N${NORMAL} and ${BOLD}--least-freq N${NORMAL} 
 pauseAfterExample
 
 # EXAMPLE 8
-example 8 'Histogram of values'
-run "--value-hist --value-hist-steps 10 --format json |\njq '.fields[] | select(.name == \"rating\") | .types[] | select(.type == \"double\") | .valueHistogram'"
+example 8 'Histogram of value'
+run "--value-hist --value-hist-steps 10 --format json |\njq '.fields[] | select(.name == \"rating\") | .types[] | select(.type == \"double\") | .histogramOfValue'"
 comment "Flag ${BOLD}--value-hist-steps N${NORMAL} set the maximum number of steps. Real step value is rounded."
 pauseAfterExample
 
 # EXAMPLE 9
-example 9 'Histogram of weekdays'
+example 9 'Histogram of weekday'
 run "--weekday-hist --format json |\njq '.fields[] | select(.name == \"_id\") | .types[]'"
 comment "ObjectId fields are processed as dates."
-comment "Flags ${BOLD}--hour-hist${NORMAL} and ${BOLD}--weekday-hist${NORMAL} serve to create a histogram of hours or weekdays."
+comment "Flags ${BOLD}--hour-hist${NORMAL} and ${BOLD}--weekday-hist${NORMAL} serve to create a histogram of hour or weekday."
 pauseAfterExample
 
 clear
