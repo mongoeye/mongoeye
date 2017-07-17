@@ -162,7 +162,7 @@ The following analyzes are processed separately for each type of the field.
 Use flag `--value` or `-v` to enable calculation of minimum, maximum, and average values. 
 
 **Supported types**:
-* Minimum and maximum: `objectId`, `double`, `string`, `bool`, `date`, `int`, `timestamp`, `long`, `decimal`
+* Minimum and maximum: `objectId` (as a date), `double`, `string`, `bool`, `date`, `int`, `timestamp`, `long`, `decimal`
 * Average: `double`, `bool`, `int`, `long`, `decimal`
 
 Example result:
