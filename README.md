@@ -105,6 +105,19 @@ For output to a file use the option `-F /path/to/file`.
 
 ## Description of features
 
+### Min, max and average value
+
+### Histogram of value
+
+### Histogram of length
+
+### Histogram of weekday
+
+### Histogram of hour
+
+### The most and least frequent values
+
+
 ## Flags
 
 #### Connection options
