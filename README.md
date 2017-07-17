@@ -103,9 +103,9 @@ Use `--format json` or `--format yaml` flags to set these formats.
 
 For output to a file use the option `-F /path/to/file`.
 
-### Description of features
+## Description of features
 
-### Flags
+## Flags
 
 #### Connection options
 ```
