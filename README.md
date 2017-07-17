@@ -8,6 +8,37 @@ Schema and data analyzer for [MongoDB](https://www.mongodb.com) written in [Go](
 [![Build Status](https://travis-ci.org/mongoeye/mongoeye.svg?branch=master)](https://travis-ci.org/mongoeye/mongoeye)
 [![Go Report Card](https://goreportcard.com/badge/github.com/mongoeye/mongoeye)](https://goreportcard.com/report/github.com/mongoeye/mongoeye)
 
+## Table of Contents
+      * [Overview](#overview)
+         * [Key features](#key-features)
+      * [Demo](#demo)
+      * [Comparison](#comparison)
+      * [Installation](#installation)
+      * [Compilation](#compilation)
+      * [Usage](#usage)
+         * [Table output](#table-output)
+         * [JSON and YAML output](#json-and-yaml-output)
+      * [Description of features](#description-of-features)
+         * [Base output](#base-output)
+         * [Value - min, max, avg](#value---min-max-avg)
+         * [Length - min, max, avg](#length---min-max-avg)
+         * [Number of unique values](#number-of-unique-values)
+         * [Frequency of values](#frequency-of-values)
+         * [Histogram of value](#histogram-of-value)
+         * [Histogram of length](#histogram-of-length)
+         * [Histogram of weekday](#histogram-of-weekday)
+         * [Histogram of hour](#histogram-of-hour)
+      * [Flags](#flags)
+            * [Connection options](#connection-options)
+            * [Authentication](#authentication)
+            * [Input options](#input-options)
+            * [Output options](#output-options)
+            * [Other options](#other-options)
+         * [Environment variables](#environment-variables)
+      * [TODO](#todo)
+      * [Donation](#donation)
+      * [License](#license)
+
 ## Overview
 
 Mongoeye provides a quick overview of the data in your MongoDB database.
