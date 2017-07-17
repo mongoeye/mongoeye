@@ -173,15 +173,7 @@ histogramOfValue:
   range: 3.5
   step: 0.5
   numOfSteps: 7
-  intervals:
-  - 7
-  - 0
-  - 17
-  - 0
-  - 202
-  - 0
-  - 219
-
+  intervals: [7, 0, 17, 0, 202, 0, 219]
 ```
 
 ### Histogram of length
@@ -193,13 +185,7 @@ histogramOfLength:
   range: 300
   step: 50
   numOfSteps: 6
-  intervals:
-  - 96
-  - 78
-  - 3
-  - 1
-  - 1
-  - 0
+  intervals: [96, 78, 3, 1, 1, 0]
 ```
 
 ### Histogram of weekday
