@@ -49,17 +49,17 @@ func TestToGroupResultChannel_Full(t *testing.T) {
 		analysis.BsonFieldType:   "string",
 		analysis.BsonCount:       102,
 		analysis.BsonCountUnique: 35,
-		analysis.BsonValueExtremes: bson.M{
+		analysis.BsonValueStats: bson.M{
 			analysis.BsonMinValue: "012",
 			analysis.BsonMaxValue: "xyzax",
 			analysis.BsonAvgValue: nil,
 		},
-		analysis.BsonLengthExtremes: bson.M{
+		analysis.BsonLengthStats: bson.M{
 			analysis.BsonMinLength: 3,
 			analysis.BsonMaxLength: 5,
 			analysis.BsonAvgLength: 3.478,
 		},
-		analysis.BsonTopNValues: []bson.M{
+		analysis.BsonMostFrequent: []bson.M{
 			{
 				analysis.BsonValueFreqValue: "abc",
 				analysis.BsonValueFreqCount: 10,
@@ -73,7 +73,7 @@ func TestToGroupResultChannel_Full(t *testing.T) {
 				analysis.BsonValueFreqCount: 4,
 			},
 		},
-		analysis.BsonBottomNValues: []bson.M{
+		analysis.BsonLeastFrequent: []bson.M{
 			{
 				analysis.BsonValueFreqValue: "i",
 				analysis.BsonValueFreqCount: 2,
@@ -145,17 +145,17 @@ func TestToGroupResultChannel_Full(t *testing.T) {
 			Name:        "string",
 			Count:       102,
 			CountUnique: 35,
-			ValueExtremes: &analysis.ValueExtremes{
+			ValueStats: &analysis.ValueStats{
 				Min: "012",
 				Max: "xyzax",
 				Avg: nil,
 			},
-			LengthExtremes: &analysis.LengthExtremes{
+			LengthStats: &analysis.LengthStats{
 				Min: 3,
 				Max: 5,
 				Avg: 3.478,
 			},
-			TopNValues: []analysis.ValueFreq{
+			MostFrequent: []analysis.ValueFreq{
 				{
 					Value: "abc",
 					Count: 10,
@@ -169,7 +169,7 @@ func TestToGroupResultChannel_Full(t *testing.T) {
 					Count: 4,
 				},
 			},
-			BottomNValues: []analysis.ValueFreq{
+			LeastFrequent: []analysis.ValueFreq{
 				{
 					Value: "i",
 					Count: 2,
@@ -288,7 +288,7 @@ func TestNormalizeType_Long(t *testing.T) {
 func TestNormalizeType_Date(t *testing.T) {
 	data := &analysis.Type{
 		Name: "date",
-		ValueExtremes: &analysis.ValueExtremes{
+		ValueStats: &analysis.ValueStats{
 			Min: helpers.ParseDate("2017-04-17T23:59:59+00:00"),
 			Max: helpers.ParseDate("2017-04-21T00:00:01+00:00"),
 		},
@@ -296,13 +296,13 @@ func TestNormalizeType_Date(t *testing.T) {
 			Start: helpers.ParseDate("2017-04-15T23:59:59+00:00"),
 			End:   helpers.ParseDate("2017-04-22T00:00:01+00:00"),
 		},
-		TopNValues: analysis.ValueFreqSlice{
+		MostFrequent: analysis.ValueFreqSlice{
 			{
 				Value: helpers.ParseDate("2017-04-25T00:00:01+00:00"),
 				Count: 10,
 			},
 		},
-		BottomNValues: analysis.ValueFreqSlice{
+		LeastFrequent: analysis.ValueFreqSlice{
 			{
 				Value: helpers.ParseDate("2017-04-10T00:00:01+00:00"),
 				Count: 1,
@@ -313,19 +313,19 @@ func TestNormalizeType_Date(t *testing.T) {
 	loc, _ := time.LoadLocation("America/New_York")
 	NormalizeType(data, loc)
 
-	assert.NotEqual(t, data.ValueExtremes.Min, helpers.ParseDate("2017-04-17T23:59:59+00:00"))
-	assert.Equal(t, data.ValueExtremes.Min, helpers.ParseDate("2017-04-17T23:59:59+00:00").In(loc))
-	assert.NotEqual(t, data.ValueExtremes.Max, helpers.ParseDate("2017-04-21T00:00:01+00:00"))
-	assert.Equal(t, data.ValueExtremes.Max, helpers.ParseDate("2017-04-21T00:00:01+00:00").In(loc))
+	assert.NotEqual(t, data.ValueStats.Min, helpers.ParseDate("2017-04-17T23:59:59+00:00"))
+	assert.Equal(t, data.ValueStats.Min, helpers.ParseDate("2017-04-17T23:59:59+00:00").In(loc))
+	assert.NotEqual(t, data.ValueStats.Max, helpers.ParseDate("2017-04-21T00:00:01+00:00"))
+	assert.Equal(t, data.ValueStats.Max, helpers.ParseDate("2017-04-21T00:00:01+00:00").In(loc))
 	assert.NotEqual(t, data.ValueHistogram.Start, helpers.ParseDate("2017-04-15T23:59:59+00:00"))
 	assert.Equal(t, data.ValueHistogram.Start, helpers.ParseDate("2017-04-15T23:59:59+00:00").In(loc))
 	assert.NotEqual(t, data.ValueHistogram.End, helpers.ParseDate("2017-04-22T00:00:01+00:00"))
 	assert.Equal(t, data.ValueHistogram.End, helpers.ParseDate("2017-04-22T00:00:01+00:00").In(loc))
 
-	assert.NotEqual(t, data.TopNValues[0].Value, helpers.ParseDate("2017-04-25T00:00:01+00:00"))
-	assert.Equal(t, data.TopNValues[0].Value, helpers.ParseDate("2017-04-25T00:00:01+00:00").In(loc))
-	assert.NotEqual(t, data.BottomNValues[0].Value, helpers.ParseDate("2017-04-10T00:00:01+00:00"))
-	assert.Equal(t, data.BottomNValues[0].Value, helpers.ParseDate("2017-04-10T00:00:01+00:00").In(loc))
+	assert.NotEqual(t, data.MostFrequent[0].Value, helpers.ParseDate("2017-04-25T00:00:01+00:00"))
+	assert.Equal(t, data.MostFrequent[0].Value, helpers.ParseDate("2017-04-25T00:00:01+00:00").In(loc))
+	assert.NotEqual(t, data.LeastFrequent[0].Value, helpers.ParseDate("2017-04-10T00:00:01+00:00"))
+	assert.Equal(t, data.LeastFrequent[0].Value, helpers.ParseDate("2017-04-10T00:00:01+00:00").In(loc))
 }
 
 func TestNormalizeType_Decimal(t *testing.T) {

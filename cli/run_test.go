@@ -425,10 +425,12 @@ func TestRun_Json(t *testing.T) {
 	assert.Equal(t, nil, err)
 
 	expected := `{
+	"database": "%s",
+	"collection": "%s",
 	"plan": "local",
 	"duration": <DURATION>,
-	"allDocsCount": 1,
-	"docsCount": 1,
+	"allDocs": 1,
+	"analyzedDocs": 1,
 	"fieldsCount": 2,
 	"fields": [
 		{
@@ -456,7 +458,7 @@ func TestRun_Json(t *testing.T) {
 	]
 }`
 
-	assert.Equal(t, expected, regexp.MustCompile("\"duration\": [0-9]+,").ReplaceAllString(stdout.String(), "\"duration\": <DURATION>,"))
+	assert.Equal(t, fmt.Sprintf(expected, c.Database.Name, c.Name), regexp.MustCompile("\"duration\": [0-9]+,").ReplaceAllString(stdout.String(), "\"duration\": <DURATION>,"))
 	assert.NotContains(t, stdout.String(), "OK")
 }
 
@@ -497,10 +499,12 @@ func TestRun_Json_File(t *testing.T) {
 	content := string(b)
 
 	expected := `{
+	"database": "%s",
+	"collection": "%s",
 	"plan": "local",
 	"duration": <DURATION>,
-	"allDocsCount": 1,
-	"docsCount": 1,
+	"allDocs": 1,
+	"analyzedDocs": 1,
 	"fieldsCount": 2,
 	"fields": [
 		{
@@ -532,7 +536,7 @@ func TestRun_Json_File(t *testing.T) {
 	expected = strings.Replace(expected, "\t", "", -1)
 	expected = strings.Replace(expected, ": ", ":", -1)
 
-	assert.Equal(t, expected, regexp.MustCompile("\"duration\":[0-9]+,").ReplaceAllString(content, "\"duration\":<DURATION>,"))
+	assert.Equal(t, fmt.Sprintf(expected, c.Database.Name, c.Name), regexp.MustCompile("\"duration\":[0-9]+,").ReplaceAllString(content, "\"duration\":<DURATION>,"))
 	assert.Contains(t, stdout.String(), fmt.Sprintf("The analysis results were written to the file: %s.", tmpFile.Name()))
 	assert.Contains(t, stdout.String(), "OK")
 }
@@ -568,10 +572,12 @@ func TestRun_Yaml(t *testing.T) {
 	assert.Equal(t, nil, err)
 
 	expected := `
+database: %s
+collection: %s
 plan: local
 duration: <DURATION>
-allDocsCount: 1
-docsCount: 1
+allDocs: 1
+analyzedDocs: 1
 fieldsCount: 2
 fields:
 - name: _id
@@ -588,7 +594,7 @@ fields:
     count: 1
 `
 
-	assert.Equal(t, expected, "\n"+regexp.MustCompile("\nduration: [0-9.]+ms").ReplaceAllString(stdout.String(), "\nduration: <DURATION>"))
+	assert.Equal(t, fmt.Sprintf(expected, c.Database.Name, c.Name), "\n"+regexp.MustCompile("\nduration: [0-9.]+ms").ReplaceAllString(stdout.String(), "\nduration: <DURATION>"))
 	assert.NotContains(t, stdout.String(), "OK")
 }
 
@@ -634,10 +640,12 @@ func TestRun_Yaml_File(t *testing.T) {
 	content := string(b)
 
 	expected := `
+database: %s
+collection: %s
 plan: local
 duration: <DURATION>
-allDocsCount: 1
-docsCount: 1
+allDocs: 1
+analyzedDocs: 1
 fieldsCount: 2
 fields:
 - name: _id
@@ -653,7 +661,7 @@ fields:
   - type: string
     count: 1
 `
-	assert.Equal(t, expected, "\n"+regexp.MustCompile("\nduration: [0-9.]+ms").ReplaceAllString(content, "\nduration: <DURATION>"))
+	assert.Equal(t, fmt.Sprintf(expected, c.Database.Name, c.Name), "\n"+regexp.MustCompile("\nduration: [0-9.]+ms").ReplaceAllString(content, "\nduration: <DURATION>"))
 	assert.Contains(t, stdout.String(), fmt.Sprintf("The analysis results were written to the file: %s.", tmpFile.Name()))
 	assert.Contains(t, stdout.String(), "OK")
 }

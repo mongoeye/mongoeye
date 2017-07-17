@@ -25,7 +25,7 @@ func runMergeWorker(groupProcess *groupProcess, groupOptions *group.Options, ana
 
 			// Value extremes
 			if acc.StoreMinMaxValue {
-				t.ValueExtremes = &analysis.ValueExtremes{
+				t.ValueStats = &analysis.ValueStats{
 					Min: acc.MinValue,
 					Max: acc.MaxValue,
 				}
@@ -33,16 +33,16 @@ func runMergeWorker(groupProcess *groupProcess, groupOptions *group.Options, ana
 				if acc.StoreAvgValue {
 					avg := acc.ValuesSum / float64(acc.Count)
 					if id.Type == "decimal" {
-						t.ValueExtremes.Avg = helpers.DoubleToDecimal(avg)
+						t.ValueStats.Avg = helpers.DoubleToDecimal(avg)
 					} else {
-						t.ValueExtremes.Avg = avg
+						t.ValueStats.Avg = avg
 					}
 				}
 			}
 
 			// Length extremes
 			if acc.StoreMinMaxAvgLength {
-				t.LengthExtremes = &analysis.LengthExtremes{
+				t.LengthStats = &analysis.LengthStats{
 					Min: acc.MinLength,
 					Max: acc.MaxLength,
 					Avg: float64(acc.LengthSum) / float64(acc.Count),

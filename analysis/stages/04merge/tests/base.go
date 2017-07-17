@@ -43,7 +43,7 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 			},
 		},
 	}
-	var decimalLengthExtremes *analysis.LengthExtremes
+	var decimalLengthStats *analysis.LengthStats
 
 	if !tests.HasMongoDBDecimalSupport() {
 		decimalType = "string"
@@ -52,7 +52,7 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 		decimal3 = "789.3"
 		decimalAvg = nil
 		decimalHistogram = nil
-		decimalLengthExtremes = &analysis.LengthExtremes{
+		decimalLengthStats = &analysis.LengthStats{
 			Min: 5,
 			Max: 5,
 			Avg: 5.0,
@@ -145,7 +145,7 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 				{
 					Name:  "objectId",
 					Count: 3,
-					ValueExtremes: &analysis.ValueExtremes{
+					ValueStats: &analysis.ValueStats{
 						Max: bson.ObjectIdHex("58e20d849d3ae7e1f8eac9c2"),
 						Min: bson.ObjectIdHex("58e20d849d3ae7e1f8eac9c0"),
 						Avg: nil,
@@ -162,12 +162,12 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 					Name:        "double",
 					Count:       3,
 					CountUnique: 3,
-					ValueExtremes: &analysis.ValueExtremes{
+					ValueStats: &analysis.ValueStats{
 						Min: 123.456,
 						Max: 798.123,
 						Avg: 459.45599999999996,
 					},
-					TopNValues: []analysis.ValueFreq{
+					MostFrequent: []analysis.ValueFreq{
 						{
 							Count: 1,
 							Value: 123.456,
@@ -181,7 +181,7 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 							Value: 798.123,
 						},
 					},
-					BottomNValues: []analysis.ValueFreq{
+					LeastFrequent: []analysis.ValueFreq{
 						{
 							Count: 1,
 							Value: 123.456,
@@ -228,17 +228,17 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 					Name:        "string",
 					Count:       3,
 					CountUnique: 3,
-					ValueExtremes: &analysis.ValueExtremes{
+					ValueStats: &analysis.ValueStats{
 						Max: "Šašo",
 						Min: "abc",
 						Avg: nil,
 					},
-					LengthExtremes: &analysis.LengthExtremes{
+					LengthStats: &analysis.LengthStats{
 						Max: 4,
 						Min: 3,
 						Avg: 3.3333333333333335,
 					},
-					TopNValues: []analysis.ValueFreq{
+					MostFrequent: []analysis.ValueFreq{
 						{
 							Count: 1,
 							Value: "Šašo",
@@ -252,7 +252,7 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 							Value: "cde",
 						},
 					},
-					BottomNValues: []analysis.ValueFreq{
+					LeastFrequent: []analysis.ValueFreq{
 						{
 							Count: 1,
 							Value: "Šašo",
@@ -316,7 +316,7 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 				{
 					Name:  "bool",
 					Count: 3,
-					ValueExtremes: &analysis.ValueExtremes{
+					ValueStats: &analysis.ValueStats{
 						Min: false,
 						Max: true,
 						Avg: 0.6666666666666666,
@@ -333,12 +333,12 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 					Name:        "date",
 					Count:       3,
 					CountUnique: 3,
-					ValueExtremes: &analysis.ValueExtremes{
+					ValueStats: &analysis.ValueStats{
 						Min: helpers.ParseDate("2017-03-31T11:20:32+00:00"),
 						Max: helpers.ParseDate("2017-03-31T11:20:30+00:00"),
 						Avg: nil,
 					},
-					TopNValues: []analysis.ValueFreq{
+					MostFrequent: []analysis.ValueFreq{
 						{
 							Value: helpers.ParseDate("2017-03-31T11:20:30+00:00"),
 							Count: 1,
@@ -352,7 +352,7 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 							Count: 1,
 						},
 					},
-					BottomNValues: []analysis.ValueFreq{
+					LeastFrequent: []analysis.ValueFreq{
 						{
 							Value: helpers.ParseDate("2017-03-31T11:20:30+00:00"),
 							Count: 1,
@@ -500,12 +500,12 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 					Name:        "int",
 					Count:       3,
 					CountUnique: 2,
-					ValueExtremes: &analysis.ValueExtremes{
+					ValueStats: &analysis.ValueStats{
 						Min: 123,
 						Max: 456,
 						Avg: 234.0,
 					},
-					TopNValues: []analysis.ValueFreq{
+					MostFrequent: []analysis.ValueFreq{
 						{
 							Value: 123,
 							Count: 2,
@@ -515,7 +515,7 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 							Count: 1,
 						},
 					},
-					BottomNValues: []analysis.ValueFreq{
+					LeastFrequent: []analysis.ValueFreq{
 						{
 							Value: 123,
 							Count: 2,
@@ -554,12 +554,12 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 					Name:        "timestamp",
 					Count:       3,
 					CountUnique: 2,
-					ValueExtremes: &analysis.ValueExtremes{
+					ValueStats: &analysis.ValueStats{
 						Min: 1490959230,
 						Max: 1490959231,
 						Avg: nil,
 					},
-					TopNValues: []analysis.ValueFreq{
+					MostFrequent: []analysis.ValueFreq{
 						{
 							Value: 1490959230,
 							Count: 2,
@@ -569,7 +569,7 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 							Count: 1,
 						},
 					},
-					BottomNValues: []analysis.ValueFreq{
+					LeastFrequent: []analysis.ValueFreq{
 						{
 							Value: 1490959230,
 							Count: 2,
@@ -591,12 +591,12 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 					Name:        "long",
 					Count:       3,
 					CountUnique: 2,
-					ValueExtremes: &analysis.ValueExtremes{
+					ValueStats: &analysis.ValueStats{
 						Min: 123,
 						Max: 456,
 						Avg: 345.0,
 					},
-					TopNValues: []analysis.ValueFreq{
+					MostFrequent: []analysis.ValueFreq{
 						{
 							Value: 456,
 							Count: 2,
@@ -606,7 +606,7 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 							Count: 1,
 						},
 					},
-					BottomNValues: []analysis.ValueFreq{
+					LeastFrequent: []analysis.ValueFreq{
 						{
 							Value: 456,
 							Count: 2,
@@ -645,13 +645,13 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 					Name:        decimalType,
 					Count:       3,
 					CountUnique: 3,
-					ValueExtremes: &analysis.ValueExtremes{
+					ValueStats: &analysis.ValueStats{
 						Min: decimal1,
 						Max: decimal3,
 						Avg: decimalAvg,
 					},
-					LengthExtremes: decimalLengthExtremes,
-					TopNValues: []analysis.ValueFreq{
+					LengthStats: decimalLengthStats,
+					MostFrequent: []analysis.ValueFreq{
 						{
 							Value: decimal1,
 							Count: 1,
@@ -665,7 +665,7 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 							Count: 1,
 						},
 					},
-					BottomNValues: []analysis.ValueFreq{
+					LeastFrequent: []analysis.ValueFreq{
 						{
 							Value: decimal1,
 							Count: 1,
@@ -712,7 +712,7 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 				{
 					Name:  "array",
 					Count: 2,
-					LengthExtremes: &analysis.LengthExtremes{
+					LengthStats: &analysis.LengthStats{
 						Min: 2,
 						Max: 2,
 						Avg: 2.0,
@@ -729,12 +729,12 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 					Name:        "int",
 					Count:       4,
 					CountUnique: 4,
-					ValueExtremes: &analysis.ValueExtremes{
+					ValueStats: &analysis.ValueStats{
 						Min: 1,
 						Max: 4,
 						Avg: 2.5,
 					},
-					TopNValues: []analysis.ValueFreq{
+					MostFrequent: []analysis.ValueFreq{
 						{
 							Value: 1,
 							Count: 1,
@@ -752,7 +752,7 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 							Count: 1,
 						},
 					},
-					BottomNValues: []analysis.ValueFreq{
+					LeastFrequent: []analysis.ValueFreq{
 						{
 							Value: 1,
 							Count: 1,
@@ -806,7 +806,7 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 				{
 					Name:  "object",
 					Count: 2,
-					LengthExtremes: &analysis.LengthExtremes{
+					LengthStats: &analysis.LengthStats{
 						Min: 2,
 						Max: 2,
 						Avg: 2.0,
@@ -823,23 +823,23 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 					Name:        "string",
 					Count:       1,
 					CountUnique: 1,
-					ValueExtremes: &analysis.ValueExtremes{
+					ValueStats: &analysis.ValueStats{
 						Min: "cde",
 						Max: "cde",
 						Avg: nil,
 					},
-					LengthExtremes: &analysis.LengthExtremes{
+					LengthStats: &analysis.LengthStats{
 						Min: 3,
 						Max: 3,
 						Avg: 3.0,
 					},
-					TopNValues: []analysis.ValueFreq{
+					MostFrequent: []analysis.ValueFreq{
 						{
 							Count: 1,
 							Value: "cde",
 						},
 					},
-					BottomNValues: []analysis.ValueFreq{
+					LeastFrequent: []analysis.ValueFreq{
 						{
 							Count: 1,
 							Value: "cde",
@@ -850,18 +850,18 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 					Name:        "int",
 					Count:       1,
 					CountUnique: 1,
-					ValueExtremes: &analysis.ValueExtremes{
+					ValueStats: &analysis.ValueStats{
 						Min: 10,
 						Max: 10,
 						Avg: 10.0,
 					},
-					TopNValues: []analysis.ValueFreq{
+					MostFrequent: []analysis.ValueFreq{
 						{
 							Count: 1,
 							Value: 10,
 						},
 					},
-					BottomNValues: []analysis.ValueFreq{
+					LeastFrequent: []analysis.ValueFreq{
 						{
 							Count: 1,
 							Value: 10,
@@ -879,23 +879,23 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 					Name:        "string",
 					Count:       1,
 					CountUnique: 1,
-					ValueExtremes: &analysis.ValueExtremes{
+					ValueStats: &analysis.ValueStats{
 						Min: "abc",
 						Max: "abc",
 						Avg: nil,
 					},
-					LengthExtremes: &analysis.LengthExtremes{
+					LengthStats: &analysis.LengthStats{
 						Min: 3,
 						Max: 3,
 						Avg: 3.0,
 					},
-					TopNValues: []analysis.ValueFreq{
+					MostFrequent: []analysis.ValueFreq{
 						{
 							Count: 1,
 							Value: "abc",
 						},
 					},
-					BottomNValues: []analysis.ValueFreq{
+					LeastFrequent: []analysis.ValueFreq{
 						{
 							Count: 1,
 							Value: "abc",
@@ -906,18 +906,18 @@ func RunTestAllTypes(t *testing.T, stageFactory merge.StageFactory) {
 					Name:        "int",
 					Count:       1,
 					CountUnique: 1,
-					ValueExtremes: &analysis.ValueExtremes{
+					ValueStats: &analysis.ValueStats{
 						Min: 20,
 						Max: 20,
 						Avg: 20.0,
 					},
-					TopNValues: []analysis.ValueFreq{
+					MostFrequent: []analysis.ValueFreq{
 						{
 							Count: 1,
 							Value: 20,
 						},
 					},
-					BottomNValues: []analysis.ValueFreq{
+					LeastFrequent: []analysis.ValueFreq{
 						{
 							Count: 1,
 							Value: 20,

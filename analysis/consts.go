@@ -8,16 +8,16 @@ var (
 	BsonFieldType           string
 	BsonCount               string
 	BsonCountUnique         string
-	BsonValueExtremes       string
+	BsonValueStats          string
 	BsonMinValue            string
 	BsonMaxValue            string
 	BsonAvgValue            string
-	BsonLengthExtremes      string
+	BsonLengthStats         string
 	BsonMinLength           string
 	BsonMaxLength           string
 	BsonAvgLength           string
-	BsonTopNValues          string
-	BsonBottomNValues       string
+	BsonMostFrequent        string
+	BsonLeastFrequent       string
 	BsonValueFreqValue      string
 	BsonValueFreqCount      string
 	BsonValueHistogram      string
@@ -50,8 +50,8 @@ var (
 
 func init() {
 	t := Type{}
-	v := ValueExtremes{}
-	l := LengthExtremes{}
+	v := ValueStats{}
+	l := LengthStats{}
 	f := ValueFreq{}
 	h := Histogram{}
 	i := Interval{}
@@ -60,16 +60,16 @@ func init() {
 	BsonFieldType = helpers.GetBSONFieldName(t, "Name")
 	BsonCount = helpers.GetBSONFieldName(t, "Count")
 	BsonCountUnique = helpers.GetBSONFieldName(t, "CountUnique")
-	BsonValueExtremes = helpers.GetBSONFieldName(t, "ValueExtremes")
+	BsonValueStats = helpers.GetBSONFieldName(t, "ValueStats")
 	BsonMinValue = helpers.GetBSONFieldName(v, "Min")
 	BsonMaxValue = helpers.GetBSONFieldName(v, "Max")
 	BsonAvgValue = helpers.GetBSONFieldName(v, "Avg")
-	BsonLengthExtremes = helpers.GetBSONFieldName(t, "LengthExtremes")
+	BsonLengthStats = helpers.GetBSONFieldName(t, "LengthStats")
 	BsonMinLength = helpers.GetBSONFieldName(l, "Min")
 	BsonMaxLength = helpers.GetBSONFieldName(l, "Max")
 	BsonAvgLength = helpers.GetBSONFieldName(l, "Avg")
-	BsonTopNValues = helpers.GetBSONFieldName(t, "TopNValues")
-	BsonBottomNValues = helpers.GetBSONFieldName(t, "BottomNValues")
+	BsonMostFrequent = helpers.GetBSONFieldName(t, "MostFrequent")
+	BsonLeastFrequent = helpers.GetBSONFieldName(t, "LeastFrequent")
 	BsonValueFreqValue = helpers.GetBSONFieldName(f, "Value")
 	BsonValueFreqCount = helpers.GetBSONFieldName(f, "Count")
 	BsonValueHistogram = helpers.GetBSONFieldName(t, "ValueHistogram")

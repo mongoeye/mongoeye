@@ -14,10 +14,10 @@ func TestOptions_IsNecessaryToCalcValueFreq(t *testing.T) {
 	o = &Options{StoreCountOfUnique: true}
 	assert.Equal(t, true, o.IsNecessaryToCalcValueFreq())
 
-	o = &Options{StoreTopNValues: 10}
+	o = &Options{StoreMostFrequent: 10}
 	assert.Equal(t, true, o.IsNecessaryToCalcValueFreq())
 
-	o = &Options{StoreBottomNValues: 10}
+	o = &Options{StoreLeastFrequent: 10}
 	assert.Equal(t, true, o.IsNecessaryToCalcValueFreq())
 
 	o = &Options{ValueHistogramMaxRes: 100}

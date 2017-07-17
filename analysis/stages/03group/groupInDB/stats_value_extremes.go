@@ -7,7 +7,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-// ValueExtremesComputation generates pipeline to compute min, max and avg value.
+// ValueStatsComputation generates pipeline to compute min, max and avg value.
 // Example results:
 //	[
 //		{
@@ -23,7 +23,7 @@ import (
 //		},
 //		...
 //	]
-func ValueExtremesComputation(options *group.Options) *expr.Pipeline {
+func ValueStatsComputation(options *group.Options) *expr.Pipeline {
 	p := expr.NewPipeline()
 
 	allowedTypes := group.StoreMinMaxValueTypes[:]
@@ -39,7 +39,7 @@ func ValueExtremesComputation(options *group.Options) *expr.Pipeline {
 
 	project := bson.M{
 		analysis.BsonId: bson.M{
-			statType:               valueExtremes,
+			statType:               valueStats,
 			group.BsonFieldName:    expr.Field(analysis.BsonId, group.BsonFieldName),
 			analysis.BsonFieldType: expr.Field(analysis.BsonId, analysis.BsonFieldType),
 		},

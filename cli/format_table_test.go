@@ -31,7 +31,7 @@ func TestFormat_TABLE(t *testing.T) {
 					{
 						Name:  "objectId",
 						Count: 1000,
-						ValueExtremes: &analysis.ValueExtremes{
+						ValueStats: &analysis.ValueStats{
 							Min: bson.ObjectIdHex("58e20d849d3ae7e1f8eac9a1"),
 							Max: bson.ObjectIdHex("58e20d849d3ae7e1f8eac9c1"),
 						},
@@ -305,7 +305,7 @@ func TestFormat_TABLE_FileOutput(t *testing.T) {
 					{
 						Name:  "objectId",
 						Count: 1000,
-						ValueExtremes: &analysis.ValueExtremes{
+						ValueStats: &analysis.ValueStats{
 							Min: bson.ObjectIdHex("58e20d849d3ae7e1f8eac9a1"),
 							Max: bson.ObjectIdHex("58e20d849d3ae7e1f8eac9c1"),
 						},

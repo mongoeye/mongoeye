@@ -24,8 +24,8 @@ var testGroupOptions = group.Options{
 	StoreCountOfUnique:    false,
 	StoreWeekdayHistogram: false,
 	StoreHourHistogram:    false,
-	StoreTopNValues:       0,
-	StoreBottomNValues:    0,
+	StoreMostFrequent:     0,
+	StoreLeastFrequent:    0,
 	ValueHistogramMaxRes:  0,
 	LengthHistogramMaxRes: 0,
 }

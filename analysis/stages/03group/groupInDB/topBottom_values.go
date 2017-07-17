@@ -95,12 +95,12 @@ func ValueFreqComputation(options *group.Options) *expr.Pipeline {
 		analysis.BsonCountUnique: 1,
 	}
 
-	if options.StoreTopNValues > 0 {
-		project[analysis.BsonTopNValues] = expr.Slice(expr.Field(bsonValueFreq), int(options.StoreTopNValues))
+	if options.StoreMostFrequent > 0 {
+		project[analysis.BsonMostFrequent] = expr.Slice(expr.Field(bsonValueFreq), int(options.StoreMostFrequent))
 	}
 
-	if options.StoreBottomNValues > 0 {
-		project[analysis.BsonBottomNValues] = expr.Slice(expr.Field(bsonValueFreq), -int(options.StoreBottomNValues))
+	if options.StoreLeastFrequent > 0 {
+		project[analysis.BsonLeastFrequent] = expr.Slice(expr.Field(bsonValueFreq), -int(options.StoreLeastFrequent))
 	}
 
 	p.AddStage("project", project)

@@ -13,8 +13,8 @@ type Options struct {
 	StoreMinMaxAvgValue   bool // store minimum, maximum and average value if possible
 	StoreMinMaxAvgLength  bool // store minimum, maximum and average length
 	StoreCountOfUnique    bool // store number of unique values
-	StoreTopNValues       uint // saves the N values that most occur, zero = disabled
-	StoreBottomNValues    uint // saves the N values that least occur, zero = disabled
+	StoreMostFrequent     uint // saves the N values that most occur, zero = disabled
+	StoreLeastFrequent    uint // saves the N values that least occur, zero = disabled
 	StoreWeekdayHistogram bool
 	StoreHourHistogram    bool
 	ValueHistogramMaxRes  uint // create histogram from values, zero = disabled
@@ -24,8 +24,8 @@ type Options struct {
 // IsNecessaryToCalcValueFreq - will be value frequency distribution needed for further calculations?
 func (options *Options) IsNecessaryToCalcValueFreq() bool {
 	return options.StoreCountOfUnique ||
-		options.StoreTopNValues > 0 ||
-		options.StoreBottomNValues > 0 ||
+		options.StoreMostFrequent > 0 ||
+		options.StoreLeastFrequent > 0 ||
 		options.ValueHistogramMaxRes > 0
 }
 
@@ -73,7 +73,7 @@ var StoreLengthTypes = []string{
 }
 
 // StoreTopValuesTypes - types for which are saved most occurring value,
-// if options.StoreTopNValues > 0
+// if options.StoreMostFrequent > 0
 var StoreTopValuesTypes = []string{
 	"double",
 	"string",
@@ -85,7 +85,7 @@ var StoreTopValuesTypes = []string{
 }
 
 // StoreBottomValuesTypes - types for which are saved least occurring value,
-// if options.StoreBottomNValues > 0
+// if options.StoreLeastFrequent > 0
 var StoreBottomValuesTypes = []string{
 	"double",
 	"string",

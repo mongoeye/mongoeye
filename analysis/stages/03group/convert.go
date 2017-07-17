@@ -89,20 +89,20 @@ func NormalizeType(t *analysis.Type, location *time.Location) {
 	}
 
 	if t.Name == "date" {
-		if t.ValueExtremes != nil {
-			t.ValueExtremes.Min = helpers.SafeToDate(t.ValueExtremes.Min).In(location)
-			t.ValueExtremes.Max = helpers.SafeToDate(t.ValueExtremes.Max).In(location)
+		if t.ValueStats != nil {
+			t.ValueStats.Min = helpers.SafeToDate(t.ValueStats.Min).In(location)
+			t.ValueStats.Max = helpers.SafeToDate(t.ValueStats.Max).In(location)
 		}
 
-		if t.TopNValues != nil {
-			for i, v := range t.TopNValues {
-				t.TopNValues[i].Value = helpers.SafeToDate(v.Value).In(location)
+		if t.MostFrequent != nil {
+			for i, v := range t.MostFrequent {
+				t.MostFrequent[i].Value = helpers.SafeToDate(v.Value).In(location)
 			}
 		}
 
-		if t.BottomNValues != nil {
-			for i, v := range t.BottomNValues {
-				t.BottomNValues[i].Value = helpers.SafeToDate(v.Value).In(location)
+		if t.LeastFrequent != nil {
+			for i, v := range t.LeastFrequent {
+				t.LeastFrequent[i].Value = helpers.SafeToDate(v.Value).In(location)
 			}
 		}
 	}

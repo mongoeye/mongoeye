@@ -97,12 +97,12 @@ func BenchmarkGroupLocallyCountOfUnique(b *testing.B) {
 	groupTests.RunBenchmarkStageCountOfUnique(b, NewStage)
 }
 
-func BenchmarkGroupLocallyTopNValues(b *testing.B) {
-	groupTests.RunBenchmarkStageTopNValues(b, NewStage)
+func BenchmarkGroupLocallyMostFrequent(b *testing.B) {
+	groupTests.RunBenchmarkStageMostFrequent(b, NewStage)
 }
 
-func BenchmarkGroupLocallyBottomNValues(b *testing.B) {
-	groupTests.RunBenchmarkStageBottomNValues(b, NewStage)
+func BenchmarkGroupLocallyLeastFrequent(b *testing.B) {
+	groupTests.RunBenchmarkStageLeastFrequent(b, NewStage)
 }
 
 func BenchmarkGroupLocallyValuesHistogram(b *testing.B) {

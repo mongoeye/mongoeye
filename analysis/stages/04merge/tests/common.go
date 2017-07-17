@@ -49,8 +49,8 @@ func init() {
 		StoreCountOfUnique:    true,
 		StoreWeekdayHistogram: true,
 		StoreHourHistogram:    true,
-		StoreTopNValues:       20,
-		StoreBottomNValues:    20,
+		StoreMostFrequent:     20,
+		StoreLeastFrequent:    20,
 		ValueHistogramMaxRes:  1000,
 		LengthHistogramMaxRes: 100,
 	}

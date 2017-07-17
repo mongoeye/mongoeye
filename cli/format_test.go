@@ -13,6 +13,8 @@ import (
 
 func TestFormat_JSON(t *testing.T) {
 	result := Result{
+		Database:     "db",
+		Collection:   "col",
 		Plan:         "local",
 		Duration:     20 * time.Millisecond,
 		AllDocsCount: 12345,
@@ -27,7 +29,7 @@ func TestFormat_JSON(t *testing.T) {
 					{
 						Name:  "objectId",
 						Count: 1000,
-						ValueExtremes: &analysis.ValueExtremes{
+						ValueStats: &analysis.ValueStats{
 							Min: bson.ObjectIdHex("58e20d849d3ae7e1f8eac9a1"),
 							Max: bson.ObjectIdHex("58e20d849d3ae7e1f8eac9c1"),
 						},
@@ -70,10 +72,12 @@ func TestFormat_JSON(t *testing.T) {
 	assert.Equal(t, nil, err)
 
 	expected := `{
+	"database": "db",
+	"collection": "col",
 	"plan": "local",
 	"duration": 20000000,
-	"allDocsCount": 12345,
-	"docsCount": 1000,
+	"allDocs": 12345,
+	"analyzedDocs": 1000,
 	"fieldsCount": 1,
 	"fields": [
 		{
@@ -88,7 +92,7 @@ func TestFormat_JSON(t *testing.T) {
 						"min": "58e20d849d3ae7e1f8eac9a1",
 						"max": "58e20d849d3ae7e1f8eac9c1"
 					},
-					"histogramOfValue": {
+					"valueHistogram": {
 						"start": "2000-01-01T00:00:00Z",
 						"end": "2000-01-10T00:00:00Z",
 						"range": 864000,
@@ -117,6 +121,8 @@ func TestFormat_JSON(t *testing.T) {
 
 func TestFormat_JSON_FileOutput(t *testing.T) {
 	result := Result{
+		Database:     "db",
+		Collection:   "col",
 		Plan:         "local",
 		Duration:     20 * time.Millisecond,
 		AllDocsCount: 10000,
@@ -142,12 +148,14 @@ func TestFormat_JSON_FileOutput(t *testing.T) {
 	out, err := Format(result, config)
 	assert.Equal(t, nil, err)
 
-	expected := `{"plan":"local","duration":20000000,"allDocsCount":10000,"docsCount":1000,"fieldsCount":1,"fields":[{"name":"_id","level":0,"count":1000,"types":null}]}`
+	expected := `{"database":"db","collection":"col","plan":"local","duration":20000000,"allDocs":10000,"analyzedDocs":1000,"fieldsCount":1,"fields":[{"name":"_id","level":0,"count":1000,"types":null}]}`
 	assert.Equal(t, expected, string(out))
 }
 
 func TestFormat_YAML(t *testing.T) {
 	result := Result{
+		Database:     "db",
+		Collection:   "col",
 		Plan:         "local",
 		Duration:     20 * time.Millisecond,
 		AllDocsCount: 12345,
@@ -162,7 +170,7 @@ func TestFormat_YAML(t *testing.T) {
 					{
 						Name:  "objectId",
 						Count: 1000,
-						ValueExtremes: &analysis.ValueExtremes{
+						ValueStats: &analysis.ValueStats{
 							Min: bson.ObjectIdHex("58e20d849d3ae7e1f8eac9a1"),
 							Max: bson.ObjectIdHex("58e20d849d3ae7e1f8eac9c1"),
 						},
@@ -204,10 +212,12 @@ func TestFormat_YAML(t *testing.T) {
 	out, err := Format(result, config)
 	assert.Equal(t, nil, err)
 
-	expected := `plan: local
+	expected := `database: db
+collection: col
+plan: local
 duration: 20ms
-allDocsCount: 12345
-docsCount: 1000
+allDocs: 12345
+analyzedDocs: 1000
 fieldsCount: 1
 fields:
 - name: _id
@@ -219,7 +229,7 @@ fields:
     value:
       min: 58e20d849d3ae7e1f8eac9a1
       max: 58e20d849d3ae7e1f8eac9c1
-    histogramOfValue:
+    valueHistogram:
       start: 2000-01-01T00:00:00Z
       end: 2000-01-10T00:00:00Z
       range: 864000
