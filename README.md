@@ -14,10 +14,10 @@ Mongoeye provides a quick overview of the data in your MongoDB database.
 
 ### Key features
 
-* *Fast:*&nbsp; the fastest tool for analyzing the MongoDB scheme
+* *Fast:*&nbsp; the fastest schema analyzer for MongoDB
 * *Single binary:*&nbsp; pre-built [binaries](https://github.com/mongoeye/mongoeye/releases) for Windows, Linux, and MacOS (Darwin)
 * *Local analysis:*&nbsp; quick local analysis using a parallel algorithm (MongoDB 2.0+)
-* *Analysis in database:*&nbsp; using the aggregation framework (MongoDB 3.5.9+)
+* *Remote analysis:*&nbsp; distributed analysis in database using the aggregation framework (MongoDB 3.5.9+)
 * *Rich features:*&nbsp; generates [histogram](https://en.wikipedia.org/wiki/Histogram) (value, length, weekday, hour), most frequent values, ... 
 * *Integrable:*&nbsp; table, JSON or YAML output
 
@@ -103,6 +103,8 @@ Use `--format json` or `--format yaml` flags to set these formats.
 
 For output to a file use the option `-F /path/to/file`.
 
+### Description of features
+
 ### Flags
 
 #### Connection options
@@ -173,9 +175,8 @@ Instead of the `--count-unique` flag, for example, you can use `export MONGOEYE_
 
 ## TODO
 
-* Create a shared library for integration into other languages.
+* Create a shared library for integration into other languages (Python, Node.js, ...)
 * TLS/SSL support
-* Optimize local and aggregation framework algorithms.
 * Create a [web interface](https://github.com/mongoeye/mongoeye-ui).
 
 ## Donation
@@ -189,7 +190,7 @@ If is this tool useful to you, so feel free to support its further development.
 
 Mongoeye is under the GPL-3.0 license. See the [LICENSE](LICENSE.md) file for details.
 
-<sub title="Ad maiorem Dei gloriam. - To the greater glory of God."><sub>
+<sub title="Ad maiorem Dei gloriam. To the greater glory of God."><sub>
 AMDG
 </sub></sub>
 
