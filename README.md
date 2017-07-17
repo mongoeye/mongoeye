@@ -19,7 +19,7 @@ Mongoeye provides a quick overview of the data in your MongoDB database.
 * *Local analysis:*&nbsp; quick local analysis using a parallel algorithm (MongoDB 2.0+)
 * *Remote analysis:*&nbsp; distributed analysis in database using the aggregation framework (MongoDB 3.5.9+)
 * *Rich features:*&nbsp; [histogram](https://en.wikipedia.org/wiki/Histogram) (value, length, weekday, hour), most frequent values, ... 
-* *Integrable:*&nbsp; table, JSON or YAML output
+* *Integrable:*&nbsp; [table](#table-output), [JSON or YAML output](#json-and-yaml-output)
 
 ## Demo
 
