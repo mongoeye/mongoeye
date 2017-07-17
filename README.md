@@ -204,8 +204,15 @@ histogramOfLength:
 
 ### Histogram of weekday
 
+```yaml
+histogramOfWeekday: [5, 48, 23, 124, 45, 15, 87]
+```
+
 ### Histogram of hour
 
+```yaml
+histogramOfHour: [47, 73, 18, 26, 30, 46, 91, 13, 28, 11, 52, 99, 76, 25, 94, 51, 87, 86, 19, 22, 11, 62, 28, 47]
+```
 
 ## Flags
 
