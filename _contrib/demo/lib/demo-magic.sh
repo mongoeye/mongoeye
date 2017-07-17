@@ -94,7 +94,7 @@ function pe() {
   str="$@"
 
   # print the command
-  p "${GREEN}${str}${COLOR_RESET}"
+  p "${RED}${str}${COLOR_RESET}"
 
   # execute the command
   cmd=`echo -e "${str}" | tr '\n' ' '`

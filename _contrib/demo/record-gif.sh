@@ -26,9 +26,10 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "${DIR}"
 
 # Env
-export width="1440"
-export height="920"
+export width="1920"
+export height="1200"
 export geometry="${width}x${height}"
+export background="#0a0a08"
 export DISPLAY=:99
 export XENVIRONMENT=./.Xdefaults
 export NO_AT_BRIDGE=1 # https://gist.github.com/jeffcogswell/62395900725acef1c0a5a608f7eb7a05
@@ -41,7 +42,10 @@ sleep 1
 unclutter -idle 0 -root &
 sleep 1
 
+# Set background
+xsetroot -solid "${background}"
+
 # Run demo
 termCmd="urxvt -geometry ${geometry} -e ./demo.sh"
 echo "Running: ${termCmd}"
-byzanz-record -v -w "${width}" -h "${height}" -x 0 -y 0 -c -e "${termCmd}" "${DIR}/../../_release/demo.gif"
+byzanz-record -v -w "${width}" -h "${height}" -x 0 -y 0 -e "${termCmd}" "${DIR}/../../_release/demo.gif"

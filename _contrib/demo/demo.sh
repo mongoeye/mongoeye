@@ -47,7 +47,7 @@ PAUSE_AFTER_EXAMPLE=8
 
 # Clear
 clear
-sleep 1
+sleep 0.5
 
 # EXAMPLE 1
 example 1 'Basic usage'
