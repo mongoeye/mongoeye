@@ -124,12 +124,12 @@ It is necessary to set output in JSON (`--format json`) or YAML (`--format yaml`
 ### Base output
 
 The output of the analysis contains these basic keys:
-  * *plan:* 
-  * *duration:* 
-  * *allDocs:* 
-  * *analyzedDocs:* 
-  * *fieldsCount:* 
-  * *fields:* 
+  * **plan**:
+  * **duration**: duration of analysis
+  * **allDocs**: number of all documents in collection
+  * **analyzedDocs**: number of analyzed documents from collection
+  * **fieldsCount**: number of found fields
+  * **fields**:  results of the analysis for each field
 
 Example:
 ```yaml
