@@ -118,7 +118,7 @@ For output to a file use the option `-F /path/to/file`.
 
 This chapter explains the features of Mongoeye and their various outputs.
 
-It is necessary to set `--format json` or `--format yaml` to get detailed results, otherwise only the schema table will appear.
+Use `--format json` or `--format yaml` to get detailed results, otherwise only the schema table will appear.
 
 The output of the analysis always contains these basic keys:
 * **database**: name of database
