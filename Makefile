@@ -48,3 +48,8 @@ build-zip:
 demo-gif:
 	bash -c "source _contrib/docker/env.sh && _contrib/demo/record-gif.sh"
 
+demo-asciinema:
+	bash -c "source _contrib/docker/env.sh && asciinema rec -t 'Mongoeye demo' -y -c ./_contrib/demo/demo.sh"
+
+
+

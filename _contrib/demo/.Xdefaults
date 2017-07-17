@@ -40,8 +40,8 @@ URxvt.fading: 0
 *.color13:      #ae81ff
 
 ! cyan
-*.color6:       #1bb9ff
-*.color14:      #1bb9ff
+*.color1:       #ff3541
+*.color9:       #ff3541
 
 ! white
 *.color7:       #f8f8f2
