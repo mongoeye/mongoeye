@@ -204,15 +204,7 @@ histogramOfValue:
   range: 3.5
   step: 0.5
   numOfSteps: 7
-  intervals:
-  - 7
-  - 0
-  - 17
-  - 0
-  - 202
-  - 0
-  - 219
-
+  intervals: [7, 0, 17, 0, 202, 0, 219]
 ```
 
 ### Histogram of length
@@ -224,19 +216,20 @@ histogramOfLength:
   range: 300
   step: 50
   numOfSteps: 6
-  intervals:
-  - 96
-  - 78
-  - 3
-  - 1
-  - 1
-  - 0
+  intervals: [96, 78, 3, 1, 1, 0]
 ```
 
 ### Histogram of weekday
 
+```yaml
+histogramOfWeekday: [5, 48, 23, 124, 45, 15, 87]
+```
+
 ### Histogram of hour
 
+```yaml
+histogramOfHour: [47, 73, 18, 26, 30, 46, 91, 13, 28, 11, 52, 99, 76, 25, 94, 51, 87, 86, 19, 22, 11, 62, 28, 47]
+```
 
 ## Flags
 
