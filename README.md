@@ -109,7 +109,7 @@ For output to a file use the option `-F /path/to/file`.
 
 ```yaml
 value:
-  min: -41.565586
+  min: 11.565586
   max: 60.206787
   avg: 38.51128
 ```
