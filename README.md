@@ -37,13 +37,7 @@ Mongoeye provides a quick overview of the data in your MongoDB database.
     * [Histogram of length](#histogram-of-length)
     * [Histogram of weekday](#histogram-of-weekday)
     * [Histogram of hour](#histogram-of-hour)
- * [Flags](#flags)
-       * [Connection options](#connection-options)
-       * [Authentication](#authentication)
-       * [Input options](#input-options)
-       * [Output options](#output-options)
-       * [Other options](#other-options)
-    * [Environment variables](#environment-variables)
+ * [List of flags](#list-of-flags)
  * [TODO](#todo)
  * [Donation](#donation)
  * [License](#license)
@@ -227,7 +221,7 @@ histogramOfWeekday: [5, 48, 23, 124, 45, 15, 87]
 histogramOfHour: [47, 73, 18, 26, 30, 46, 91, 13, 28, 11, 52, 99, 76, 25, 94, 51, 87, 86, 19, 22, 11, 62, 28, 47]
 ```
 
-## Flags
+## List of flags
 
 #### Connection options
 ```
