@@ -18,7 +18,7 @@ Mongoeye provides a quick overview of the data in your MongoDB database.
 * *Single binary:*&nbsp; pre-built [binaries](https://github.com/mongoeye/mongoeye/releases) for Windows, Linux, and MacOS (Darwin)
 * *Local analysis:*&nbsp; quick local analysis using a parallel algorithm (MongoDB 2.0+)
 * *Remote analysis:*&nbsp; distributed analysis in database using the aggregation framework (MongoDB 3.5.9+)
-* *Rich features:*&nbsp; [histogram](https://en.wikipedia.org/wiki/Histogram) (value, length, weekday, hour), [most frequent values](#frequency-of-values), ... 
+* *Rich features:*&nbsp; [histogram](#histogram-of-value) (value, length, weekday, hour), [most frequent values](#frequency-of-values), ... 
 * *Integrable:*&nbsp; [table](#table-output), [JSON or YAML output](#json-and-yaml-output)
 
 ## Demo
