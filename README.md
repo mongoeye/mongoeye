@@ -8,61 +8,41 @@ Schema and data analyzer for [MongoDB](https://www.mongodb.com) written in [Go](
 [![Build Status](https://travis-ci.org/mongoeye/mongoeye.svg?branch=master)](https://travis-ci.org/mongoeye/mongoeye)
 [![Go Report Card](https://goreportcard.com/badge/github.com/mongoeye/mongoeye)](https://goreportcard.com/report/github.com/mongoeye/mongoeye)
 
-## Table of Contents
-      * [Overview](#overview)
-         * [Key features](#key-features)
-      * [Demo](#demo)
-      * [Comparison](#comparison)
-      * [Installation](#installation)
-      * [Compilation](#compilation)
-      * [Usage](#usage)
-         * [Table output](#table-output)
-         * [JSON and YAML output](#json-and-yaml-output)
-      * [Description of features](#description-of-features)
-         * [Base output](#base-output)
-         * [Value - min, max, avg](#value---min-max-avg)
-         * [Length - min, max, avg](#length---min-max-avg)
-         * [Number of unique values](#number-of-unique-values)
-         * [Frequency of values](#frequency-of-values)
-         * [Histogram of value](#histogram-of-value)
-         * [Histogram of length](#histogram-of-length)
-         * [Histogram of weekday](#histogram-of-weekday)
-         * [Histogram of hour](#histogram-of-hour)
-      * [Flags](#flags)
-            * [Connection options](#connection-options)
-            * [Authentication](#authentication)
-            * [Input options](#input-options)
-            * [Output options](#output-options)
-            * [Other options](#other-options)
-         * [Environment variables](#environment-variables)
-      * [TODO](#todo)
-      * [Donation](#donation)
-      * [License](#license)
-
 ## Overview
 
 Mongoeye provides a quick overview of the data in your MongoDB database.
 
 ### Key features
 
-* *Fast:*&nbsp; the fastest schema analyzer for MongoDB
+* *Fast:*&nbsp; [the fastest](https://github.com/mongoeye/mongoeye/blob/doc/_misc/comparison.png) schema analyzer for MongoDB
 * *Single binary:*&nbsp; pre-built [binaries](https://github.com/mongoeye/mongoeye/releases) for Windows, Linux, and MacOS (Darwin)
 * *Local analysis:*&nbsp; quick local analysis using a parallel algorithm (MongoDB 2.0+)
 * *Remote analysis:*&nbsp; distributed analysis in database using the aggregation framework (MongoDB 3.5.9+)
-* *Rich features:*&nbsp; [histogram](https://en.wikipedia.org/wiki/Histogram) (value, length, weekday, hour), most frequent values, ... 
-* *Integrable:*&nbsp; table, JSON or YAML output
+* *Rich features:*&nbsp; [histogram](#histogram-of-value) (value, length, weekday, hour), [most frequent values](#frequency-of-values), ... 
+* *Integrable:*&nbsp; [table](#table-output), [JSON or YAML output](#json-and-yaml-output)
 
 ## Demo
 
 <a href="https://asciinema.org/a/129238" target="_blank" title="Open in asciinema.org"><img src="https://github.com/mongoeye/mongoeye/blob/doc/_misc/demo.gif?raw=true" /></a>
 
-## Comparison
-
-The speed of the analysis was compared with similar tools on the [test collection](https://github.com/mongoeye/mongoeye/blob/master/_contrib/dataset/companies.json) under the same conditions.
-
-<a href="https://github.com/mongoeye/mongoeye/blob/master/_misc/comparison.png?raw=true" target="_blank" title="Open image"><img src="https://github.com/mongoeye/mongoeye/blob/master/_misc/comparison.png?raw=true" /></a>
-
-Links: [Studio3T](https://studio3t.com), [MongoDB Compass](https://www.mongodb.com/products/compass), [Variety.js](https://github.com/variety/variety), [Schema.js](https://github.com/skratchdot/mongodb-schema)
+## Table of Contents
+ * [Installation](#installation)
+ * [Compilation](#compilation)
+ * [Usage](#usage)
+    * [Table output](#table-output)
+    * [JSON and YAML output](#json-and-yaml-output)
+ * [Features](#features)
+    * [Value - min, max, avg](#value---min-max-avg)
+    * [Length - min, max, avg](#length---min-max-avg)
+    * [Number of unique values](#number-of-unique-values)
+    * [Frequency of values](#frequency-of-values)
+    * [Histogram of value](#histogram-of-value)
+    * [Histogram of length](#histogram-of-length)
+    * [Histogram of weekday](#histogram-of-weekday)
+    * [Histogram of hour](#histogram-of-hour)
+ * [List of flags](#list-of-flags)
+ * [TODO](#todo)
+ * [License](#license)
 
 ## Installation
 
@@ -134,22 +114,58 @@ Use `--format json` or `--format yaml` flags to set these formats.
 
 For output to a file use the option `-F /path/to/file`.
 
-## Description of features
+## Features
 
-### Base output
+This chapter explains the features of Mongoeye and their various outputs.
 
+Use `--format json` or `--format yaml` to get detailed results, otherwise only the schema table will appear.
+
+The output of the analysis always contains these basic keys:
+* **database**: database name
+* **collection**: collection name
+* **plan**: `local` for local analysis, `db` for analysis using aggregation framework
+* **duration**: duration of analysis
+* **allDocs**: number of all documents in collection
+* **analyzedDocs**: number of analyzed documents from collection
+* **fieldsCount**: number of found fields
+* **fields**:  result of the analysis for each field
+ * **name**: name of field
+ * **level**: level of nested field, `0` is root level
+ * **count**: number of occurrences
+ * **types**: result of the analysis for each type of field
+   * **type**: name of type
+   * **count**: number of occurrences of type
+
+Example result:
 ```yaml
-- name: rating
-  level: 0
-  count: 1000
-  types:
-  - type: int
-    count: 549
-    ...
+database: company
+collection: users
+plan: local
+duration: 46.515331ms
+allDocs: 2548
+analyzedDocs: 1000
+fieldsCount: 9
+fields:
+  - name: rating
+    level: 0
+    count: 1000
+    types:
+    - type: int
+      count: 549
+      < other outputs according to settings >
 ```
+
+The analyzes in the following subchapters are processed separately for each type in field.
 
 ### Value - min, max, avg
 
+Use the flag `--value` or `-v` to enable calculation of minimum, maximum, and average values.
+
+**Supported types**:
+* Minimum and maximum: `objectId`, `double`, `string`, `bool`, `date`, `int`, `timestamp`, `long`, `decimal`
+* Average: `double`, `bool`, `int`, `long`, `decimal`
+
+Example result:
 ```yaml
 value:
   min: 11.565586
@@ -159,6 +175,11 @@ value:
 
 ### Length - min, max, avg
 
+Use the flag `--length` or `-l` to enable calculation of minimum, maximum, and average lengths.
+
+**Supported types**: `string`, `array`, `object`
+
+Example result:
 ```yaml
 length:
   min: 29
@@ -168,12 +189,22 @@ length:
 
 ### Number of unique values
 
+Use the flag `--count-unique` to count all unique values.
+
+**Supported types**: `double`, `string`, `date`, `int`, `timestamp`, `long`, `decimal`
+
+Example result:
 ```yaml
 unique: 894
 ```
 
 ### Frequency of values
 
+Use flag `--most-freq N` or `--least-freq N` to get the most or least occurring values.
+
+**Supported types**: `double`, `string`, `date`, `int`, `timestamp`, `long`, `decimal`
+
+Example result:
 ```yaml
 mostFrequent:
 - value: USD
@@ -195,22 +226,39 @@ leastFrequent:
   count: 3
 ```
 
-### Histogram of value
+### Value histogram
 
+Use the flag `--value-hist` or `-V` to generate value histogram.
+
+Flag `--value-hist-steps` sets the maximum number of steps (default `100`).
+
+**Supported types**: `objectId`* - as a date*, `double`, `date`, `int`, `long`, `decimal`
+
+Example result:
 ```yaml
-histogramOfValue:
+valueHistogram:
   start: 2.5
-  end: 6
-  range: 3.5
+  end: 12
+  range: 9.5
   step: 0.5
-  numOfSteps: 7
-  intervals: [7, 0, 17, 0, 202, 0, 219]
+  numOfSteps: 19
+  intervals: [36, 25, 14, 81, 95, 86, 59, 6, 82, 84, 62, 33, 19, 9, 1, 14, 67, 2, 45]
 ```
 
-### Histogram of length
+Graphic representation:
 
+
+### Length histogram
+
+Use the flag `--length-hist` or `-L` to generate length histogram.
+
+Flag `--length-hist-steps` sets the maximum number of steps (default `100`).
+
+**Supported types**: `string`, `array`, `object`
+
+Example result:
 ```yaml
-histogramOfLength:
+lengthHistogram:
   start: 0
   end: 300
   range: 300
@@ -219,19 +267,31 @@ histogramOfLength:
   intervals: [96, 78, 3, 1, 1, 0]
 ```
 
-### Histogram of weekday
+### Weekday histogram
 
+Use the flag `--weekday-hist` or `-W` to generate weekday histogram.
+
+To determine the day of week it uses the time zone from the `--timezone` flag (default `local`).
+
+Example result:
 ```yaml
-histogramOfWeekday: [5, 48, 23, 124, 45, 15, 87]
+weekdayHistogram: [5, 48, 23, 124, 45, 15, 87]
 ```
 
-### Histogram of hour
+### Hour histogram
 
+Use the flag `--hour-hist` or `-H` to generate weekday histogram.
+
+To determine the hour it uses the time zone from the `--timezone` flag (default `local`).
+
+First value is for interval `[ 00, 01 )`, last for interval `[ 23, 24 )`.
+
+Example result:
 ```yaml
-histogramOfHour: [47, 73, 18, 26, 30, 46, 91, 13, 28, 11, 52, 99, 76, 25, 94, 51, 87, 86, 19, 22, 11, 62, 28, 47]
+hourHistogram: [47, 73, 18, 26, 30, 46, 91, 13, 28, 11, 52, 99, 76, 25, 94, 51, 87, 86, 19, 22, 11, 62, 28, 47]
 ```
 
-## Flags
+## List of flags
 
 #### Connection options
 ```
