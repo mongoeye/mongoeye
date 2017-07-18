@@ -59,28 +59,28 @@ func RunBenchmarkStageCountOfUnique(b *testing.B, stageFactory group.StageFactor
 	benchmarkStage(b, c, time.UTC, stageFactory(&options), false)
 }
 
-// RunBenchmarkStageTopNValues - tests speed of group stage with StoreTopNValues option.
-func RunBenchmarkStageTopNValues(b *testing.B, stageFactory group.StageFactory) {
+// RunBenchmarkStageMostFrequent - tests speed of group stage with StoreMostFrequent option.
+func RunBenchmarkStageMostFrequent(b *testing.B, stageFactory group.StageFactory) {
 	b.StopTimer()
 
 	c := tests.BenchmarkDbSession.DB(tests.BenchmarkDb).C(tests.BenchmarkCol)
 
 	options := group.Options{}
 	copier.Copy(&options, &testGroupOptions)
-	options.StoreTopNValues = 20
+	options.StoreMostFrequent = 20
 
 	benchmarkStage(b, c, time.UTC, stageFactory(&options), false)
 }
 
-// RunBenchmarkStageBottomNValues - tests speed of group stage with StoreBottomNValues option.
-func RunBenchmarkStageBottomNValues(b *testing.B, stageFactory group.StageFactory) {
+// RunBenchmarkStageLeastFrequent - tests speed of group stage with StoreLeastFrequent option.
+func RunBenchmarkStageLeastFrequent(b *testing.B, stageFactory group.StageFactory) {
 	b.StopTimer()
 
 	c := tests.BenchmarkDbSession.DB(tests.BenchmarkDb).C(tests.BenchmarkCol)
 
 	options := group.Options{}
 	copier.Copy(&options, &testGroupOptions)
-	options.StoreBottomNValues = 20
+	options.StoreLeastFrequent = 20
 
 	benchmarkStage(b, c, time.UTC, stageFactory(&options), false)
 }
@@ -180,8 +180,8 @@ func RunBenchmarkStageFull(b *testing.B, stageFactory group.StageFactory) {
 	options.StoreCountOfUnique = true
 	options.StoreWeekdayHistogram = true
 	options.StoreHourHistogram = true
-	options.StoreTopNValues = 20
-	options.StoreBottomNValues = 20
+	options.StoreMostFrequent = 20
+	options.StoreLeastFrequent = 20
 	options.ValueHistogramMaxRes = 1000
 	options.LengthHistogramMaxRes = 100
 

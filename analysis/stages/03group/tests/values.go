@@ -114,7 +114,7 @@ func RunTestValueMinMaxAvg(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "objectId",
 				Count: 3,
-				ValueExtremes: &analysis.ValueExtremes{
+				ValueStats: &analysis.ValueStats{
 					Min: bson.ObjectIdHex("58e20d849d3ae7e1f8eac9c0"),
 					Max: bson.ObjectIdHex("58e20d849d3ae7e1f8eac9c2"),
 				},
@@ -125,7 +125,7 @@ func RunTestValueMinMaxAvg(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "double",
 				Count: 3,
-				ValueExtremes: &analysis.ValueExtremes{
+				ValueStats: &analysis.ValueStats{
 					Min: 123.456,
 					Max: 798.123,
 					Avg: 459.45599999999996,
@@ -137,7 +137,7 @@ func RunTestValueMinMaxAvg(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "string",
 				Count: 3,
-				ValueExtremes: &analysis.ValueExtremes{
+				ValueStats: &analysis.ValueStats{
 					Min: "abc",
 					Max: "Šašo",
 					Avg: nil,
@@ -163,7 +163,7 @@ func RunTestValueMinMaxAvg(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "bool",
 				Count: 3,
-				ValueExtremes: &analysis.ValueExtremes{
+				ValueStats: &analysis.ValueStats{
 					Min: false,
 					Max: true,
 					Avg: 0.6666666666666666,
@@ -175,7 +175,7 @@ func RunTestValueMinMaxAvg(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "date",
 				Count: 3,
-				ValueExtremes: &analysis.ValueExtremes{
+				ValueStats: &analysis.ValueStats{
 					Min: time.Unix(1490959230, 0),
 					Max: time.Unix(1490959232, 0),
 				},
@@ -228,7 +228,7 @@ func RunTestValueMinMaxAvg(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "int",
 				Count: 3,
-				ValueExtremes: &analysis.ValueExtremes{
+				ValueStats: &analysis.ValueStats{
 					Min: 123,
 					Max: 456,
 					Avg: 234,
@@ -240,7 +240,7 @@ func RunTestValueMinMaxAvg(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "timestamp",
 				Count: 3,
-				ValueExtremes: &analysis.ValueExtremes{
+				ValueStats: &analysis.ValueStats{
 					Min: bson.MongoTimestamp(1490959230),
 					Max: bson.MongoTimestamp(1490959231),
 				},
@@ -251,7 +251,7 @@ func RunTestValueMinMaxAvg(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "long",
 				Count: 3,
-				ValueExtremes: &analysis.ValueExtremes{
+				ValueStats: &analysis.ValueStats{
 					Min: 123,
 					Max: 456,
 					Avg: 345,
@@ -263,7 +263,7 @@ func RunTestValueMinMaxAvg(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  decimalType,
 				Count: 3,
-				ValueExtremes: &analysis.ValueExtremes{
+				ValueStats: &analysis.ValueStats{
 					Min: decimal1,
 					Max: decimal3,
 					Avg: decimalAvg,
@@ -296,7 +296,7 @@ func RunTestValueMinMaxAvg(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "int",
 				Count: 1,
-				ValueExtremes: &analysis.ValueExtremes{
+				ValueStats: &analysis.ValueStats{
 					Min: 10,
 					Max: 10,
 					Avg: 10,
@@ -308,7 +308,7 @@ func RunTestValueMinMaxAvg(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "string",
 				Count: 1,
-				ValueExtremes: &analysis.ValueExtremes{
+				ValueStats: &analysis.ValueStats{
 					Min: "cde",
 					Max: "cde",
 				},
@@ -319,7 +319,7 @@ func RunTestValueMinMaxAvg(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "string",
 				Count: 1,
-				ValueExtremes: &analysis.ValueExtremes{
+				ValueStats: &analysis.ValueStats{
 					Min: "abc",
 					Max: "abc",
 				},
@@ -330,7 +330,7 @@ func RunTestValueMinMaxAvg(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "int",
 				Count: 1,
-				ValueExtremes: &analysis.ValueExtremes{
+				ValueStats: &analysis.ValueStats{
 					Min: 20,
 					Max: 20,
 					Avg: 20,
@@ -349,7 +349,7 @@ func RunTestValueMinMaxAvg(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "int",
 				Count: 4,
-				ValueExtremes: &analysis.ValueExtremes{
+				ValueStats: &analysis.ValueStats{
 					Min: 1,
 					Max: 4,
 					Avg: 2.5,
@@ -361,7 +361,7 @@ func RunTestValueMinMaxAvg(t *testing.T, stageFactory group.StageFactory) {
 	testStage(t, c, time.UTC, stageFactory(&options), expected)
 }
 
-// RunTestValueTopValues tests group stage with StoreTopNValues option.
+// RunTestValueTopValues tests group stage with StoreMostFrequent option.
 func RunTestValueTopValues(t *testing.T, stageFactory group.StageFactory) {
 	c := setup()
 	defer tearDown(c)
@@ -453,7 +453,7 @@ func RunTestValueTopValues(t *testing.T, stageFactory group.StageFactory) {
 
 	options := group.Options{}
 	copier.Copy(&options, &testGroupOptions)
-	options.StoreTopNValues = 2
+	options.StoreMostFrequent = 2
 
 	expected := []interface{}{
 		group.Result{
@@ -468,7 +468,7 @@ func RunTestValueTopValues(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "double",
 				Count: 7,
-				TopNValues: []analysis.ValueFreq{
+				MostFrequent: []analysis.ValueFreq{
 					{
 						Value: 123.456,
 						Count: 3,
@@ -485,7 +485,7 @@ func RunTestValueTopValues(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "string",
 				Count: 7,
-				TopNValues: []analysis.ValueFreq{
+				MostFrequent: []analysis.ValueFreq{
 					{
 						Value: "Šašo",
 						Count: 3,
@@ -502,7 +502,7 @@ func RunTestValueTopValues(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "date",
 				Count: 7,
-				TopNValues: []analysis.ValueFreq{
+				MostFrequent: []analysis.ValueFreq{
 					{
 						Value: helpers.ParseDate("2017-03-31T11:20:30+00:00"),
 						Count: 3,
@@ -519,7 +519,7 @@ func RunTestValueTopValues(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "int",
 				Count: 7,
-				TopNValues: []analysis.ValueFreq{
+				MostFrequent: []analysis.ValueFreq{
 					{
 						Value: 123,
 						Count: 3,
@@ -536,7 +536,7 @@ func RunTestValueTopValues(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "timestamp",
 				Count: 7,
-				TopNValues: []analysis.ValueFreq{
+				MostFrequent: []analysis.ValueFreq{
 					{
 						Value: 1490959230,
 						Count: 3,
@@ -553,7 +553,7 @@ func RunTestValueTopValues(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "long",
 				Count: 7,
-				TopNValues: []analysis.ValueFreq{
+				MostFrequent: []analysis.ValueFreq{
 					{
 						Value: 456,
 						Count: 3,
@@ -570,7 +570,7 @@ func RunTestValueTopValues(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  decimalType,
 				Count: 7,
-				TopNValues: []analysis.ValueFreq{
+				MostFrequent: []analysis.ValueFreq{
 					{
 						Value: decimal1,
 						Count: 3,
@@ -587,7 +587,7 @@ func RunTestValueTopValues(t *testing.T, stageFactory group.StageFactory) {
 	testStage(t, c, time.UTC, stageFactory(&options), expected)
 }
 
-// RunTestValueTopValuesNGreaterThanNumberOfValues tests group stage with StoreTopNValues option + StoreTopNValues > number of values.
+// RunTestValueTopValuesNGreaterThanNumberOfValues tests group stage with StoreMostFrequent option + StoreMostFrequent > number of values.
 func RunTestValueTopValuesNGreaterThanNumberOfValues(t *testing.T, stageFactory group.StageFactory) {
 	c := setup()
 	defer tearDown(c)
@@ -613,7 +613,7 @@ func RunTestValueTopValuesNGreaterThanNumberOfValues(t *testing.T, stageFactory 
 
 	options := group.Options{}
 	copier.Copy(&options, &testGroupOptions)
-	options.StoreTopNValues = 200
+	options.StoreMostFrequent = 200
 
 	expected := []interface{}{
 		group.Result{
@@ -628,7 +628,7 @@ func RunTestValueTopValuesNGreaterThanNumberOfValues(t *testing.T, stageFactory 
 			Type: analysis.Type{
 				Name:  "double",
 				Count: 1,
-				TopNValues: []analysis.ValueFreq{
+				MostFrequent: []analysis.ValueFreq{
 					{
 						Value: 123.456,
 						Count: 1,
@@ -641,7 +641,7 @@ func RunTestValueTopValuesNGreaterThanNumberOfValues(t *testing.T, stageFactory 
 			Type: analysis.Type{
 				Name:  "string",
 				Count: 1,
-				TopNValues: []analysis.ValueFreq{
+				MostFrequent: []analysis.ValueFreq{
 					{
 						Value: "Šašo",
 						Count: 1,
@@ -654,7 +654,7 @@ func RunTestValueTopValuesNGreaterThanNumberOfValues(t *testing.T, stageFactory 
 			Type: analysis.Type{
 				Name:  "date",
 				Count: 1,
-				TopNValues: []analysis.ValueFreq{
+				MostFrequent: []analysis.ValueFreq{
 					{
 						Value: helpers.ParseDate("2017-03-31T11:20:30+00:00"),
 						Count: 1,
@@ -667,7 +667,7 @@ func RunTestValueTopValuesNGreaterThanNumberOfValues(t *testing.T, stageFactory 
 			Type: analysis.Type{
 				Name:  "int",
 				Count: 1,
-				TopNValues: []analysis.ValueFreq{
+				MostFrequent: []analysis.ValueFreq{
 					{
 						Value: 123,
 						Count: 1,
@@ -680,7 +680,7 @@ func RunTestValueTopValuesNGreaterThanNumberOfValues(t *testing.T, stageFactory 
 			Type: analysis.Type{
 				Name:  "timestamp",
 				Count: 1,
-				TopNValues: []analysis.ValueFreq{
+				MostFrequent: []analysis.ValueFreq{
 					{
 						Value: 1490959230,
 						Count: 1,
@@ -693,7 +693,7 @@ func RunTestValueTopValuesNGreaterThanNumberOfValues(t *testing.T, stageFactory 
 			Type: analysis.Type{
 				Name:  "long",
 				Count: 1,
-				TopNValues: []analysis.ValueFreq{
+				MostFrequent: []analysis.ValueFreq{
 					{
 						Value: 456,
 						Count: 1,
@@ -706,7 +706,7 @@ func RunTestValueTopValuesNGreaterThanNumberOfValues(t *testing.T, stageFactory 
 			Type: analysis.Type{
 				Name:  decimalType,
 				Count: 1,
-				TopNValues: []analysis.ValueFreq{
+				MostFrequent: []analysis.ValueFreq{
 					{
 						Value: decimal,
 						Count: 1,
@@ -719,7 +719,7 @@ func RunTestValueTopValuesNGreaterThanNumberOfValues(t *testing.T, stageFactory 
 	testStage(t, c, time.UTC, stageFactory(&options), expected)
 }
 
-// RunTestValueBottomValues tests group stage with StoreBottomNValues option.
+// RunTestValueBottomValues tests group stage with StoreLeastFrequent option.
 func RunTestValueBottomValues(t *testing.T, stageFactory group.StageFactory) {
 	c := setup()
 	defer tearDown(c)
@@ -811,7 +811,7 @@ func RunTestValueBottomValues(t *testing.T, stageFactory group.StageFactory) {
 
 	options := group.Options{}
 	copier.Copy(&options, &testGroupOptions)
-	options.StoreBottomNValues = 2
+	options.StoreLeastFrequent = 2
 
 	expected := []interface{}{
 		group.Result{
@@ -826,7 +826,7 @@ func RunTestValueBottomValues(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "double",
 				Count: 7,
-				BottomNValues: []analysis.ValueFreq{
+				LeastFrequent: []analysis.ValueFreq{
 					{
 						Value: 80.0,
 						Count: 1,
@@ -843,7 +843,7 @@ func RunTestValueBottomValues(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "string",
 				Count: 7,
-				BottomNValues: []analysis.ValueFreq{
+				LeastFrequent: []analysis.ValueFreq{
 					{
 						Value: "xyzabc",
 						Count: 1,
@@ -860,7 +860,7 @@ func RunTestValueBottomValues(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "date",
 				Count: 7,
-				BottomNValues: []analysis.ValueFreq{
+				LeastFrequent: []analysis.ValueFreq{
 					{
 						Value: helpers.ParseDate("2020-05-31T21:07:10+00:00"),
 						Count: 1,
@@ -877,7 +877,7 @@ func RunTestValueBottomValues(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "int",
 				Count: 7,
-				BottomNValues: []analysis.ValueFreq{
+				LeastFrequent: []analysis.ValueFreq{
 					{
 						Value: 31,
 						Count: 1,
@@ -894,7 +894,7 @@ func RunTestValueBottomValues(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "timestamp",
 				Count: 7,
-				BottomNValues: []analysis.ValueFreq{
+				LeastFrequent: []analysis.ValueFreq{
 					{
 						Value: 1471954230,
 						Count: 1,
@@ -911,7 +911,7 @@ func RunTestValueBottomValues(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "long",
 				Count: 7,
-				BottomNValues: []analysis.ValueFreq{
+				LeastFrequent: []analysis.ValueFreq{
 					{
 						Value: 105,
 						Count: 1,
@@ -928,7 +928,7 @@ func RunTestValueBottomValues(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  decimalType,
 				Count: 7,
-				BottomNValues: []analysis.ValueFreq{
+				LeastFrequent: []analysis.ValueFreq{
 					{
 						Value: decimal4,
 						Count: 1,
@@ -945,7 +945,7 @@ func RunTestValueBottomValues(t *testing.T, stageFactory group.StageFactory) {
 	testStage(t, c, time.UTC, stageFactory(&options), expected)
 }
 
-// RunTestValueBottomValuesNGreaterThanNumberOfValues tests group stage with StoreBottomNValues option + StoreBottomNValues > number of values.
+// RunTestValueBottomValuesNGreaterThanNumberOfValues tests group stage with StoreLeastFrequent option + StoreLeastFrequent > number of values.
 func RunTestValueBottomValuesNGreaterThanNumberOfValues(t *testing.T, stageFactory group.StageFactory) {
 	c := setup()
 	defer tearDown(c)
@@ -971,7 +971,7 @@ func RunTestValueBottomValuesNGreaterThanNumberOfValues(t *testing.T, stageFacto
 
 	options := group.Options{}
 	copier.Copy(&options, &testGroupOptions)
-	options.StoreBottomNValues = 200
+	options.StoreLeastFrequent = 200
 
 	expected := []interface{}{
 		group.Result{
@@ -986,7 +986,7 @@ func RunTestValueBottomValuesNGreaterThanNumberOfValues(t *testing.T, stageFacto
 			Type: analysis.Type{
 				Name:  "double",
 				Count: 1,
-				BottomNValues: []analysis.ValueFreq{
+				LeastFrequent: []analysis.ValueFreq{
 					{
 						Value: 123.456,
 						Count: 1,
@@ -999,7 +999,7 @@ func RunTestValueBottomValuesNGreaterThanNumberOfValues(t *testing.T, stageFacto
 			Type: analysis.Type{
 				Name:  "string",
 				Count: 1,
-				BottomNValues: []analysis.ValueFreq{
+				LeastFrequent: []analysis.ValueFreq{
 					{
 						Value: "Šašo",
 						Count: 1,
@@ -1012,7 +1012,7 @@ func RunTestValueBottomValuesNGreaterThanNumberOfValues(t *testing.T, stageFacto
 			Type: analysis.Type{
 				Name:  "date",
 				Count: 1,
-				BottomNValues: []analysis.ValueFreq{
+				LeastFrequent: []analysis.ValueFreq{
 					{
 						Value: helpers.ParseDate("2017-03-31T11:20:30+00:00"),
 						Count: 1,
@@ -1025,7 +1025,7 @@ func RunTestValueBottomValuesNGreaterThanNumberOfValues(t *testing.T, stageFacto
 			Type: analysis.Type{
 				Name:  "int",
 				Count: 1,
-				BottomNValues: []analysis.ValueFreq{
+				LeastFrequent: []analysis.ValueFreq{
 					{
 						Value: 123,
 						Count: 1,
@@ -1038,7 +1038,7 @@ func RunTestValueBottomValuesNGreaterThanNumberOfValues(t *testing.T, stageFacto
 			Type: analysis.Type{
 				Name:  "timestamp",
 				Count: 1,
-				BottomNValues: []analysis.ValueFreq{
+				LeastFrequent: []analysis.ValueFreq{
 					{
 						Value: 1490959230,
 						Count: 1,
@@ -1051,7 +1051,7 @@ func RunTestValueBottomValuesNGreaterThanNumberOfValues(t *testing.T, stageFacto
 			Type: analysis.Type{
 				Name:  "long",
 				Count: 1,
-				BottomNValues: []analysis.ValueFreq{
+				LeastFrequent: []analysis.ValueFreq{
 					{
 						Value: 456,
 						Count: 1,
@@ -1064,7 +1064,7 @@ func RunTestValueBottomValuesNGreaterThanNumberOfValues(t *testing.T, stageFacto
 			Type: analysis.Type{
 				Name:  decimalType,
 				Count: 1,
-				BottomNValues: []analysis.ValueFreq{
+				LeastFrequent: []analysis.ValueFreq{
 					{
 						Value: decimal,
 						Count: 1,
@@ -1273,8 +1273,8 @@ func RunTestObjectIdAsDate(t *testing.T, stageFactory group.StageFactory) {
 	options.StoreMinMaxAvgValue = true
 	options.StoreWeekdayHistogram = true
 	options.StoreHourHistogram = true
-	options.StoreTopNValues = 3
-	options.StoreBottomNValues = 3
+	options.StoreMostFrequent = 3
+	options.StoreLeastFrequent = 3
 	options.ValueHistogramMaxRes = 1000
 
 	expected := []interface{}{
@@ -1283,11 +1283,11 @@ func RunTestObjectIdAsDate(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "objectId",
 				Count: 7,
-				ValueExtremes: &analysis.ValueExtremes{
+				ValueStats: &analysis.ValueStats{
 					Min: helpers.ParseDate("2017-04-16T23:59:59+00:00"),
 					Max: helpers.ParseDate("2017-04-25T21:57:13+00:00"),
 				},
-				TopNValues: analysis.ValueFreqSlice{
+				MostFrequent: analysis.ValueFreqSlice{
 					{
 						Count: 1,
 						Value: helpers.ParseDate("2017-04-16T23:59:59+00:00"),
@@ -1301,7 +1301,7 @@ func RunTestObjectIdAsDate(t *testing.T, stageFactory group.StageFactory) {
 						Value: helpers.ParseDate("2017-04-25T21:57:13+00:00"),
 					},
 				},
-				BottomNValues: analysis.ValueFreqSlice{
+				LeastFrequent: analysis.ValueFreqSlice{
 					{
 						Count: 1,
 						Value: helpers.ParseDate("2017-04-20T05:45:57+00:00"),

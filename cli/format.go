@@ -9,10 +9,12 @@ import (
 
 // Result of analysis.
 type Result struct {
+	Database     string          `json:"database"         yaml:"database"`
+	Collection   string          `json:"collection"       yaml:"collection"`
 	Plan         string          `json:"plan"             yaml:"plan"`
 	Duration     time.Duration   `json:"duration"         yaml:"duration"`
-	AllDocsCount uint64          `json:"allDocsCount"     yaml:"allDocsCount"`
-	DocsCount    uint64          `json:"docsCount"        yaml:"docsCount"`
+	AllDocsCount uint64          `json:"allDocs"          yaml:"allDocs"`
+	DocsCount    uint64          `json:"analyzedDocs"     yaml:"analyzedDocs"`
 	FieldsCount  uint64          `json:"fieldsCount"      yaml:"fieldsCount"`
 	Fields       analysis.Fields `json:"fields"           yaml:"fields"`
 }

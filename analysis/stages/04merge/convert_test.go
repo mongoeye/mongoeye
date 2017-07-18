@@ -59,17 +59,17 @@ func TestToFieldChannel_Full(t *testing.T) {
 				analysis.BsonFieldType:   "string",
 				analysis.BsonCount:       102,
 				analysis.BsonCountUnique: 35,
-				analysis.BsonValueExtremes: bson.M{
+				analysis.BsonValueStats: bson.M{
 					analysis.BsonMinValue: "012",
 					analysis.BsonMaxValue: "xyzax",
 					analysis.BsonAvgValue: nil,
 				},
-				analysis.BsonLengthExtremes: bson.M{
+				analysis.BsonLengthStats: bson.M{
 					analysis.BsonMinLength: 3,
 					analysis.BsonMaxLength: 5,
 					analysis.BsonAvgLength: 3.478,
 				},
-				analysis.BsonTopNValues: []bson.M{
+				analysis.BsonMostFrequent: []bson.M{
 					{
 						analysis.BsonValueFreqValue: "abc",
 						analysis.BsonValueFreqCount: 10,
@@ -83,7 +83,7 @@ func TestToFieldChannel_Full(t *testing.T) {
 						analysis.BsonValueFreqCount: 4,
 					},
 				},
-				analysis.BsonBottomNValues: []bson.M{
+				analysis.BsonLeastFrequent: []bson.M{
 					{
 						analysis.BsonValueFreqValue: "i",
 						analysis.BsonValueFreqCount: 2,
@@ -159,17 +159,17 @@ func TestToFieldChannel_Full(t *testing.T) {
 				Name:        "string",
 				Count:       102,
 				CountUnique: 35,
-				ValueExtremes: &analysis.ValueExtremes{
+				ValueStats: &analysis.ValueStats{
 					Min: "012",
 					Max: "xyzax",
 					Avg: nil,
 				},
-				LengthExtremes: &analysis.LengthExtremes{
+				LengthStats: &analysis.LengthStats{
 					Min: 3,
 					Max: 5,
 					Avg: 3.478,
 				},
-				TopNValues: []analysis.ValueFreq{
+				MostFrequent: []analysis.ValueFreq{
 					{
 						Value: "abc",
 						Count: 10,
@@ -183,7 +183,7 @@ func TestToFieldChannel_Full(t *testing.T) {
 						Count: 4,
 					},
 				},
-				BottomNValues: []analysis.ValueFreq{
+				LeastFrequent: []analysis.ValueFreq{
 					{
 						Value: "i",
 						Count: 2,

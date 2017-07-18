@@ -7,7 +7,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-// LengthExtremesComputation adds length extremes computation to aggregation pipeline
+// LengthStatsComputation adds length extremes computation to aggregation pipeline
 // Example results:
 //	[
 //		{
@@ -23,7 +23,7 @@ import (
 //		},
 //		...
 //	]
-func LengthExtremesComputation(options *group.Options) *expr.Pipeline {
+func LengthStatsComputation(options *group.Options) *expr.Pipeline {
 	p := expr.NewPipeline()
 
 	p.AddStage("match", bson.M{
@@ -34,7 +34,7 @@ func LengthExtremesComputation(options *group.Options) *expr.Pipeline {
 		analysis.BsonId: bson.M{
 			group.BsonFieldName:    expr.Field(analysis.BsonId, group.BsonFieldName),
 			analysis.BsonFieldType: expr.Field(analysis.BsonId, analysis.BsonFieldType),
-			statType:               lengthExtremes,
+			statType:               lengthStats,
 		},
 		analysis.BsonMinLength: 1,
 		analysis.BsonMaxLength: 1,

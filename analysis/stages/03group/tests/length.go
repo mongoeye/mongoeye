@@ -44,7 +44,7 @@ func RunTestStringLengthMinMaxAvg(t *testing.T, stageFactory group.StageFactory)
 			Type: analysis.Type{
 				Name:  "string",
 				Count: 3,
-				LengthExtremes: &analysis.LengthExtremes{
+				LengthStats: &analysis.LengthStats{
 					Min: 0,
 					Max: 10,
 					Avg: 5,
@@ -103,7 +103,7 @@ func RunTestArrayLengthMinMaxAvg(t *testing.T, stageFactory group.StageFactory) 
 			Type: analysis.Type{
 				Name:  "array",
 				Count: 4,
-				LengthExtremes: &analysis.LengthExtremes{
+				LengthStats: &analysis.LengthStats{
 					Min: 0,
 					Max: 5,
 					Avg: 1.5,
@@ -122,7 +122,7 @@ func RunTestArrayLengthMinMaxAvg(t *testing.T, stageFactory group.StageFactory) 
 			Type: analysis.Type{
 				Name:  "string",
 				Count: 2,
-				LengthExtremes: &analysis.LengthExtremes{
+				LengthStats: &analysis.LengthStats{
 					Min: 3,
 					Max: 3,
 					Avg: 3,
@@ -179,7 +179,7 @@ func RunTestObjectLengthMinMaxAvg(t *testing.T, stageFactory group.StageFactory)
 			Type: analysis.Type{
 				Name:  "object",
 				Count: 4,
-				LengthExtremes: &analysis.LengthExtremes{
+				LengthStats: &analysis.LengthStats{
 					Min: 0,
 					Max: 5,
 					Avg: 1.5,
@@ -198,7 +198,7 @@ func RunTestObjectLengthMinMaxAvg(t *testing.T, stageFactory group.StageFactory)
 			Type: analysis.Type{
 				Name:  "string",
 				Count: 1,
-				LengthExtremes: &analysis.LengthExtremes{
+				LengthStats: &analysis.LengthStats{
 					Min: 3,
 					Max: 3,
 					Avg: 3,
@@ -224,7 +224,7 @@ func RunTestObjectLengthMinMaxAvg(t *testing.T, stageFactory group.StageFactory)
 			Type: analysis.Type{
 				Name:  "string",
 				Count: 1,
-				LengthExtremes: &analysis.LengthExtremes{
+				LengthStats: &analysis.LengthStats{
 					Min: 3,
 					Max: 3,
 					Avg: 3,

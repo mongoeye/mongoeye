@@ -36,9 +36,9 @@ func GroupStats(p *expr.Pipeline, groupOptions *group.Options) {
 
 	// Value extremes
 	sw.AddBranch(
-		expr.Eq(statType, valueExtremes),
+		expr.Eq(statType, valueStats),
 		bson.M{
-			analysis.BsonValueExtremes: bson.M{
+			analysis.BsonValueStats: bson.M{
 				analysis.BsonMinValue: expr.Cond(
 					expr.Eq(expr.Field(analysis.BsonId, analysis.BsonFieldType), "bool"),
 					expr.Eq(expr.Field(analysis.BsonMinValue), 1),
@@ -56,9 +56,9 @@ func GroupStats(p *expr.Pipeline, groupOptions *group.Options) {
 
 	// Length extremes
 	sw.AddBranch(
-		expr.Eq(statType, lengthExtremes),
+		expr.Eq(statType, lengthStats),
 		bson.M{
-			analysis.BsonLengthExtremes: bson.M{
+			analysis.BsonLengthStats: bson.M{
 				analysis.BsonMinLength: expr.Field(analysis.BsonMinLength),
 				analysis.BsonMaxLength: expr.Field(analysis.BsonMaxLength),
 				analysis.BsonAvgLength: expr.Field(analysis.BsonAvgLength),
@@ -71,8 +71,8 @@ func GroupStats(p *expr.Pipeline, groupOptions *group.Options) {
 		expr.Eq(statType, valueFreqStats),
 		bson.M{
 			analysis.BsonCountUnique:   expr.Field(analysis.BsonCountUnique),
-			analysis.BsonTopNValues:    expr.Field(analysis.BsonTopNValues),
-			analysis.BsonBottomNValues: expr.Field(analysis.BsonBottomNValues),
+			analysis.BsonMostFrequent:  expr.Field(analysis.BsonMostFrequent),
+			analysis.BsonLeastFrequent: expr.Field(analysis.BsonLeastFrequent),
 		},
 	)
 

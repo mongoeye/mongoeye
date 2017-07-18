@@ -27,6 +27,7 @@ func (p plans) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
 // Plan of analysis.
 type plan struct {
 	Name         string
+	Config       *Config
 	Options      *analysis.Options
 	SampleStage  *analysis.Stage
 	ExpandStage  *analysis.Stage
@@ -54,16 +55,18 @@ func (p *plan) Run(collection *mgo.Collection) Result {
 
 	sort.Sort(fields)
 
-	docsCount := p.Limit
-	if docsCount == 0 {
-		docsCount = p.AllDocsCount
+	analyzedDocs := p.Limit
+	if analyzedDocs == 0 {
+		analyzedDocs = p.AllDocsCount
 	}
 
 	return Result{
+		Database:     p.Config.Database,
+		Collection:   p.Config.Collection,
 		Plan:         p.Name,
 		Duration:     duration,
 		AllDocsCount: p.AllDocsCount,
-		DocsCount:    docsCount,
+		DocsCount:    analyzedDocs,
 		FieldsCount:  uint64(len(fields)),
 		Fields:       fields,
 	}
@@ -97,6 +100,7 @@ func generateAnalysisPlans(server mgo.BuildInfo, count int, config *Config) plan
 	if runLocal {
 		plans = append(plans, &plan{
 			Name:         "local",
+			Config:       config,
 			Options:      analysisOptions,
 			SampleStage:  sampleInDB.NewStage(sampleOptions),
 			ExpandStage:  expandLocally.NewStage(expandOptions),
@@ -109,7 +113,8 @@ func generateAnalysisPlans(server mgo.BuildInfo, count int, config *Config) plan
 
 	if runAggregation && server.VersionAtLeast(analysis.AggregationMinVersion...) {
 		plans = append(plans, &plan{
-			Name:         "depthInDB",
+			Name:         "db",
+			Config:       config,
 			Options:      analysisOptions,
 			SampleStage:  sampleInDB.NewStage(sampleOptions),
 			ExpandStage:  expandInDBDepth.NewStage(expandOptions),

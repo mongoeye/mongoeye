@@ -45,8 +45,8 @@ func GroupValues(p *expr.Pipeline, options *group.Options) {
 	if options.StoreWeekdayHistogram ||
 		options.StoreHourHistogram ||
 		options.StoreCountOfUnique ||
-		options.StoreTopNValues > 0 ||
-		options.StoreBottomNValues > 0 ||
+		options.StoreMostFrequent > 0 ||
+		options.StoreLeastFrequent > 0 ||
 		options.ValueHistogramMaxRes > 0 {
 
 		push[expand.BsonValue] = expr.Field(expand.BsonValue)
@@ -103,8 +103,8 @@ func prepareFields(p *expr.Pipeline, options *group.Options) {
 		options.StoreWeekdayHistogram ||
 		options.StoreHourHistogram ||
 		options.StoreCountOfUnique ||
-		options.StoreTopNValues > 0 ||
-		options.StoreBottomNValues > 0 ||
+		options.StoreMostFrequent > 0 ||
+		options.StoreLeastFrequent > 0 ||
 		options.ValueHistogramMaxRes > 0 {
 
 		typeSw := expr.Switch()

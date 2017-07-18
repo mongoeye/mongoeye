@@ -30,18 +30,18 @@ func ComputeStats(p *expr.Pipeline, groupOptions *group.Options, analysisOptions
 
 	// Value extremes
 	if groupOptions.StoreMinMaxAvgValue {
-		f.AddField(valueExtremes, ValueExtremesComputation(groupOptions))
+		f.AddField(valueStats, ValueStatsComputation(groupOptions))
 	}
 
 	// Length extremes
 	if groupOptions.StoreMinMaxAvgLength {
-		f.AddField(lengthExtremes, LengthExtremesComputation(groupOptions))
+		f.AddField(lengthStats, LengthStatsComputation(groupOptions))
 	}
 
 	// The most and least frequent values
 	if groupOptions.StoreCountOfUnique ||
-		groupOptions.StoreTopNValues > 0 ||
-		groupOptions.StoreBottomNValues > 0 {
+		groupOptions.StoreMostFrequent > 0 ||
+		groupOptions.StoreLeastFrequent > 0 {
 
 		f.AddField(valueFreqStats, ValueFreqComputation(groupOptions))
 	}

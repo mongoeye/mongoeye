@@ -60,25 +60,25 @@ type Type struct {
 	Name             string            `json:"type"                          yaml:"type"                          bson:"t"`
 	Count            uint64            `json:"count"                         yaml:"count"                         bson:"c"`
 	CountUnique      uint64            `json:"unique,omitempty"              yaml:"unique,omitempty"              bson:"cu,omitempty"`
-	ValueExtremes    *ValueExtremes    `json:"value,omitempty"               yaml:"value,omitempty"               bson:"ve,omitempty"`
-	LengthExtremes   *LengthExtremes   `json:"length,omitempty"              yaml:"length,omitempty"              bson:"le,omitempty"`
-	TopNValues       ValueFreqSlice    `json:"mostFrequent,omitempty"        yaml:"mostFrequent,omitempty"        bson:"mF,omitempty"`
-	BottomNValues    ValueFreqSlice    `json:"leastFrequent,omitempty"       yaml:"leastFrequent,omitempty"       bson:"lF,omitempty"`
-	ValueHistogram   *Histogram        `json:"histogramOfValue,omitempty"    yaml:"histogramOfValue,omitempty"    bson:"vH,omitempty"`
-	LengthHistogram  *Histogram        `json:"histogramOfLength,omitempty"   yaml:"histogramOfLength,omitempty"   bson:"lH,omitempty"`
-	WeekdayHistogram *WeekdayHistogram `json:"histogramOfWeekday,omitempty"  yaml:"histogramOfWeekday,omitempty"  bson:"wH,omitempty"`
-	HourHistogram    *HourHistogram    `json:"histogramOfHour,omitempty"     yaml:"histogramOfHour,omitempty"     bson:"hH,omitempty"`
+	ValueStats       *ValueStats       `json:"value,omitempty"               yaml:"value,omitempty"               bson:"ve,omitempty"`
+	LengthStats      *LengthStats      `json:"length,omitempty"              yaml:"length,omitempty"              bson:"le,omitempty"`
+	MostFrequent     ValueFreqSlice    `json:"mostFrequent,omitempty"        yaml:"mostFrequent,omitempty"        bson:"mF,omitempty"`
+	LeastFrequent    ValueFreqSlice    `json:"leastFrequent,omitempty"       yaml:"leastFrequent,omitempty"       bson:"lF,omitempty"`
+	ValueHistogram   *Histogram        `json:"valueHistogram,omitempty"      yaml:"valueHistogram,omitempty"      bson:"vH,omitempty"`
+	LengthHistogram  *Histogram        `json:"lengthHistogram,omitempty"     yaml:"lengthHistogram,omitempty"     bson:"lH,omitempty"`
+	WeekdayHistogram *WeekdayHistogram `json:"weekdayHistogram,omitempty"    yaml:"weekdayHistogram,omitempty"    bson:"wH,omitempty"`
+	HourHistogram    *HourHistogram    `json:"hourHistogram,omitempty"       yaml:"hourHistogram,omitempty"       bson:"hH,omitempty"`
 }
 
-// ValueExtremes - min, Max, Avg value.
-type ValueExtremes struct {
+// ValueStats - Min, Max, Avg value.
+type ValueStats struct {
 	Min interface{} `json:"min"           yaml:"min"             bson:"i"`
 	Max interface{} `json:"max"           yaml:"max"             bson:"a"`
 	Avg interface{} `json:"avg,omitempty" yaml:"avg,omitempty"   bson:"g"`
 }
 
-// LengthExtremes - min, Max, Avg length.
-type LengthExtremes struct {
+// LengthStats - Min, Max, Avg length.
+type LengthStats struct {
 	Min uint    `json:"min"           yaml:"min"             bson:"il"`
 	Max uint    `json:"max"           yaml:"max"             bson:"al"`
 	Avg float64 `json:"avg,omitempty" yaml:"avg,omitempty"   bson:"gl"`

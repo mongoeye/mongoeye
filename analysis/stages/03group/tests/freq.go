@@ -1069,7 +1069,7 @@ func RunTestDateStatsTimezone(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "objectId",
 				Count: 3,
-				ValueExtremes: &analysis.ValueExtremes{
+				ValueStats: &analysis.ValueStats{
 					Min: bson.ObjectIdHex("58e20d849d3ae7e1f8eac9c0"),
 					Max: bson.ObjectIdHex("58e20d849d3ae7e1f8eac9c2"),
 				},
@@ -1080,7 +1080,7 @@ func RunTestDateStatsTimezone(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "date",
 				Count: 3,
-				ValueExtremes: &analysis.ValueExtremes{
+				ValueStats: &analysis.ValueStats{
 					Min: helpers.ParseDate("2017-04-17T23:59:59+00:00"),
 					Max: helpers.ParseDate("2017-04-21T00:00:01+00:00"),
 				},
@@ -1160,7 +1160,7 @@ func RunTestDateStatsTimezone(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "objectId",
 				Count: 3,
-				ValueExtremes: &analysis.ValueExtremes{
+				ValueStats: &analysis.ValueStats{
 					Min: bson.ObjectIdHex("58e20d849d3ae7e1f8eac9c0"),
 					Max: bson.ObjectIdHex("58e20d849d3ae7e1f8eac9c2"),
 				},
@@ -1171,7 +1171,7 @@ func RunTestDateStatsTimezone(t *testing.T, stageFactory group.StageFactory) {
 			Type: analysis.Type{
 				Name:  "date",
 				Count: 3,
-				ValueExtremes: &analysis.ValueExtremes{
+				ValueStats: &analysis.ValueStats{
 					Min: helpers.ParseDate("2017-04-17T19:59:59-04:00").In(locationNY),
 					Max: helpers.ParseDate("2017-04-20T20:00:01-04:00").In(locationNY),
 				},

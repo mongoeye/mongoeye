@@ -94,7 +94,7 @@ pauseAfterExample
 
 # EXAMPLE 8
 example 8 'Histogram of value'
-run "--value-hist --value-hist-steps 10 --format json |\njq '.fields[] | select(.name == \"rating\") | .types[] | select(.type == \"double\") | .histogramOfValue'"
+run "--value-hist --value-hist-steps 10 --format json |\njq '.fields[] | select(.name == \"rating\") | .types[] | select(.type == \"double\") | .valueHistogram'"
 comment "Flag ${BOLD}--value-hist-steps N${NORMAL} set the maximum number of steps. Real step value is rounded."
 pauseAfterExample
 

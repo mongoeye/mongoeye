@@ -54,7 +54,7 @@ func processField(field *group.Result, dataProcesses *dataProcesses, groupOption
 	lengthHistogram(field, t, freq, groupOptions, analysisOptions, wg)
 	weekdayHistogram(field, freq, groupOptions, wg)
 	hourHistogram(field, freq, groupOptions, wg)
-	topBottomNValues(field, t, freq, groupOptions, wg)
+	topLeastFrequent(field, t, freq, groupOptions, wg)
 
 	// Number of unique values
 	if groupOptions.StoreCountOfUnique {
@@ -66,12 +66,12 @@ func processField(field *group.Result, dataProcesses *dataProcesses, groupOption
 
 	// Remove value extremes, if not required
 	if !groupOptions.StoreMinMaxAvgValue {
-		field.Type.ValueExtremes = nil
+		field.Type.ValueStats = nil
 	}
 
 	// Remove length extremes, if not required
 	if !groupOptions.StoreMinMaxAvgLength {
-		field.Type.LengthExtremes = nil
+		field.Type.LengthStats = nil
 	}
 }
 
@@ -83,8 +83,8 @@ func valueHistogram(field *group.Result, t string, freq *freqTables, groupOption
 
 			field.Type.ValueHistogram = calculateHistogram(
 				t,
-				helpers.ToDouble(field.Type.ValueExtremes.Min),
-				helpers.ToDouble(field.Type.ValueExtremes.Max),
+				helpers.ToDouble(field.Type.ValueStats.Min),
+				helpers.ToDouble(field.Type.ValueStats.Max),
 				float64(groupOptions.ValueHistogramMaxRes),
 				freq.Value,
 				analysisOptions,
@@ -133,8 +133,8 @@ func lengthHistogram(field *group.Result, t string, freq *freqTables, groupOptio
 
 			field.Type.LengthHistogram = calculateHistogram(
 				"int",
-				helpers.ToDouble(field.Type.LengthExtremes.Min),
-				helpers.ToDouble(field.Type.LengthExtremes.Max),
+				helpers.ToDouble(field.Type.LengthStats.Min),
+				helpers.ToDouble(field.Type.LengthStats.Max),
 				float64(groupOptions.LengthHistogramMaxRes),
 				freq.Length,
 				analysisOptions,
@@ -143,8 +143,8 @@ func lengthHistogram(field *group.Result, t string, freq *freqTables, groupOptio
 	}
 }
 
-func topBottomNValues(field *group.Result, t string, freq *freqTables, groupOptions *group.Options, wg *sync.WaitGroup) {
-	if freq.Value != nil && ((groupOptions.StoreTopNValues > 0 && helpers.InStringSlice(t, group.StoreTopValuesTypes)) || (groupOptions.StoreBottomNValues > 0 && helpers.InStringSlice(t, group.StoreBottomValuesTypes))) {
+func topLeastFrequent(field *group.Result, t string, freq *freqTables, groupOptions *group.Options, wg *sync.WaitGroup) {
+	if freq.Value != nil && ((groupOptions.StoreMostFrequent > 0 && helpers.InStringSlice(t, group.StoreTopValuesTypes)) || (groupOptions.StoreLeastFrequent > 0 && helpers.InStringSlice(t, group.StoreBottomValuesTypes))) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
@@ -153,31 +153,31 @@ func topBottomNValues(field *group.Result, t string, freq *freqTables, groupOpti
 			keys := table.Keys()
 
 			// Top N values
-			if groupOptions.StoreTopNValues > 0 {
-				n := int(groupOptions.StoreTopNValues)
+			if groupOptions.StoreMostFrequent > 0 {
+				n := int(groupOptions.StoreMostFrequent)
 				if n > len(keys) {
 					n = len(keys)
 				}
-				field.Type.TopNValues = make([]analysis.ValueFreq, n)
+				field.Type.MostFrequent = make([]analysis.ValueFreq, n)
 
 				i := 0
 				for _, v := range keys[0:n] {
-					field.Type.TopNValues[i] = analysis.ValueFreq{Value: v, Count: analysis.Count(table.freqTable[v])}
+					field.Type.MostFrequent[i] = analysis.ValueFreq{Value: v, Count: analysis.Count(table.freqTable[v])}
 					i++
 				}
 			}
 
 			// Bottom N values
-			if groupOptions.StoreBottomNValues > 0 {
-				n := int(groupOptions.StoreBottomNValues)
+			if groupOptions.StoreLeastFrequent > 0 {
+				n := int(groupOptions.StoreLeastFrequent)
 				if n > len(keys) {
 					n = len(keys)
 				}
-				field.Type.BottomNValues = make([]analysis.ValueFreq, n)
+				field.Type.LeastFrequent = make([]analysis.ValueFreq, n)
 
 				i := 0
 				for _, v := range keys[len(keys)-n:] {
-					field.Type.BottomNValues[i] = analysis.ValueFreq{Value: v, Count: analysis.Count(table.freqTable[v])}
+					field.Type.LeastFrequent[i] = analysis.ValueFreq{Value: v, Count: analysis.Count(table.freqTable[v])}
 					i++
 				}
 			}

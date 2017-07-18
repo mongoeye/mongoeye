@@ -52,8 +52,8 @@ func createAccumulator(id GroupId, options *group.Options) *Accumulator {
 	}
 
 	if (options.StoreCountOfUnique && helpers.InStringSlice(t, group.StoreCountOfUniqueTypes)) ||
-		(options.StoreTopNValues > 0 && helpers.InStringSlice(t, group.StoreTopValuesTypes)) ||
-		(options.StoreBottomNValues > 0 && helpers.InStringSlice(t, group.StoreBottomValuesTypes)) ||
+		(options.StoreMostFrequent > 0 && helpers.InStringSlice(t, group.StoreTopValuesTypes)) ||
+		(options.StoreLeastFrequent > 0 && helpers.InStringSlice(t, group.StoreBottomValuesTypes)) ||
 		(options.ValueHistogramMaxRes > 0 && helpers.InStringSlice(t, group.ValueHistogramTypes)) {
 		acc.StoreValueDistribution = true
 	}

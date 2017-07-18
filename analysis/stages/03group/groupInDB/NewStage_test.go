@@ -121,14 +121,14 @@ func BenchmarkGroupInDBCountOfUnique(b *testing.B) {
 	groupTests.RunBenchmarkStageCountOfUnique(b, NewStage)
 }
 
-func BenchmarkGroupInDBTopNValues(b *testing.B) {
+func BenchmarkGroupInDBMostFrequent(b *testing.B) {
 	tests.SkipBIfNotSupportAggregationAlgorithm(b)
-	groupTests.RunBenchmarkStageTopNValues(b, NewStage)
+	groupTests.RunBenchmarkStageMostFrequent(b, NewStage)
 }
 
-func BenchmarkGroupInDBBottomNValues(b *testing.B) {
+func BenchmarkGroupInDBLeastFrequent(b *testing.B) {
 	tests.SkipBIfNotSupportAggregationAlgorithm(b)
-	groupTests.RunBenchmarkStageBottomNValues(b, NewStage)
+	groupTests.RunBenchmarkStageLeastFrequent(b, NewStage)
 }
 
 func BenchmarkGroupInDBValuesHistogram(b *testing.B) {

@@ -44,7 +44,7 @@ func TestGenerateAnalysisPlans_UseAggregation(t *testing.T) {
 	plans := generateAnalysisPlans(server, 1, config)
 
 	assert.Equal(t, 1, len(plans))
-	assert.Equal(t, "depthInDB", plans[0].Name)
+	assert.Equal(t, "db", plans[0].Name)
 }
 
 func TestGenerateAnalysisPlans_Local(t *testing.T) {
