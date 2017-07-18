@@ -235,9 +235,9 @@ Use the flag `--value-hist` or `-V` to generate value histogram.
 Flag `--value-hist-steps` sets the maximum number of steps (default `100`).
 
 * Step of the `int` and `long` type is a whole number
-* Step of the `double` and `decimal` type: 
-   * The smallest possible mul. of `1`, `5` or `2.5` with `10^n` so the maximum number of steps is kept
-   * Eg. ..., `10`, `5`, `2.5`, `1`, `0.5`, `0.25`, `0.1`, ... 
+* Step of the `double` and `decimal` type is: 
+   * the smallest possible mul. with one of [`1`, `5`, `2.5`] with `10^n` so the maximum number of steps is kept
+   * eg. ..., `10`, `5`, `2.5`, `1`, `0.5`, `0.25`, `0.1`, ... 
 * Step of the `date` and `objectId` type is rounded to:
   * 1, 2, 5, 10, 15, 30 `seconds`
   * 1, 2, 5, 10, 15, 30 `minutes`
