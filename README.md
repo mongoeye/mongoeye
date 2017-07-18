@@ -159,7 +159,7 @@ The analyzes in the following subchapters are processed separately for each type
 
 ### Value - min, max, avg
 
-Use flag `--value` or `-v` to enable calculation of minimum, maximum, and average values.
+Use the flag `--value` or `-v` to enable calculation of minimum, maximum, and average values.
 
 **Supported types**:
 * Minimum and maximum: `objectId`, `double`, `string`, `bool`, `date`, `int`, `timestamp`, `long`, `decimal`
@@ -175,7 +175,7 @@ value:
 
 ### Length - min, max, avg
 
-Use flag `--length` or `-l` to enable calculation of minimum, maximum, and average lengths.
+Use the flag `--length` or `-l` to enable calculation of minimum, maximum, and average lengths.
 
 **Supported types**: `string`, `array`, `object`
 
@@ -189,7 +189,7 @@ length:
 
 ### Number of unique values
 
-Use flag `--count-unique` to count all unique values.
+Use the flag `--count-unique` to count all unique values.
 
 **Supported types**: `double`, `string`, `date`, `int`, `timestamp`, `long`, `decimal`
 
@@ -228,18 +228,33 @@ leastFrequent:
 
 ### Value histogram
 
+Use the flag `--value-hist` or `-V` to generate value histogram.
+
+Flag `--value-hist-steps` sets the maximum number of steps (default `100`).
+
+**Supported types**: `objectId`* - as a date*, `double`, `date`, `int`, `long`, `decimal`
+
 Example result:
 ```yaml
 valueHistogram:
   start: 2.5
-  end: 6
-  range: 3.5
+  end: 12
+  range: 9.5
   step: 0.5
-  numOfSteps: 7
-  intervals: [7, 0, 17, 0, 202, 0, 219]
+  numOfSteps: 19
+  intervals: [36, 25, 14, 81, 95, 86, 59, 6, 82, 84, 62, 33, 19, 9, 1, 14, 67, 2, 45]
 ```
 
+Graphic representation:
+
+
 ### Length histogram
+
+Use the flag `--length-hist` or `-L` to generate length histogram.
+
+Flag `--length-hist-steps` sets the maximum number of steps (default `100`).
+
+**Supported types**: `string`, `array`, `object`
 
 Example result:
 ```yaml
@@ -254,12 +269,22 @@ lengthHistogram:
 
 ### Weekday histogram
 
+Use the flag `--weekday-hist` or `-W` to generate weekday histogram.
+
+To determine the day of week it uses the time zone from the `--timezone` flag (default `local`).
+
 Example result:
 ```yaml
 weekdayHistogram: [5, 48, 23, 124, 45, 15, 87]
 ```
 
 ### Hour histogram
+
+Use the flag `--hour-hist` or `-H` to generate weekday histogram.
+
+To determine the hour it uses the time zone from the `--timezone` flag (default `local`).
+
+First value is for interval `[ 00, 01 )`, last for interval `[ 23, 24 )`.
 
 Example result:
 ```yaml
