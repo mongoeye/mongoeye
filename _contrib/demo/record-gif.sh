@@ -49,3 +49,7 @@ xsetroot -solid "${background}"
 termCmd="urxvt -geometry ${geometry} -e ./demo.sh"
 echo "Running: ${termCmd}"
 byzanz-record -v -w "${width}" -h "${height}" -x 0 -y 0 -e "${termCmd}" "${DIR}/../../_release/demo.gif"
+
+# Resize
+gifsicle "${DIR}/../../_release/demo.gif" --resize-width 880 > "${DIR}/../../_release/demo-small.gif"
+mv "${DIR}/../../_release/demo-small.gif" "${DIR}/../../_release/demo.gif"
