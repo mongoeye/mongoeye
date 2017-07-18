@@ -18,7 +18,7 @@ Mongoeye provides a quick overview of the data in your MongoDB database.
 * *Single binary:*&nbsp; pre-built [binaries](https://github.com/mongoeye/mongoeye/releases) for Windows, Linux, and MacOS (Darwin)
 * *Local analysis:*&nbsp; quick local analysis using a parallel algorithm (MongoDB 2.0+)
 * *Remote analysis:*&nbsp; distributed analysis in database using the aggregation framework (MongoDB 3.5.9+)
-* *Rich features:*&nbsp; [histogram](#histogram-of-value) (value, length, weekday, hour), [most frequent values](#frequency-of-values), ... 
+* *Rich features:*&nbsp; [histogram](#value-histogram) (value, length, weekday, hour), [most frequent values](#frequency-of-values), ... 
 * *Integrable:*&nbsp; [table](#table-output), [JSON or YAML output](#json-and-yaml-output)
 
 ## Demo
@@ -54,7 +54,7 @@ You can download the archive from [GitHub releases page](https://github.com/mong
 
 ## Compilation
 
-It is required to have [Go 1.8](https://golang.org). All external dependencies are part of the project in the [vendor](https://github.com/mongoeye/mongoeye/tree/master/vendor) directory.
+It is required to have [Go 1.8](https://golang.org). All external dependencies are part of the repository in the [vendor](https://github.com/mongoeye/mongoeye/tree/master/vendor) directory.
 
 Compilation process:
 ```
@@ -88,20 +88,20 @@ Example table output:
   all documents            │ 2548   │        
   analyzed documents       │ 1000   │  39.2  
                            │        │        
-  _id -> objectId          │ 1000   │ 100.0  
+  _id - objectId           │ 1000   │ 100.0  
   address                  │ 1000   │ 100.0  
-  │ -> int                 │    1   │   0.1  
-  └╴-> string              │  999   │  99.9  
-  address line 2 -> string │ 1000   │ 100.0  
-  name -> string           │ 1000   │ 100.0  
-  outcode -> string        │ 1000   │ 100.0  
-  postcode -> string       │ 1000   │ 100.0  
+  │ - int                  │    1   │   0.1  
+  └╴- string               │  999   │  99.9  
+  address line 2 - string  │ 1000   │ 100.0  
+  name - string            │ 1000   │ 100.0  
+  outcode - string         │ 1000   │ 100.0  
+  postcode - string        │ 1000   │ 100.0  
   rating                   │ 1000   │ 100.0  
-  │ -> int                 │  523   │  52.3  
-  │ -> double              │  451   │  45.1  
-  └╴-> string              │   26   │   2.6  
-  type_of_food -> string   │ 1000   │ 100.0  
-  URL -> string            │ 1000   │ 100.0  
+  │ - int                  │  523   │  52.3  
+  │ - double               │  451   │  45.1  
+  └╴- string               │   26   │   2.6  
+  type_of_food - string    │ 1000   │ 100.0  
+  URL - string             │ 1000   │ 100.0  
 
 OK  0.190s (local analysis)
     1000/2548 docs (39.2%)
@@ -109,8 +109,6 @@ OK  0.190s (local analysis)
 ```
 
 ### JSON and YAML output
-
-Outputs in JSON and YAML format return the results of all analyzes.
 
 Use `--format json` or `--format yaml` flags to set these formats.
 
@@ -157,8 +155,6 @@ fields:
       < other outputs according to settings >
 ```
 
-The analyzes in the following subchapters are processed separately for each type in field.
-
 ### Value - min, max, avg
 
 Use the flag `--value` or `-v` to enable calculation of minimum, maximum, and average values.
@@ -202,7 +198,7 @@ unique: 894
 
 ### Frequency of values
 
-Use flag `--most-freq N` or `--least-freq N` to get the most or least occurring values.
+Use the flag `--most-freq N` or `--least-freq N` to get the most or least occurring values.
 
 **Supported types**: `double`, `string`, `date`, `int`, `timestamp`, `long`, `decimal`
 
@@ -232,15 +228,17 @@ leastFrequent:
 
 Use the flag `--value-hist` or `-V` to generate value histogram.
 
-**Supported types**: `objectId` *- as a date*, `double`, `date`, `int`, `long`, `decimal`
+**Supported types**: `objectId` *- processed as a date*, `double`, `date`, `int`, `long`, `decimal`
 
 #### Calculation of step
 
 Flag `--value-hist-steps` sets the maximum number of steps (default `100`).
 
-* Step of `int` and `long` type is integer
-* Step of `double` and `decimal` type is rounded to: ..., 10, 5, 2.5, 1, 0.5, 0.25, 0.1 ... 
-* Step of `date` and `objectId` type is rounded to:
+* Step of the `int` and `long` type is a whole number
+* Step of the `double` and `decimal` type is: 
+   * the smallest possible multiplication of [`1`, `5` or `2.5`] and `10^n` so the max. number of steps is kept
+   * eg. ..., `100`, `50`, `25`, `10`, `5`, `2.5`, `1`, `0.5`, `0.25`, `0.1`, ... 
+* Step of the `date` and `objectId` type is rounded to:
   * 1, 2, 5, 10, 15, 30 `seconds`
   * 1, 2, 5, 10, 15, 30 `minutes`
   * 1, 2, 3, 6, 12 `hours`
