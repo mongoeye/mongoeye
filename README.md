@@ -43,7 +43,6 @@ Mongoeye provides a quick overview of the data in your MongoDB database.
     * [Histogram of weekday](#histogram-of-weekday)
     * [Histogram of hour](#histogram-of-hour)
  * [List of flags](#list-of-flags)
- * [TODO](#todo)
  * [License](#license)
 
 ## Installation
