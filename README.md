@@ -128,12 +128,12 @@ The output of the analysis always contains these basic keys:
 * **analyzedDocs**: number of analyzed documents from collection
 * **fieldsCount**: number of found fields
 * **fields**:  result of the analysis for each field
- * **name**: name of field
- * **level**: level of nested field, `0` is root level
- * **count**: number of occurrences
- * **types**: result of the analysis for each type of field
-   * **type**: name of type
-   * **count**: number of occurrences of type
+   * **name**: name of field
+   * **level**: level of nested field, `0` is root level
+   * **count**: number of occurrences
+   * **types**: result of the analysis for each type of field
+      * **type**: name of type
+      * **count**: number of occurrences of type
 
 **Example result:**
 ```yaml
