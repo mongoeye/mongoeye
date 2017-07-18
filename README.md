@@ -138,7 +138,7 @@ The output of the analysis always contains these basic keys:
    * **type**: name of type
    * **count**: number of occurrences of type
 
-Example result:
+**Example result:**
 ```yaml
 database: company
 collection: users
@@ -167,7 +167,7 @@ Use the flag `--value` or `-v` to enable calculation of minimum, maximum, and av
 * Minimum and maximum: `objectId`, `double`, `string`, `bool`, `date`, `int`, `timestamp`, `long`, `decimal`
 * Average: `double`, `bool`, `int`, `long`, `decimal`
 
-Example result:
+**Example result:**
 ```yaml
 value:
   min: 11.565586
@@ -181,7 +181,7 @@ Use the flag `--length` or `-l` to enable calculation of minimum, maximum, and a
 
 **Supported types**: `string`, `array`, `object`
 
-Example result:
+**Example result:**
 ```yaml
 length:
   min: 29
@@ -195,7 +195,7 @@ Use the flag `--count-unique` to count all unique values.
 
 **Supported types**: `double`, `string`, `date`, `int`, `timestamp`, `long`, `decimal`
 
-Example result:
+**Example result:**
 ```yaml
 unique: 894
 ```
@@ -206,7 +206,7 @@ Use flag `--most-freq N` or `--least-freq N` to get the most or least occurring 
 
 **Supported types**: `double`, `string`, `date`, `int`, `timestamp`, `long`, `decimal`
 
-Example result:
+**Example result:**
 ```yaml
 mostFrequent:
 - value: USD
@@ -271,7 +271,7 @@ Flag `--length-hist-steps` sets the maximum number of steps (default `100`).
 
 **Supported types**: `string`, `array`, `object`
 
-Example result:
+**Example result:**
 ```yaml
 lengthHistogram:
   start: 0
@@ -288,7 +288,9 @@ Use the flag `--weekday-hist` or `-W` to generate weekday histogram.
 
 To determine the day of week it uses the time zone from the `--timezone` flag (default `local`).
 
-Example result:
+First day is `Sunday`.
+
+**Example result:**
 ```yaml
 weekdayHistogram: [5, 48, 23, 124, 45, 15, 87]
 ```
@@ -301,7 +303,7 @@ To determine the hour it uses the time zone from the `--timezone` flag (default 
 
 First value is for interval `[ 00, 01 )`, last for interval `[ 23, 24 )`.
 
-Example result:
+**Example result:**
 ```yaml
 hourHistogram: [47, 73, 18, 26, 30, 46, 91, 13, 28, 11, 52, 99, 76, 25, 94, 51, 87, 86, 19, 22, 11, 62, 28, 47]
 ```
