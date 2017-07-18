@@ -236,7 +236,7 @@ Use the flag `--value-hist` or `-V` to generate value histogram.
 
 Flag `--value-hist-steps` sets the maximum number of steps (default `100`).
 
-The step is automatically determined by the maximum value.
+The step is automatically determined by the maximum value:
 * Step of `int` and `long` type is integer.
 * Step of `double` and `decimal` type is rounded to: ..., 10, 5, 2.5, 1, 0.5, 0.25, 0.1 ... 
 * Step of `date` type is rounded to:
@@ -245,7 +245,7 @@ The step is automatically determined by the maximum value.
   * 1, 2, 3, 6, 12 `hours`
   * 1, 2, 3, 4, ... `days`
 
-Example result:
+**Example result:**
 ```yaml
 valueHistogram:
   start: 2.5
@@ -256,8 +256,10 @@ valueHistogram:
   intervals: [36, 25, 14, 81, 95, 86, 59, 6, 82, 84, 62, 33, 19, 9, 1, 14, 67, 2, 45]
 ```
 
-Graphic representation:
+**Graphic representation:**
+<div style="text-align:left">
 <img src="https://github.com/mongoeye/mongoeye/blob/doc/_misc/histogram.png?raw=true">
+</div>
 
 
 ### Length histogram
