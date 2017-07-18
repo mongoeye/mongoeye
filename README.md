@@ -234,12 +234,13 @@ Use the flag `--value-hist` or `-V` to generate value histogram.
 
 **Supported types**: `objectId` *- as a date*, `double`, `date`, `int`, `long`, `decimal`
 
+#### Calculation of step
+
 Flag `--value-hist-steps` sets the maximum number of steps (default `100`).
 
-The step is automatically determined by the maximum value:
-* Step of `int` and `long` type is integer.
+* Step of `int` and `long` type is integer
 * Step of `double` and `decimal` type is rounded to: ..., 10, 5, 2.5, 1, 0.5, 0.25, 0.1 ... 
-* Step of `date` type is rounded to:
+* Step of `date` and `objectId` type is rounded to:
   * 1, 2, 5, 10, 15, 30 `seconds`
   * 1, 2, 5, 10, 15, 30 `minutes`
   * 1, 2, 3, 6, 12 `hours`
