@@ -257,7 +257,7 @@ valueHistogram:
 
 **Graphic representation:**
 <div style="text-align:left">
-<img src="https://github.com/mongoeye/mongoeye/blob/doc/_misc/histogram.png?raw=true">
+<img src="https://github.com/mongoeye/mongoeye/blob/master/_misc/histogram.png?raw=true">
 </div>
 
 
@@ -321,7 +321,7 @@ hourHistogram: [47, 73, 18, 26, 30, 46, 91, 13, 28, 11, 52, 99, 76, 25, 94, 51, 
 ```
 -u, --user                username for authentication (default "admin")
 -p, --password            password for authentication
-    --auth-db             auth database (default "admin")
+    --auth-db             auth database (default: same as the working db)
     --auth-mech           auth mechanism
 ```
 
@@ -355,7 +355,7 @@ hourHistogram: [47, 73, 18, 26, 30, 46, 91, 13, 28, 11, 52, 99, 76, 25, 94, 51, 
 #### Other options
 ```
 -t, --timezone            timezone, eg. UTC, Europe/Berlin (default "local")
-    --use-aggregation     analyze with aggregation framework (mongodb 3.5.6+)
+    --use-aggregation     analyze with aggregation framework (mongodb 3.5.9+)
     --string-max-length   max string length (default 100)
     --array-max-length    analyze only first N array elements (default 20)
     --concurrency         number of local processes (default 0 = auto)
@@ -377,6 +377,7 @@ Instead of the `--count-unique` flag, for example, you can use `export MONGOEYE_
 ## TODO
 
 * Create a shared library for integration into other languages (Python, Node.js, ...)
+* Selection of fields for analysis (include and exclude list)
 * TLS/SSL support
 * Create a [web interface](https://github.com/mongoeye/mongoeye-ui).
 
