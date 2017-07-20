@@ -14,7 +14,7 @@ Mongoeye provides a quick overview of the data in your MongoDB database.
 
 ### Key features
 
-* *Fast:*&nbsp; [the fastest](https://github.com/mongoeye/mongoeye/blob/doc/_misc/comparison.png) schema analyzer for MongoDB
+* *Fast:*&nbsp; [the fastest](https://github.com/mongoeye/mongoeye/blob/master/_misc/comparison.png) schema analyzer for MongoDB
 * *Single binary:*&nbsp; pre-built [binaries](https://github.com/mongoeye/mongoeye/releases) for Windows, Linux, and MacOS (Darwin)
 * *Local analysis:*&nbsp; quick local analysis using a parallel algorithm (MongoDB 2.0+)
 * *Remote analysis:*&nbsp; distributed analysis in database using the aggregation framework (MongoDB 3.5.9+)
@@ -38,10 +38,10 @@ Mongoeye provides a quick overview of the data in your MongoDB database.
     * [Length - min, max, avg](#length---min-max-avg)
     * [Number of unique values](#number-of-unique-values)
     * [Frequency of values](#frequency-of-values)
-    * [Histogram of value](#histogram-of-value)
-    * [Histogram of length](#histogram-of-length)
-    * [Histogram of weekday](#histogram-of-weekday)
-    * [Histogram of hour](#histogram-of-hour)
+    * [Value histogram](#value-histogram)
+    * [Length histogram](#length-histogram)
+    * [Weekday histogram](#weekday-histogram)
+    * [Hour histogram](#hour-histogram)
  * [List of flags](#list-of-flags)
  * [License](#license)
 
