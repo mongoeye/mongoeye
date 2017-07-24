@@ -594,7 +594,7 @@ fields:
     count: 1
 `
 
-	assert.Equal(t, fmt.Sprintf(expected, c.Database.Name, c.Name), "\n"+regexp.MustCompile("\nduration: [0-9.]+ms").ReplaceAllString(stdout.String(), "\nduration: <DURATION>"))
+	assert.Equal(t, fmt.Sprintf(expected, c.Database.Name, c.Name), "\n"+regexp.MustCompile("\nduration: [0-9.]+.s").ReplaceAllString(stdout.String(), "\nduration: <DURATION>"))
 	assert.NotContains(t, stdout.String(), "OK")
 }
 
@@ -661,7 +661,7 @@ fields:
   - type: string
     count: 1
 `
-	assert.Equal(t, fmt.Sprintf(expected, c.Database.Name, c.Name), "\n"+regexp.MustCompile("\nduration: [0-9.]+ms").ReplaceAllString(content, "\nduration: <DURATION>"))
+	assert.Equal(t, fmt.Sprintf(expected, c.Database.Name, c.Name), "\n"+regexp.MustCompile("\nduration: [0-9.]+.s").ReplaceAllString(content, "\nduration: <DURATION>"))
 	assert.Contains(t, stdout.String(), fmt.Sprintf("The analysis results were written to the file: %s.", tmpFile.Name()))
 	assert.Contains(t, stdout.String(), "OK")
 }
