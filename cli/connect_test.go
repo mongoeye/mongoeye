@@ -52,7 +52,7 @@ func TestConnect_InvalidDb(t *testing.T) {
 	v.Set("host", tests.TestDbUri)
 	v.Set("db", "invalidDb")
 	v.Set("col", "invalidCol")
-	v.Set("connection-timeout", 1)
+	v.Set("scope", "all")
 
 	config, _ := GetConfig(v)
 
@@ -73,7 +73,7 @@ func TestConnect_InvalidCol(t *testing.T) {
 	v.Set("host", tests.TestDbUri)
 	v.Set("db", c.Database.Name)
 	v.Set("col", "INVALID")
-	v.Set("connection-timeout", 1)
+	v.Set("scope", "all")
 
 	config, _ := GetConfig(v)
 
