@@ -3,8 +3,6 @@ package cli
 import (
 	"errors"
 	"fmt"
-	"github.com/mongoeye/mongoeye/analysis"
-	"github.com/mongoeye/mongoeye/helpers"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"gopkg.in/mgo.v2"
@@ -43,21 +41,9 @@ func Run(cmd *cobra.Command, config *Config) error {
 	}
 
 	// Connect to MongoDB
-	info, collection, err := connect(out, printInfo, config)
+	info, collection, count, err := connect(out, printInfo, config)
 	if err != nil {
 		return err
-	}
-
-	// Check compatibility
-	err = checkCompatibility(config, info)
-	if err != nil {
-		return err
-	}
-
-	// Count documents in collection
-	count, err := collection.Count()
-	if err != nil {
-		return fmt.Errorf("Cannot count documents in collection: %s.\n", err)
 	}
 
 	// Generate possible plans of analysis
@@ -114,9 +100,9 @@ func Run(cmd *cobra.Command, config *Config) error {
 }
 
 // Connect to MongoDB, show spinner
-func connect(out io.Writer, printInfo bool, config *Config) (info mgo.BuildInfo, collection *mgo.Collection, err error) {
+func connect(out io.Writer, printInfo bool, config *Config) (info mgo.BuildInfo, collection *mgo.Collection, count int, err error) {
 	task := func() {
-		info, _, collection, err = Connect(config)
+		info, _, collection, count, err = Connect(config)
 	}
 
 	if printInfo {
@@ -147,25 +133,6 @@ func runAnalysis(out io.Writer, printInfo bool, allPlans plans, collection *mgo.
 	}
 
 	return
-}
-
-// Check compatibility between given configuration and MongoDB version
-func checkCompatibility(config *Config, info mgo.BuildInfo) error {
-	// Aggregation framework require MongoDB 3.5.6+
-	if config.UseAggregation && !info.VersionAtLeast(analysis.AggregationMinVersion...) {
-		version := helpers.VersionToString(analysis.AggregationMinVersion...)
-		return fmt.Errorf("Option 'use-aggregation' require MongoDB version >= %s.\n", version)
-
-	}
-
-	// Random sample scope require MongoDB 3.2+
-	if config.Scope == "random" && !info.VersionAtLeast(analysis.RandomSampleMinVersion...) {
-		version := helpers.VersionToString(analysis.RandomSampleMinVersion...)
-		return fmt.Errorf("Invalid value of '--scope' option.\nScope '%s' require MongoDB version >= %s.\nPlease, use 'all', 'first:N' or 'last:N' scope.\n", config.Scope, version)
-
-	}
-
-	return nil
 }
 
 // PreRun prints help, version and validate arguments.

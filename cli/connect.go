@@ -3,14 +3,15 @@ package cli
 import (
 	"errors"
 	"fmt"
+	"github.com/mongoeye/mongoeye/analysis"
 	"github.com/mongoeye/mongoeye/helpers"
 	"gopkg.in/mgo.v2"
 	"strings"
 )
 
 // Connect to MongoDB database and returns server info and session.
-func Connect(config *Config) (info mgo.BuildInfo, session *mgo.Session, collection *mgo.Collection, err error) {
-	// SESSION
+func Connect(config *Config) (info mgo.BuildInfo, session *mgo.Session, collection *mgo.Collection, count int, err error) {
+	// Session
 	session, err = mgo.DialWithTimeout(config.Host, config.ConnectionTimeout)
 	if err != nil {
 		err = fmt.Errorf("Connection failed: %s.\n", err)
@@ -28,7 +29,8 @@ func Connect(config *Config) (info mgo.BuildInfo, session *mgo.Session, collecti
 	}
 
 	// Login
-	if config.User != "" && config.Password != "" {
+	useAuth := config.User != "" && config.Password != ""
+	if useAuth {
 		err = session.Login(&mgo.Credential{
 			Username:  config.User,
 			Password:  config.Password,
@@ -41,45 +43,51 @@ func Connect(config *Config) (info mgo.BuildInfo, session *mgo.Session, collecti
 		}
 	}
 
-	// Test if database require authentication and load database names
-	dbNames, err := session.DatabaseNames()
-	if err != nil {
-		if strings.Contains(err.Error(), "not authorized") {
-			err = errors.New("Database requires authentication.\nPlease enter credentials using flags or environment variables.\n")
-		} else {
-			err = fmt.Errorf("Failed to load database names: %s\n", err)
-		}
-		return
-	}
-
-	// Check if database exists
-	if !helpers.InStringSlice(config.Database, dbNames) {
-		err = fmt.Errorf("The database '%s' does not exist.\nPlease enter the name of the existing database.\n", config.Database)
-		return
-	}
-
-	// DATABASE
+	// Database and collection
 	database := session.DB(config.Database)
-
-	// Load collections names in database
-	colNames, err := database.CollectionNames()
-	if err != nil {
-		if strings.Contains(err.Error(), "not authorized") {
-			err = fmt.Errorf("User '%s' is not authorized to access database '%s'.\nPlease make sure you have entered the correct credentials.\n", config.User, config.Database)
-		} else {
-			err = fmt.Errorf("Failed to load collection names: %s\n", err)
-		}
-		return
-	}
-
-	// Check if collection exists.
-	if !helpers.InStringSlice(config.Collection, colNames) {
-		err = fmt.Errorf("The collection '%s.%s' does not exist.\nPlease enter the name of the existing collection.\n", config.Database, config.Collection)
-		return
-	}
-
-	// COLLECTION
 	collection = database.C(config.Collection)
 
-	return info, session, collection, nil
+	// Check compatibility
+	err = checkCompatibility(config, info)
+	if err != nil {
+		return
+	}
+
+	// Count documents in collection
+	count, err = collection.Count()
+	if err != nil {
+		if useAuth && strings.Contains(err.Error(), "not authorized") {
+			err = fmt.Errorf("User '%s' is not authorized to access database '%s'.\nPlease make sure you have entered the correct credentials.\n", config.User, config.Database)
+		} else {
+			err = fmt.Errorf("Cannot count documents in collection: %s.\n", err)
+		}
+		return
+	}
+
+	// Check number of documents
+	if count == 0 {
+		err = fmt.Errorf("Collection '%s.%s' does not exist or is empty.\n", database.Name, collection.Name)
+		return
+	}
+
+	return info, session, collection, count, nil
+}
+
+// Check compatibility between given configuration and MongoDB version
+func checkCompatibility(config *Config, info mgo.BuildInfo) error {
+	// Aggregation framework require MongoDB 3.5.6+
+	if config.UseAggregation && !info.VersionAtLeast(analysis.AggregationMinVersion...) {
+		version := helpers.VersionToString(analysis.AggregationMinVersion...)
+		return fmt.Errorf("Option 'use-aggregation' require MongoDB version >= %s.\n", version)
+
+	}
+
+	// Random sample scope require MongoDB 3.2+
+	if config.Scope == "random" && !info.VersionAtLeast(analysis.RandomSampleMinVersion...) {
+		version := helpers.VersionToString(analysis.RandomSampleMinVersion...)
+		return fmt.Errorf("Invalid value of '--scope' option.\nScope '%s' require MongoDB version >= %s.\nPlease, use 'all', 'first:N' or 'last:N' scope.\n", config.Scope, version)
+
+	}
+
+	return nil
 }

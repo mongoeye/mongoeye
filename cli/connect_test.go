@@ -21,10 +21,11 @@ func TestConnect(t *testing.T) {
 		Collection: c.Name,
 	}
 
-	info, session, collection, err := Connect(config)
+	info, session, collection, count, err := Connect(config)
 	assert.NotEqual(t, nil, info)
 	assert.NotEqual(t, nil, session)
 	assert.NotEqual(t, nil, collection)
+	assert.Equal(t, 1, count)
 	assert.Equal(t, nil, err)
 
 }
@@ -40,7 +41,7 @@ func TestConnect_InvalidHost(t *testing.T) {
 
 	config, _ := GetConfig(v)
 
-	_, _, _, err := Connect(config)
+	_, _, _, _, err := Connect(config)
 	assert.Equal(t, "Connection failed: no reachable servers.\n", err.Error())
 }
 
@@ -55,9 +56,9 @@ func TestConnect_InvalidDb(t *testing.T) {
 
 	config, _ := GetConfig(v)
 
-	_, _, _, err := Connect(config)
+	_, _, _, _, err := Connect(config)
 	assert.NotEqual(t, nil, err)
-	assert.Equal(t, "The database 'invalidDb' does not exist.\nPlease enter the name of the existing database.\n", err.Error())
+	assert.Equal(t, "Collection 'invalidDb.invalidCol' does not exist or is empty.\n", err.Error())
 }
 
 func TestConnect_InvalidCol(t *testing.T) {
@@ -76,6 +77,6 @@ func TestConnect_InvalidCol(t *testing.T) {
 
 	config, _ := GetConfig(v)
 
-	_, _, _, err := Connect(config)
-	assert.Equal(t, "The collection '_test.INVALID' does not exist.\nPlease enter the name of the existing collection.\n", err.Error())
+	_, _, _, _, err := Connect(config)
+	assert.Equal(t, "Collection '_test.INVALID' does not exist or is empty.\n", err.Error())
 }
