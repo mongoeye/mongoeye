@@ -35,7 +35,7 @@ func DateWeekdayHistogram(location *time.Location, options *group.Options) *expr
 		bsonAllValues: expr.Map(
 			expr.Field(bsonAllValues),
 			"i",
-			expr.DayOfWeek(ConvertDateToTimezone(expr.Var("i", expand.BsonValue), location)),
+			expr.DayOfWeek(expr.Var("i", expand.BsonValue), location),
 		),
 	})
 
