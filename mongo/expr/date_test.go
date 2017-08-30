@@ -150,17 +150,17 @@ func TestDayOfWeekLocation(t *testing.T) {
 	defer tests.TearDownTestCol(c)
 
 	c.Insert(bson.M{
-		"sun":  helpers.ParseDate("2017-01-01T05:00:00+00:00"),
-		"mon":  helpers.ParseDate("2017-01-02T00:00:00+00:00"),
-		"tue":  helpers.ParseDate("2017-01-03T10:00:00+00:00"),
+		"sun": helpers.ParseDate("2017-01-01T05:00:00+00:00"),
+		"mon": helpers.ParseDate("2017-01-02T00:00:00+00:00"),
+		"tue": helpers.ParseDate("2017-01-03T10:00:00+00:00"),
 	})
 
 	p := NewPipeline()
 	p.AddStage("project", bson.M{
 		"_id":  0,
-		"sun":   DayOfWeek(Field("sun"), locationNY), // - 05:00
-		"sun2":  DayOfWeek(Field("mon"), locationNY), // - 05:00
-		"tue":   DayOfWeek(Field("tue"), locationNY), // - 05:00
+		"sun":  DayOfWeek(Field("sun"), locationNY), // - 05:00
+		"sun2": DayOfWeek(Field("mon"), locationNY), // - 05:00
+		"tue":  DayOfWeek(Field("tue"), locationNY), // - 05:00
 	})
 
 	out := bson.M{}
@@ -344,9 +344,9 @@ func TestHourLocation(t *testing.T) {
 	assert.Equal(t, 19, out["19"])
 	assert.Equal(t, 14, out["14"])
 	assert.Equal(t, 20, out["20"])
-	assert.Equal(t, 9,  out["9"])
-	assert.Equal(t, 6,  out["6"])
-	assert.Equal(t, 8,  out["8"])
+	assert.Equal(t, 9, out["9"])
+	assert.Equal(t, 6, out["6"])
+	assert.Equal(t, 8, out["8"])
 }
 
 func TestHour_ObjectId(t *testing.T) {

@@ -2,7 +2,7 @@ package tests
 
 import "testing"
 
-var aggregationAlgorithmMinVersion = []int{3, 5, 9}
+var aggregationAlgorithmMinVersion = []int{3, 5, 10}
 
 // HasMongoDBSampleStageSupport returns true if MongoDB support $sample aggregation.
 func HasMongoDBSampleStageSupport() bool {

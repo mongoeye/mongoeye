@@ -14,10 +14,10 @@ const NameSeparator = "."
 const ArrayItemMark = "[]"
 
 // AggregationMinVersion is minimal MongoDB version that allows analysis using aggregation framework
-var AggregationMinVersion = []int{3, 5, 9}
+var AggregationMinVersion = []int{3, 5, 10}
 
 // AggregationMinVersionStr (string) is minimal MongoDB version that allows analysis using aggregation framework
-var AggregationMinVersionStr = "3.5.9"
+var AggregationMinVersionStr = "3.5.10"
 
 // RandomSampleMinVersion is minimal MongoDB version that allows analysis using random samples
 var RandomSampleMinVersion = []int{3, 2, 0}
