@@ -1,56 +1,60 @@
 package expr
 
 import (
-	"github.com/mongoeye/mongoeye/helpers"
 	"gopkg.in/mgo.v2/bson"
 	"time"
 )
 
-const dayDuration = 24 * 60 * 60 * 1000
+func formatDateAndLocation(date interface{}, location *time.Location) interface{} {
+	if location == nil {
+		return date
+	}
+	return bson.M{"date": date, "timezone": location.String()}
+}
 
 // Year encapsulates MongoDB operation $year.
-func Year(el interface{}) bson.M {
-	return bson.M{"$year": el}
+func Year(el interface{}, location *time.Location) bson.M {
+	return bson.M{"$year": formatDateAndLocation(el, location)}
 }
 
 // Month encapsulates MongoDB operation $month.
-func Month(el interface{}) bson.M {
-	return bson.M{"$month": el}
+func Month(el interface{}, location *time.Location) bson.M {
+	return bson.M{"$month": formatDateAndLocation(el, location)}
 }
 
 // DayOfMonth encapsulates MongoDB operation $dayOfMonth.
-func DayOfMonth(el interface{}) bson.M {
-	return bson.M{"$dayOfMonth": el}
+func DayOfMonth(el interface{}, location *time.Location) bson.M {
+	return bson.M{"$dayOfMonth": formatDateAndLocation(el, location)}
 }
 
 // DayOfWeek encapsulates MongoDB operation $dayOfWeek.
-func DayOfWeek(el interface{}) bson.M {
-	return Subtract(bson.M{"$dayOfWeek": el}, 1)
+func DayOfWeek(el interface{}, location *time.Location) bson.M {
+	return Subtract(bson.M{"$dayOfWeek": formatDateAndLocation(el, location)}, 1)
 }
 
 // DayOfYear encapsulates MongoDB operation $dayOfYear.
-func DayOfYear(el interface{}) bson.M {
-	return bson.M{"$dayOfYear": el}
+func DayOfYear(el interface{}, location *time.Location) bson.M {
+	return bson.M{"$dayOfYear": formatDateAndLocation(el, location)}
 }
 
 // Hour encapsulates MongoDB operation $hour.
-func Hour(el interface{}) bson.M {
-	return bson.M{"$hour": el}
+func Hour(el interface{}, location *time.Location) bson.M {
+	return bson.M{"$hour": formatDateAndLocation(el, location)}
 }
 
 // Minute encapsulates MongoDB operation $minute.
-func Minute(el interface{}) bson.M {
-	return bson.M{"$minute": el}
+func Minute(el interface{}, location *time.Location) bson.M {
+	return bson.M{"$minute": formatDateAndLocation(el, location)}
 }
 
 // Second encapsulates MongoDB operation $second.
-func Second(el interface{}) bson.M {
-	return bson.M{"$second": el}
+func Second(el interface{}, location *time.Location) bson.M {
+	return bson.M{"$second": formatDateAndLocation(el, location)}
 }
 
 // Millisecond encapsulates MongoDB operation $millisecond.
-func Millisecond(el interface{}) bson.M {
-	return bson.M{"$millisecond": el}
+func Millisecond(el interface{}, location *time.Location) bson.M {
+	return bson.M{"$millisecond": formatDateAndLocation(el, location)}
 }
 
 // DateToTimestamp converts date to timestamp in DB.
@@ -71,67 +75,6 @@ func TimestampToDate(timestamp interface{}) bson.M {
 		Multiply(
 			timestamp,
 			1000,
-		),
-	)
-}
-
-// ResetMonthDay converts date to date of the fist day of month
-func ResetMonthDay(date interface{}) bson.M {
-	return Subtract(
-		date,
-		Multiply(
-			Subtract(DayOfMonth(date), 1),
-			dayDuration,
-		),
-	)
-}
-
-// FirstDayOfMonth converts date to first day of given month. The year remains unchanged.
-func FirstDayOfMonth(yearDate interface{}, month int) interface{} {
-	return ResetMonthDay(
-		Subtract(
-			yearDate,
-			Multiply(
-				Subtract(
-					DayOfYear(yearDate),
-					month*29,
-				),
-				dayDuration,
-			),
-		),
-	)
-}
-
-// NthSundayOfMonth get date of N-th sunday of month
-func NthSundayOfMonth(date interface{}, n int, numberOfDays int) bson.M {
-	if n > 0 {
-		return Add(
-			Mod(
-				Subtract(
-					8,
-					DayOfWeek(ResetMonthDay(date)),
-				),
-				7,
-			),
-			Multiply(
-				7,
-				Subtract(
-					n,
-					1,
-				),
-			),
-		)
-	}
-
-	// Last sunday
-	return Subtract(
-		numberOfDays+1,
-		Mod(
-			Add(
-				numberOfDays,
-				DayOfWeek(ResetMonthDay(date)),
-			),
-			7,
 		),
 	)
 }
@@ -185,83 +128,6 @@ func CeilDateSeconds(step interface{}) bson.M {
 	return sw.Bson()
 }
 
-// DateInTimezone converts date in UTC timezone to desired timezone
-func DateInTimezone(date interface{}, timezone *helpers.Timezone) interface{} {
-	var offset interface{}
-
-	// Calculate offset winter/summer time
-	if timezone.TimeZoneChanging == false {
-		if timezone.WinterTimeOffset == 0 {
-			return date
-		}
-		offset = timezone.WinterTimeOffset
-	} else {
-		sw := Switch()
-		// Winter months
-		sw.AddBranch(
-			Or(
-				Lt("$$m", timezone.SummerTimeStartMonth),
-				Gt("$$m", timezone.WinterTimeStartMonth),
-			),
-			timezone.WinterTimeOffset,
-		)
-		// Summer months
-		sw.AddBranch(
-			And(
-				Gt("$$m", timezone.SummerTimeStartMonth),
-				Lt("$$m", timezone.WinterTimeStartMonth),
-			),
-			timezone.SummerTimeOffset,
-		)
-		// Winter / summer time month
-		sw.AddBranch(
-			Eq("$$m", timezone.SummerTimeStartMonth),
-			Let(
-				bson.M{"border": NthSundayOfMonth(
-					FirstDayOfMonth(date, timezone.SummerTimeStartMonth),
-					timezone.SummerTimeStartSunday,
-					timezone.SummerTimeStartMonthDays,
-				),
-				},
-				Cond(
-					Lt(DayOfMonth(date), "$$border"),
-					timezone.WinterTimeOffset,
-					timezone.SummerTimeOffset,
-				),
-			),
-		)
-		// Summer / winter time month
-		sw.AddBranch(
-			Eq("$$m", timezone.WinterTimeStartMonth),
-			Let(
-				bson.M{"border": NthSundayOfMonth(
-					FirstDayOfMonth(date, timezone.WinterTimeStartMonth),
-					timezone.WinterTimeStartSunday,
-					timezone.WinterTimeStartMonthDays,
-				),
-				},
-				Cond(
-					Lt(DayOfMonth(date), "$$border"),
-					timezone.SummerTimeOffset,
-					timezone.WinterTimeOffset,
-				),
-			),
-		)
-
-		offset = sw.Bson()
-	}
-
-	return Let(
-		bson.M{
-			"m": Month(date),
-		},
-		Add(
-			date,
-			offset,
-		),
-	)
-}
-
 // ObjectIdToDate converts objectId value to date
 func ObjectIdToDate(id interface{}) interface{} {
 	timestamp := Let(
@@ -270,12 +136,12 @@ func ObjectIdToDate(id interface{}) interface{} {
 		},
 		Let(
 			bson.M{
-				"y":    Year(Var("id")),
-				"m":    Month(Var("id")),
-				"d":    DayOfMonth(Var("id")),
-				"hour": Hour(Var("id")),
-				"min":  Minute(Var("id")),
-				"sec":  Second(Var("id")),
+				"y":    Year(Var("id"), nil),
+				"m":    Month(Var("id"), nil),
+				"d":    DayOfMonth(Var("id"), nil),
+				"hour": Hour(Var("id"), nil),
+				"min":  Minute(Var("id"), nil),
+				"sec":  Second(Var("id"), nil),
 			},
 			// Algorithm: http://howardhinnant.github.io/date_algorithms.html#days_from_civil
 			// STEP 1: y -= m <= 2;

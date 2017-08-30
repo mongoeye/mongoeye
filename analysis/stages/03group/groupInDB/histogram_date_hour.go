@@ -35,7 +35,7 @@ func DateHourHistogram(location *time.Location, options *group.Options) *expr.Pi
 		bsonAllValues: expr.Map(
 			expr.Field(bsonAllValues),
 			"i",
-			expr.Hour(ConvertDateToTimezone(expr.Var("i", expand.BsonValue), location)),
+			expr.Hour(expr.Var("i", expand.BsonValue), location),
 		),
 	})
 

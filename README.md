@@ -17,7 +17,7 @@ Mongoeye provides a quick overview of the data in your MongoDB database.
 * *Fast:*&nbsp; [the fastest](https://github.com/mongoeye/mongoeye/blob/master/_misc/comparison.png) schema analyzer for MongoDB
 * *Single binary:*&nbsp; pre-built [binaries](https://github.com/mongoeye/mongoeye/releases) for Windows, Linux, and MacOS (Darwin)
 * *Local analysis:*&nbsp; quick local analysis using a parallel algorithm (MongoDB 2.0+)
-* *Remote analysis:*&nbsp; distributed analysis in database using the aggregation framework (MongoDB 3.5.9+)
+* *Remote analysis:*&nbsp; distributed analysis in database using the aggregation framework (MongoDB 3.5.10+)
 * *Rich features:*&nbsp; [histogram](#value-histogram) (value, length, weekday, hour), [most frequent values](#frequency-of-values), ... 
 * *Integrable:*&nbsp; [table](#table-output), [JSON or YAML output](#json-and-yaml-output)
 
@@ -354,7 +354,7 @@ hourHistogram: [47, 73, 18, 26, 30, 46, 91, 13, 28, 11, 52, 99, 76, 25, 94, 51, 
 #### Other options
 ```
 -t, --timezone            timezone, eg. UTC, Europe/Berlin (default "local")
-    --use-aggregation     analyze with aggregation framework (mongodb 3.5.9+)
+    --use-aggregation     analyze with aggregation framework (mongodb 3.5.10+)
     --string-max-length   max string length (default 100)
     --array-max-length    analyze only first N array elements (default 20)
     --concurrency         number of local processes (default 0 = auto)
