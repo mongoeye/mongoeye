@@ -71,7 +71,7 @@ pauseAfterExample
 # EXAMPLE 4
 example 4 'Analysis of first 100 documents'
 run '--scope first:100'
-comment "For other options, see the flags ${BOLD}--query${NORMAL} and ${BOLD}--scope${NORMAL} in the help."
+comment "For other options, see the flags ${BOLD}--match${NORMAL} and ${BOLD}--scope${NORMAL} in the help."
 pauseAfterExample
 
 # EXAMPLE 5

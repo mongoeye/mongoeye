@@ -6,8 +6,12 @@ import (
 	"testing"
 )
 
-func TestSampleInDB_Query(t *testing.T) {
-	sampleTests.RunTestQuery(t, NewStage)
+func TestSampleInDB_Match(t *testing.T) {
+	sampleTests.RunTestMatch(t, NewStage)
+}
+
+func TestSampleInDB_Project(t *testing.T) {
+	sampleTests.RunTestProject(t, NewStage)
 }
 
 func TestSampleInDB_First(t *testing.T) {

@@ -35,7 +35,8 @@ type Config struct {
 	// analysis options
 	Database   string
 	Collection string
-	Query      bson.M
+	Match      bson.M
+	Project    bson.M
 	Scope      string
 	Limit      uint64
 	Depth      uint
@@ -98,9 +99,10 @@ func (c *Config) CreateSampleStageOptions() *sample.Options {
 	}
 
 	return &sample.Options{
-		Query: c.Query,
-		Scope: scope,
-		Limit: uint64(c.Limit),
+		Match:   c.Match,
+		Project: c.Project,
+		Scope:   scope,
+		Limit:   uint64(c.Limit),
 	}
 }
 
@@ -174,8 +176,14 @@ func GetConfig(v *viper.Viper) (*Config, error) {
 		return nil, err
 	}
 
-	// Parse query
-	query, err := parseQuery(v)
+	// Parse match
+	match, err := parseJsonArgument(v, "match")
+	if err != nil {
+		return nil, err
+	}
+
+	// Parse project
+	project, err := parseJsonArgument(v, "project")
 	if err != nil {
 		return nil, err
 	}
@@ -193,7 +201,8 @@ func GetConfig(v *viper.Viper) (*Config, error) {
 		AuthMechanism:        v.GetString("auth-mech"),
 		Database:             v.GetString("db"),
 		Collection:           v.GetString("col"),
-		Query:                query,
+		Match:                match,
+		Project:              project,
 		Scope:                scope,
 		Limit:                limit,
 		Depth:                uint(v.GetInt("depth")),
@@ -311,15 +320,13 @@ func parseLocation(v *viper.Viper) (location *time.Location, err error) {
 	return
 }
 
-func parseQuery(v *viper.Viper) (query bson.M, err error) {
-	query = bson.M{}
-	queryRaw := v.GetString("query")
-	if len(queryRaw) > 0 {
-		err = json.Unmarshal([]byte(queryRaw), &query)
+func parseJsonArgument(v *viper.Viper, argument string) (out bson.M, err error) {
+	out = bson.M{}
+	raw := v.GetString(argument)
+	if len(raw) > 0 {
+		err = json.Unmarshal([]byte(raw), &out)
 		if err != nil {
-			err = errors.New(
-				"Invalid JSON in 'query' option.\nPlease enter a valid query.",
-			)
+			err = fmt.Errorf("Invalid JSON in '%s' option.\nPlease enter a valid query.", argument)
 		}
 	}
 

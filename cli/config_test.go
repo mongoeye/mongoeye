@@ -37,7 +37,8 @@ func TestGetConfig_Default(t *testing.T) {
 	assert.Equal(t, "", c.AuthMechanism)
 	assert.Equal(t, "", c.Database)
 	assert.Equal(t, "", c.Collection)
-	assert.Equal(t, bson.M{}, c.Query)
+	assert.Equal(t, bson.M{}, c.Match)
+	assert.Equal(t, bson.M{}, c.Project)
 	assert.Equal(t, "random", c.Scope)
 	assert.Equal(t, uint64(1000), c.Limit)
 	assert.Equal(t, uint(2), c.Depth)
@@ -83,7 +84,8 @@ func TestGetConfig_Env(t *testing.T) {
 	os.Setenv("XYZ_AUTH-MECH", "mech")
 	os.Setenv("XYZ_DB", "dataDb")
 	os.Setenv("XYZ_COL", "dataCol")
-	os.Setenv("XYZ_QUERY", "{ \"user\": \"david\" }")
+	os.Setenv("XYZ_MATCH", "{ \"user\": \"david\" }")
+	os.Setenv("XYZ_PROJECT", "{ \"user\": 1 }")
 	os.Setenv("XYZ_SCOPE", "first:456")
 	os.Setenv("XYZ_DEPTH", "5")
 	os.Setenv("XYZ_VALUE", "true")
@@ -122,7 +124,8 @@ func TestGetConfig_Env(t *testing.T) {
 	assert.Equal(t, "mech", c.AuthMechanism)
 	assert.Equal(t, "dataDb", c.Database)
 	assert.Equal(t, "dataCol", c.Collection)
-	assert.Equal(t, bson.M{"user": "david"}, c.Query)
+	assert.Equal(t, bson.M{"user": "david"}, c.Match)
+	assert.Equal(t, bson.M{"user": float64(1)}, c.Project)
 	assert.Equal(t, "first", c.Scope)
 	assert.Equal(t, uint64(456), c.Limit)
 	assert.Equal(t, uint(5), c.Depth)
@@ -169,7 +172,8 @@ func TestGetConfig_Flags(t *testing.T) {
 		"--auth-mech", "mech",
 		"--db", "dataDb",
 		"--col", "dataCol",
-		"--query", "{ \"user\": \"david\" }",
+		"--match", "{ \"user\": \"david\" }",
+		"--project", "{ \"user\": 1 }",
 		"--scope", "first:123",
 		"--depth", "5",
 		"--value", "true",
@@ -210,7 +214,8 @@ func TestGetConfig_Flags(t *testing.T) {
 	assert.Equal(t, "mech", c.AuthMechanism)
 	assert.Equal(t, "dataDb", c.Database)
 	assert.Equal(t, "dataCol", c.Collection)
-	assert.Equal(t, bson.M{"user": "david"}, c.Query)
+	assert.Equal(t, bson.M{"user": "david"}, c.Match)
+	assert.Equal(t, bson.M{"user": float64(1)}, c.Project)
 	assert.Equal(t, "first", c.Scope)
 	assert.Equal(t, uint64(123), c.Limit)
 	assert.Equal(t, uint(5), c.Depth)
@@ -310,7 +315,8 @@ func TestGetConfig_Full(t *testing.T) {
 		"--auth-mech", "mech",
 		"--db", "dataDb",
 		"--col", "dataCol",
-		"--query", "{ \"user\": \"david\" }",
+		"--match", "{ \"user\": \"david\" }",
+		"--project", "{ \"user\": 1 }",
 		"--scope", "first:123",
 		"--depth", "5",
 		"--value-hist-steps", "80",
@@ -329,7 +335,8 @@ func TestGetConfig_Full(t *testing.T) {
 	assert.Equal(t, "mech", c.AuthMechanism)
 	assert.Equal(t, "dataDb", c.Database)
 	assert.Equal(t, "dataCol", c.Collection)
-	assert.Equal(t, bson.M{"user": "david"}, c.Query)
+	assert.Equal(t, bson.M{"user": "david"}, c.Match)
+	assert.Equal(t, bson.M{"user": float64(1)}, c.Project)
 	assert.Equal(t, "first", c.Scope)
 	assert.Equal(t, uint64(123), c.Limit)
 	assert.Equal(t, uint(5), c.Depth)
@@ -363,7 +370,8 @@ func TestGetConfig_Full2(t *testing.T) {
 		"--auth-mech", "mech",
 		"--db", "dataDb",
 		"--col", "dataCol",
-		"--query", "{ \"user\": \"david\" }",
+		"--match", "{ \"user\": \"david\" }",
+		"--project", "{ \"user\": 1 }",
 		"--scope", "first:123",
 		"--depth", "5",
 		"--value-hist-steps", "80",
@@ -384,7 +392,8 @@ func TestGetConfig_Full2(t *testing.T) {
 	assert.Equal(t, "mech", c.AuthMechanism)
 	assert.Equal(t, "dataDb", c.Database)
 	assert.Equal(t, "dataCol", c.Collection)
-	assert.Equal(t, bson.M{"user": "david"}, c.Query)
+	assert.Equal(t, bson.M{"user": "david"}, c.Match)
+	assert.Equal(t, bson.M{"user": float64(1)}, c.Project)
 	assert.Equal(t, "first", c.Scope)
 	assert.Equal(t, uint64(123), c.Limit)
 	assert.Equal(t, uint(5), c.Depth)
@@ -444,14 +453,27 @@ func TestGetConfig_InvalidTimezone(t *testing.T) {
 	assert.NotEqual(t, nil, err)
 }
 
-func TestGetConfig_InvalidQuery(t *testing.T) {
+func TestGetConfig_InvalidMatch(t *testing.T) {
 	os.Clearenv()
 
 	cmd := &cobra.Command{}
 	v := viper.New()
 	InitFlags(cmd, v, "xyz")
 
-	v.Set("query", "{ xyz")
+	v.Set("match", "{ xyz")
+
+	_, err := GetConfig(v)
+	assert.NotEqual(t, nil, err)
+}
+
+func TestGetConfig_InvalidProject(t *testing.T) {
+	os.Clearenv()
+
+	cmd := &cobra.Command{}
+	v := viper.New()
+	InitFlags(cmd, v, "xyz")
+
+	v.Set("project", "{ xyz")
 
 	_, err := GetConfig(v)
 	assert.NotEqual(t, nil, err)
@@ -582,40 +604,45 @@ func TestConfig_CreateAnalysisOptions_ConcurrencyAuto(t *testing.T) {
 
 func TestConfig_CreateSampleStageOptions(t *testing.T) {
 	c := Config{
-		Query: bson.M{"key": "value"},
-		Scope: "all",
-		Limit: 0,
+		Match:   bson.M{"key": "value"},
+		Project: bson.M{"key": 1},
+		Scope:   "all",
+		Limit:   0,
 	}
 
 	assert.Equal(t, &sample.Options{
-		Query: bson.M{"key": "value"},
-		Scope: sample.All,
-		Limit: 0,
+		Match:   bson.M{"key": "value"},
+		Project: bson.M{"key": 1},
+		Scope:   sample.All,
+		Limit:   0,
 	}, c.CreateSampleStageOptions())
 
 	// scope: first
 	c.Scope = "first"
 	c.Limit = 12345
 	assert.Equal(t, &sample.Options{
-		Query: bson.M{"key": "value"},
-		Scope: sample.First,
-		Limit: 12345,
+		Match:   bson.M{"key": "value"},
+		Project: bson.M{"key": 1},
+		Scope:   sample.First,
+		Limit:   12345,
 	}, c.CreateSampleStageOptions())
 
 	// scope: last
 	c.Scope = "last"
 	assert.Equal(t, &sample.Options{
-		Query: bson.M{"key": "value"},
-		Scope: sample.Last,
-		Limit: 12345,
+		Match:   bson.M{"key": "value"},
+		Project: bson.M{"key": 1},
+		Scope:   sample.Last,
+		Limit:   12345,
 	}, c.CreateSampleStageOptions())
 
 	// scope: random
 	c.Scope = "random"
 	assert.Equal(t, &sample.Options{
-		Query: bson.M{"key": "value"},
-		Scope: sample.Random,
-		Limit: 12345,
+		Match:   bson.M{"key": "value"},
+		Project: bson.M{"key": 1},
+		Scope:   sample.Random,
+		Limit:   12345,
 	}, c.CreateSampleStageOptions())
 
 	// invalid scope

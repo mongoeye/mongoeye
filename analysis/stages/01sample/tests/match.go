@@ -6,14 +6,14 @@ import (
 	"testing"
 )
 
-// RunTestQuery tests sample stage with query option.
-func RunTestQuery(t *testing.T, sampleFactory sample.StageFactory) {
+// RunTestMatch tests sample stage with match option.
+func RunTestMatch(t *testing.T, sampleFactory sample.StageFactory) {
 	c := setup()
 	defer tearDown(c)
 
 	options := sample.Options{
 		Scope: sample.All,
-		Query: bson.M{
+		Match: bson.M{
 			"key1": bson.M{"$gt": 123},
 		},
 	}

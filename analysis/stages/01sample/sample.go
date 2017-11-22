@@ -10,9 +10,10 @@ import (
 
 // Options  of sample stage.
 type Options struct {
-	Query bson.M
-	Scope AnalysisScope
-	Limit uint64
+	Match   bson.M
+	Project bson.M
+	Scope   AnalysisScope
+	Limit   uint64
 }
 
 // AnalysisScope defines the method of sampling.
