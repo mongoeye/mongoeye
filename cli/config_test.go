@@ -39,7 +39,7 @@ func TestGetConfig_Default(t *testing.T) {
 	assert.Equal(t, "", c.Collection)
 	assert.Equal(t, bson.M{}, c.Match)
 	assert.Equal(t, bson.M{}, c.Project)
-	assert.Equal(t, "random", c.Scope)
+	assert.Equal(t, "random", c.Sample)
 	assert.Equal(t, uint64(1000), c.Limit)
 	assert.Equal(t, uint(2), c.Depth)
 	assert.Equal(t, false, c.MinMaxAvgValue)
@@ -86,7 +86,7 @@ func TestGetConfig_Env(t *testing.T) {
 	os.Setenv("XYZ_COL", "dataCol")
 	os.Setenv("XYZ_MATCH", "{ \"user\": \"david\" }")
 	os.Setenv("XYZ_PROJECT", "{ \"user\": 1 }")
-	os.Setenv("XYZ_SCOPE", "first:456")
+	os.Setenv("XYZ_SAMPLE", "first:456")
 	os.Setenv("XYZ_DEPTH", "5")
 	os.Setenv("XYZ_VALUE", "true")
 	os.Setenv("XYZ_LENGTH", "true")
@@ -126,7 +126,7 @@ func TestGetConfig_Env(t *testing.T) {
 	assert.Equal(t, "dataCol", c.Collection)
 	assert.Equal(t, bson.M{"user": "david"}, c.Match)
 	assert.Equal(t, bson.M{"user": float64(1)}, c.Project)
-	assert.Equal(t, "first", c.Scope)
+	assert.Equal(t, "first", c.Sample)
 	assert.Equal(t, uint64(456), c.Limit)
 	assert.Equal(t, uint(5), c.Depth)
 	assert.Equal(t, true, c.MinMaxAvgValue)
@@ -174,7 +174,7 @@ func TestGetConfig_Flags(t *testing.T) {
 		"--col", "dataCol",
 		"--match", "{ \"user\": \"david\" }",
 		"--project", "{ \"user\": 1 }",
-		"--scope", "first:123",
+		"--sample", "first:123",
 		"--depth", "5",
 		"--value", "true",
 		"--length", "true",
@@ -216,7 +216,7 @@ func TestGetConfig_Flags(t *testing.T) {
 	assert.Equal(t, "dataCol", c.Collection)
 	assert.Equal(t, bson.M{"user": "david"}, c.Match)
 	assert.Equal(t, bson.M{"user": float64(1)}, c.Project)
-	assert.Equal(t, "first", c.Scope)
+	assert.Equal(t, "first", c.Sample)
 	assert.Equal(t, uint64(123), c.Limit)
 	assert.Equal(t, uint(5), c.Depth)
 	assert.Equal(t, true, c.MinMaxAvgValue)
@@ -317,7 +317,7 @@ func TestGetConfig_Full(t *testing.T) {
 		"--col", "dataCol",
 		"--match", "{ \"user\": \"david\" }",
 		"--project", "{ \"user\": 1 }",
-		"--scope", "first:123",
+		"--sample", "first:123",
 		"--depth", "5",
 		"--value-hist-steps", "80",
 		"--length-hist-steps", "120",
@@ -337,7 +337,7 @@ func TestGetConfig_Full(t *testing.T) {
 	assert.Equal(t, "dataCol", c.Collection)
 	assert.Equal(t, bson.M{"user": "david"}, c.Match)
 	assert.Equal(t, bson.M{"user": float64(1)}, c.Project)
-	assert.Equal(t, "first", c.Scope)
+	assert.Equal(t, "first", c.Sample)
 	assert.Equal(t, uint64(123), c.Limit)
 	assert.Equal(t, uint(5), c.Depth)
 	assert.Equal(t, true, c.MinMaxAvgValue)
@@ -372,7 +372,7 @@ func TestGetConfig_Full2(t *testing.T) {
 		"--col", "dataCol",
 		"--match", "{ \"user\": \"david\" }",
 		"--project", "{ \"user\": 1 }",
-		"--scope", "first:123",
+		"--sample", "first:123",
 		"--depth", "5",
 		"--value-hist-steps", "80",
 		"--length-hist-steps", "120",
@@ -394,7 +394,7 @@ func TestGetConfig_Full2(t *testing.T) {
 	assert.Equal(t, "dataCol", c.Collection)
 	assert.Equal(t, bson.M{"user": "david"}, c.Match)
 	assert.Equal(t, bson.M{"user": float64(1)}, c.Project)
-	assert.Equal(t, "first", c.Scope)
+	assert.Equal(t, "first", c.Sample)
 	assert.Equal(t, uint64(123), c.Limit)
 	assert.Equal(t, uint(5), c.Depth)
 	assert.Equal(t, true, c.MinMaxAvgValue)
@@ -479,27 +479,27 @@ func TestGetConfig_InvalidProject(t *testing.T) {
 	assert.NotEqual(t, nil, err)
 }
 
-func TestGetConfig_InvalidScopeLimit(t *testing.T) {
+func TestGetConfig_InvalidSampleLimit(t *testing.T) {
 	os.Clearenv()
 
 	cmd := &cobra.Command{}
 	v := viper.New()
 	InitFlags(cmd, v, "xyz")
 
-	v.Set("scope", "first:abc")
+	v.Set("sample", "first:abc")
 
 	_, err := GetConfig(v)
 	assert.NotEqual(t, nil, err)
 }
 
-func TestGetConfig_ValidateScope(t *testing.T) {
+func TestGetConfig_ValidateSample(t *testing.T) {
 	os.Clearenv()
 
 	cmd := &cobra.Command{}
 	v := viper.New()
 	InitFlags(cmd, v, "xyz")
 
-	v.Set("scope", "xyz")
+	v.Set("sample", "xyz")
 
 	_, err := GetConfig(v)
 	assert.NotEqual(t, nil, err)
@@ -512,7 +512,7 @@ func TestGetConfig_ValidateLimit(t *testing.T) {
 	v := viper.New()
 	InitFlags(cmd, v, "xyz")
 
-	v.Set("scope", "first:0")
+	v.Set("sample", "first:0")
 
 	_, err := GetConfig(v)
 	assert.NotEqual(t, nil, err)
@@ -606,47 +606,47 @@ func TestConfig_CreateSampleStageOptions(t *testing.T) {
 	c := Config{
 		Match:   bson.M{"key": "value"},
 		Project: bson.M{"key": 1},
-		Scope:   "all",
+		Sample:  "all",
 		Limit:   0,
 	}
 
 	assert.Equal(t, &sample.Options{
 		Match:   bson.M{"key": "value"},
 		Project: bson.M{"key": 1},
-		Scope:   sample.All,
+		Method:  sample.AllDocuments,
 		Limit:   0,
 	}, c.CreateSampleStageOptions())
 
-	// scope: first
-	c.Scope = "first"
+	// sample: first
+	c.Sample = "first"
 	c.Limit = 12345
 	assert.Equal(t, &sample.Options{
 		Match:   bson.M{"key": "value"},
 		Project: bson.M{"key": 1},
-		Scope:   sample.First,
+		Method:  sample.FirstNDocuments,
 		Limit:   12345,
 	}, c.CreateSampleStageOptions())
 
-	// scope: last
-	c.Scope = "last"
+	// sample: last
+	c.Sample = "last"
 	assert.Equal(t, &sample.Options{
 		Match:   bson.M{"key": "value"},
 		Project: bson.M{"key": 1},
-		Scope:   sample.Last,
+		Method:  sample.LastNDocuments,
 		Limit:   12345,
 	}, c.CreateSampleStageOptions())
 
-	// scope: random
-	c.Scope = "random"
+	// sample: random
+	c.Sample = "random"
 	assert.Equal(t, &sample.Options{
 		Match:   bson.M{"key": "value"},
 		Project: bson.M{"key": 1},
-		Scope:   sample.Random,
+		Method:  sample.RandomNDocuments,
 		Limit:   12345,
 	}, c.CreateSampleStageOptions())
 
-	// invalid scope
-	c.Scope = "abc"
+	// invalid sample
+	c.Sample = "abc"
 	assert.Panics(t, func() {
 		c.CreateSampleStageOptions()
 	})

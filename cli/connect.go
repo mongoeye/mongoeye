@@ -82,10 +82,10 @@ func checkCompatibility(config *Config, info mgo.BuildInfo) error {
 
 	}
 
-	// Random sample scope require MongoDB 3.2+
-	if config.Scope == "random" && !info.VersionAtLeast(analysis.RandomSampleMinVersion...) {
+	// Random sample sample require MongoDB 3.2+
+	if config.Sample == "random" && !info.VersionAtLeast(analysis.RandomSampleMinVersion...) {
 		version := helpers.VersionToString(analysis.RandomSampleMinVersion...)
-		return fmt.Errorf("Invalid value of '--scope' option.\nScope '%s' require MongoDB version >= %s.\nPlease, use 'all', 'first:N' or 'last:N' scope.\n", config.Scope, version)
+		return fmt.Errorf("Invalid value of '--sample' option.\nSample '%s' require MongoDB version >= %s.\nPlease, use 'all', 'first:N' or 'last:N' sample.\n", config.Sample, version)
 
 	}
 

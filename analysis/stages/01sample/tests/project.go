@@ -12,7 +12,7 @@ func RunTestProject(t *testing.T, sampleFactory sample.StageFactory) {
 	defer tearDown(c)
 
 	options := sample.Options{
-		Scope: sample.All,
+		Method: sample.AllDocuments,
 		Project: bson.M{
 			"key1": 1,
 		},

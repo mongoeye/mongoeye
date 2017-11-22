@@ -20,22 +20,22 @@ func NewStage(sampleOptions *sample.Options) *analysis.Stage {
 				p.AddStage("match", sampleOptions.Match)
 			}
 
-			// Scope
-			switch sampleOptions.Scope {
-			case sample.First:
+			// Sample
+			switch sampleOptions.Method {
+			case sample.FirstNDocuments:
 				p.AddStage("sort", bson.M{"_id": 1})
 				p.AddStage("limit", sampleOptions.Limit)
-			case sample.Last:
+			case sample.LastNDocuments:
 				p.AddStage("sort", bson.M{"_id": -1})
 				p.AddStage("limit", sampleOptions.Limit)
-			case sample.Random:
+			case sample.RandomNDocuments:
 				p.AddStage("sample", bson.M{"size": sampleOptions.Limit})
-			case sample.All:
+			case sample.AllDocuments:
 				if sampleOptions.Limit != 0 {
-					panic("Limit option can not be used together with scope = All. Set limit to 0 or use one of the following scopes: First, Last, Random.")
+					panic("Limit option can not be used together with sample = all. Set limit to 0 or use one of the following samples: first, last, random.")
 				}
 			default:
-				panic("Invalid scope. Use one of the following: First, Last, Random, All.")
+				panic("Invalid sample. Use one of the following: first, last, random, all.")
 			}
 
 			// Project

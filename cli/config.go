@@ -37,7 +37,7 @@ type Config struct {
 	Collection string
 	Match      bson.M
 	Project    bson.M
-	Scope      string
+	Sample     string
 	Limit      uint64
 	Depth      uint
 
@@ -84,24 +84,24 @@ func (c *Config) CreateAnalysisOptions() *analysis.Options {
 
 // CreateSampleStageOptions generates sample options from config.
 func (c *Config) CreateSampleStageOptions() *sample.Options {
-	var scope sample.AnalysisScope
-	switch c.Scope {
+	var sampleMethod sample.SampleMethod
+	switch c.Sample {
 	case "all":
-		scope = sample.All
+		sampleMethod = sample.AllDocuments
 	case "first":
-		scope = sample.First
+		sampleMethod = sample.FirstNDocuments
 	case "last":
-		scope = sample.Last
+		sampleMethod = sample.LastNDocuments
 	case "random":
-		scope = sample.Random
+		sampleMethod = sample.RandomNDocuments
 	default:
-		panic("Unexpected scope.")
+		panic("Unexpected sample.")
 	}
 
 	return &sample.Options{
 		Match:   c.Match,
 		Project: c.Project,
-		Scope:   scope,
+		Method:  sampleMethod,
 		Limit:   uint64(c.Limit),
 	}
 }
@@ -164,8 +164,8 @@ func GetConfig(v *viper.Viper) (*Config, error) {
 		return nil, err
 	}
 
-	// Parse scope
-	scope, limit, err := parseScope(v)
+	// Parse sample
+	sample, limit, err := parseSample(v)
 	if err != nil {
 		return nil, err
 	}
@@ -203,7 +203,7 @@ func GetConfig(v *viper.Viper) (*Config, error) {
 		Collection:           v.GetString("col"),
 		Match:                match,
 		Project:              project,
-		Scope:                scope,
+		Sample:               sample,
 		Limit:                limit,
 		Depth:                uint(v.GetInt("depth")),
 		MinMaxAvgValue:       v.GetBool("value"),
@@ -287,14 +287,14 @@ func parseConnectionMode(v *viper.Viper) (mode mgo.Mode, err error) {
 	return
 }
 
-func parseScope(v *viper.Viper) (scope string, limit uint64, err error) {
-	scopeParts := strings.SplitN(strings.ToLower(v.GetString("scope")), ":", 2)
-	scope = scopeParts[0]
-	if len(scopeParts) > 1 {
-		i, e := strconv.ParseInt(scopeParts[1], 10, 64)
+func parseSample(v *viper.Viper) (sample string, limit uint64, err error) {
+	sampleParts := strings.SplitN(strings.ToLower(v.GetString("sample")), ":", 2)
+	sample = sampleParts[0]
+	if len(sampleParts) > 1 {
+		i, e := strconv.ParseInt(sampleParts[1], 10, 64)
 		if e != nil {
 			err = errors.New(
-				"Cannot parse a valid limit (integer) from 'scope' option.\nPlease enter a valid scope, eg. 'first:100'.",
+				"Cannot parse a valid limit (integer) from 'sample' option.\nPlease enter a valid sample, eg. 'first:100'.",
 			)
 		}
 
@@ -334,15 +334,15 @@ func parseJsonArgument(v *viper.Viper, argument string) (out bson.M, err error) 
 }
 
 func (c *Config) validate() error {
-	if !helpers.InStringSlice(c.Scope, []string{"all", "first", "last", "random"}) {
+	if !helpers.InStringSlice(c.Sample, []string{"all", "first", "last", "random"}) {
 		return errors.New(
-			"Invalid value of 'scope' option.\nAllowed values are: 'all', 'first:N', 'last:N', 'random:N'.",
+			"Invalid value of 'sample' option.\nAllowed values are: 'all', 'first:N', 'last:N', 'random:N'.",
 		)
 	}
 
-	if c.Scope != "all" && c.Limit < 1 {
+	if c.Sample != "all" && c.Limit < 1 {
 		return errors.New(
-			"Limit (N) in 'scope' option must be >= 1.",
+			"Limit (N) in 'sample' option must be >= 1.",
 		)
 	}
 

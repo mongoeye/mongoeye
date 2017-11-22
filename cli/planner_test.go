@@ -87,7 +87,7 @@ func TestPlans_Limit(t *testing.T) {
 	cmd := &cobra.Command{}
 	v := viper.New()
 	InitFlags(cmd, v, "env")
-	cmd.ParseFlags([]string{"cmd", "--scope", "first:20"})
+	cmd.ParseFlags([]string{"cmd", "--sample", "first:20"})
 
 	config, _ := GetConfig(v)
 
@@ -108,7 +108,7 @@ func TestPlans_LimitOptimization(t *testing.T) {
 	cmd := &cobra.Command{}
 	v := viper.New()
 	InitFlags(cmd, v, "env")
-	cmd.ParseFlags([]string{"cmd", "--scope", "first:20"})
+	cmd.ParseFlags([]string{"cmd", "--sample", "first:20"})
 
 	config, _ := GetConfig(v)
 

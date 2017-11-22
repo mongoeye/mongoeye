@@ -23,7 +23,7 @@ Mongoeye provides a quick overview of the data in your MongoDB database.
 
 ## Demo
 
-<a href="https://asciinema.org/a/129487" target="_blank" title="Open in asciinema.org">
+<a href="https://asciinema.org/a/148993" target="_blank" title="Open in asciinema.org">
 <img src="https://github.com/mongoeye/mongoeye/blob/master/_misc/demo.gif?raw=true">
 </a>
 
@@ -316,9 +316,9 @@ The **`--match`** option is applied as the first:
   - suitable for include/exclude documents from analysis
   - by default, all documents are included (if the argument is not present)
 
-The **`--scope`** option is applied as the second:
-  - limits the number of documents using [$sort](https://docs.mongodb.com/manual/reference/operator/aggregation/sort/), [$limit](https://docs.mongodb.com/manual/reference/operator/aggregation/limit/) and [$sample](https://docs.mongodb.com/manual/reference/operator/aggregation/sample/) aggregations
-  - valid values are: `all`, `first:N`, `last:N`, `random:N`, where `N > 0`
+The **`--sample`** option is applied as the second:
+  - determines the sampling method using [$sort](https://docs.mongodb.com/manual/reference/operator/aggregation/sort/), [$limit](https://docs.mongodb.com/manual/reference/operator/aggregation/limit/) and [$sample](https://docs.mongodb.com/manual/reference/operator/aggregation/sample/) aggregations
+  - valid values are: `all`, `first:N`, `last:N`, `random:N`, where `N > 1`
   - default value is `random:1000`
 
 The **`--project`** option is applied as the third:
@@ -351,8 +351,8 @@ The **`--project`** option is applied as the third:
     --db                  database for analysis
     --col                 collection for analysis
     --match               filter documents before analysis (json, $match aggregation)
+-s, --sample              all, first:N, last:N, random:N (default "random:1000")
     --project             filter/project fields before analysis (json, $project aggregation)
--s, --scope               all, first:N, last:N, random:N (default "random:1000")
 -d, --depth               max depth in nested documents (default 2)
 ```
 

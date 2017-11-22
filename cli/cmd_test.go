@@ -23,7 +23,7 @@ func TestCmdRun_Analysis(t *testing.T) {
 		"--host", tests.TestDbUri,
 		"--db", c.Database.Name,
 		"--col", c.Name,
-		"--scope", "all",
+		"--sample", "all",
 	})
 
 	err := cmd.Execute()

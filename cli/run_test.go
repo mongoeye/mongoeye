@@ -256,7 +256,7 @@ func TestRun_Table(t *testing.T) {
 		"--host", tests.TestDbUri,
 		"--db", c.Database.Name,
 		"--col", c.Name,
-		"--scope", "all",
+		"--sample", "all",
 	})
 
 	config, _ := GetConfig(v)
@@ -299,7 +299,7 @@ func TestRun_Table_Color(t *testing.T) {
 		"--host", tests.TestDbUri,
 		"--db", c.Database.Name,
 		"--col", c.Name,
-		"--scope", "all",
+		"--sample", "all",
 	})
 
 	config, _ := GetConfig(v)
@@ -332,7 +332,7 @@ func TestRun_Table_NoColor(t *testing.T) {
 		"--host", tests.TestDbUri,
 		"--db", c.Database.Name,
 		"--col", c.Name,
-		"--scope", "all",
+		"--sample", "all",
 		"--no-color",
 	})
 
@@ -367,7 +367,7 @@ func TestRun_Table_File(t *testing.T) {
 		"--host", tests.TestDbUri,
 		"--db", c.Database.Name,
 		"--col", c.Name,
-		"--scope", "all",
+		"--sample", "all",
 		"--file", tmpFile.Name(),
 	})
 
@@ -416,7 +416,7 @@ func TestRun_Json(t *testing.T) {
 		"--host", tests.TestDbUri,
 		"--db", c.Database.Name,
 		"--col", c.Name,
-		"--scope", "all",
+		"--sample", "all",
 		"--format", "json",
 	})
 
@@ -486,7 +486,7 @@ func TestRun_Json_File(t *testing.T) {
 		"--db", c.Database.Name,
 		"--col", c.Name,
 		"--file", tmpFile.Name(),
-		"--scope", "all",
+		"--sample", "all",
 		"--format", "json",
 	})
 
@@ -563,7 +563,7 @@ func TestRun_Yaml(t *testing.T) {
 		"--host", tests.TestDbUri,
 		"--db", c.Database.Name,
 		"--col", c.Name,
-		"--scope", "all",
+		"--sample", "all",
 		"--format", "yaml",
 	})
 
@@ -626,7 +626,7 @@ func TestRun_Yaml_File(t *testing.T) {
 		"--host", tests.TestDbUri,
 		"--db", c.Database.Name,
 		"--col", c.Name,
-		"--scope", "all",
+		"--sample", "all",
 		"--file", tmpFile.Name(),
 		"--format", "yaml",
 	})
@@ -686,7 +686,7 @@ func TestRun_IncompatibleWithAggregationAlgorithm(t *testing.T) {
 		"--host", tests.TestDbUri,
 		"--db", c.Database.Name,
 		"--col", c.Name,
-		"--scope", "all",
+		"--sample", "all",
 		"--use-aggregation",
 	})
 
@@ -719,14 +719,14 @@ func TestRun_IncompatibleWithSampleStage(t *testing.T) {
 		"--host", tests.TestDbUri,
 		"--db", c.Database.Name,
 		"--col", c.Name,
-		"--scope", "random:1000",
+		"--sample", "random:1000",
 	})
 
 	config, _ := GetConfig(v)
 	err := Run(cmd, config)
 
 	assert.Equal(t,
-		fmt.Sprintf("Invalid value of '--scope' option.\nScope 'random' require MongoDB version >= %s.\nPlease, use 'all', 'first:N' or 'last:N' scope.\n", helpers.VersionToString(analysis.RandomSampleMinVersion...)),
+		fmt.Sprintf("Invalid value of '--sample' option.\nSample 'random' require MongoDB version >= %s.\nPlease, use 'all', 'first:N' or 'last:N' sample.\n", helpers.VersionToString(analysis.RandomSampleMinVersion...)),
 		err.Error(),
 	)
 }
@@ -734,7 +734,7 @@ func TestRun_IncompatibleWithSampleStage(t *testing.T) {
 func Test_checkCompatibility(t *testing.T) {
 	config := &Config{
 		UseAggregation: true,
-		Scope:          "random",
+		Sample:         "random",
 	}
 
 	info := mgo.BuildInfo{
@@ -748,7 +748,7 @@ func Test_checkCompatibility(t *testing.T) {
 func Test_checkCompatibility_UnsupportedAggregationAlgorithm(t *testing.T) {
 	config := &Config{
 		UseAggregation: true,
-		Scope:          "all",
+		Sample:         "all",
 	}
 
 	info := mgo.BuildInfo{
@@ -759,10 +759,10 @@ func Test_checkCompatibility_UnsupportedAggregationAlgorithm(t *testing.T) {
 	assert.NotEqual(t, nil, checkCompatibility(config, info))
 }
 
-func Test_checkCompatibility_UnsupportedScope(t *testing.T) {
+func Test_checkCompatibility_UnsupportedSample(t *testing.T) {
 	config := &Config{
 		UseAggregation: false,
-		Scope:          "random",
+		Sample:         "random",
 	}
 
 	info := mgo.BuildInfo{
