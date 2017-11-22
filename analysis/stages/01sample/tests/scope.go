@@ -10,13 +10,13 @@ import (
 	"time"
 )
 
-// RunTestFirst tests sample scope = first.
+// RunTestFirst tests sample method = first.
 func RunTestFirst(t *testing.T, sampleFactory sample.StageFactory) {
 	c := setup()
 	defer tearDown(c)
 
 	options := sample.Options{
-		Scope: sample.First,
+		Method: sample.FirstNDocuments,
 		Limit: 2,
 	}
 
@@ -36,13 +36,13 @@ func RunTestFirst(t *testing.T, sampleFactory sample.StageFactory) {
 	testStage(t, c, sampleFactory(&options), expected)
 }
 
-// RunTestLast tests sample scope = last.
+// RunTestLast tests sample method = last.
 func RunTestLast(t *testing.T, sampleFactory sample.StageFactory) {
 	c := setup()
 	defer tearDown(c)
 
 	options := sample.Options{
-		Scope: sample.Last,
+		Method: sample.LastNDocuments,
 		Limit: 2,
 	}
 
@@ -62,13 +62,13 @@ func RunTestLast(t *testing.T, sampleFactory sample.StageFactory) {
 	testStage(t, c, sampleFactory(&options), expected)
 }
 
-// RunTestRandom tests sample scope = random.
+// RunTestRandom tests sample method = random.
 func RunTestRandom(t *testing.T, sampleFactory sample.StageFactory) {
 	c := setup()
 	defer tearDown(c)
 
 	options := sample.Options{
-		Scope: sample.Random,
+		Method: sample.RandomNDocuments,
 		Limit: 2,
 	}
 
@@ -81,13 +81,13 @@ func RunTestRandom(t *testing.T, sampleFactory sample.StageFactory) {
 	assert.Equal(t, 2, len(results))
 }
 
-// RunTestAll tests sample scope = all.
+// RunTestAll tests sample method = all.
 func RunTestAll(t *testing.T, sampleFactory sample.StageFactory) {
 	c := setup()
 	defer tearDown(c)
 
 	options := sample.Options{
-		Scope: sample.All,
+		Method: sample.AllDocuments,
 	}
 
 	expected := []interface{}{
@@ -111,13 +111,13 @@ func RunTestAll(t *testing.T, sampleFactory sample.StageFactory) {
 	testStage(t, c, sampleFactory(&options), expected)
 }
 
-// RunTestInvalidScope tests invalid sample scope.
-func RunTestInvalidScope(t *testing.T, sampleFactory sample.StageFactory) {
+// RunTestInvalidSample tests invalid sample method.
+func RunTestInvalidSample(t *testing.T, sampleFactory sample.StageFactory) {
 	c := setup()
 	defer tearDown(c)
 
 	options := sample.Options{
-		Scope: 123,
+		Method: 123,
 	}
 
 	assert.Panics(t, func() {
@@ -125,13 +125,13 @@ func RunTestInvalidScope(t *testing.T, sampleFactory sample.StageFactory) {
 	})
 }
 
-// RunTestInvalidLimitWithAllScope tests limit together with all scope.
-func RunTestInvalidLimitWithAllScope(t *testing.T, sampleFactory sample.StageFactory) {
+// RunTestInvalidLimitWithAllSample tests limit together with all sample.
+func RunTestInvalidLimitWithAllSample(t *testing.T, sampleFactory sample.StageFactory) {
 	c := setup()
 	defer tearDown(c)
 
 	options := sample.Options{
-		Scope: sample.All,
+		Method: sample.AllDocuments,
 		Limit: 1,
 	}
 

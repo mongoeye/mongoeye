@@ -89,8 +89,8 @@ func generateAnalysisPlans(server mgo.BuildInfo, count int, config *Config) plan
 	mergeOptions := config.CreateMergeStageOptions()
 
 	// Optimize sample stage
-	if sampleOptions.Scope != sample.All && sampleOptions.Limit > uint64(count) {
-		sampleOptions.Scope = sample.All
+	if sampleOptions.Method != sample.AllDocuments && sampleOptions.Limit > uint64(count) {
+		sampleOptions.Method = sample.AllDocuments
 		sampleOptions.Limit = 0
 	}
 

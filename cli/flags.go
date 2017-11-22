@@ -64,8 +64,8 @@ func InitFlags(cmd *cobra.Command, v *viper.Viper, envPrefix string) {
 	s.String("db", "", "database for analysis")
 	s.String("col", "", "collection for analysis")
 	s.StringP("match", "", "", "filter documents before analysis (json, $match aggregation)")
+	s.StringP("sample", "s", "random:1000", "all, first:N, last:N, random:N")
 	s.StringP("project", "", "", "filter/project fields before analysis (json, $project aggregation)")
-	s.StringP("scope", "s", "random:1000", "all, first:N, last:N, random:N")
 	s.UintP("depth", "d", 2, "max depth in nested documents")
 
 	// statistics options

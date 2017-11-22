@@ -245,7 +245,7 @@ func processField(name string, kind byte, d *decoder.Decoder, level uint, option
 		if options.StoreValue {
 			value.Value = v
 		}
-	case 0x0D: // JavaScript without scope
+	case 0x0D: // JavaScript without sample
 		value.Type = "javascript"
 		v := bson.JavaScript{Code: d.ReadStr()}
 
@@ -259,16 +259,16 @@ func processField(name string, kind byte, d *decoder.Decoder, level uint, option
 		if options.StoreValue {
 			value.Value = v
 		}
-	case 0x0F: // JavaScript with scope
+	case 0x0F: // JavaScript with sample
 		value.Type = "javascriptWithScope"
 
 		d.Skip(4) // Skip length
 		js := bson.JavaScript{Code: d.ReadStr(), Scope: bson.M{}}
 
-		scopeLen := d.ReadInt32()
+		sampleLen := d.ReadInt32()
 		d.Rewind(4)
 
-		bson.Unmarshal(d.ReadBytes(scopeLen), &js.Scope)
+		bson.Unmarshal(d.ReadBytes(sampleLen), &js.Scope)
 
 		if options.StoreValue {
 			value.Value = js

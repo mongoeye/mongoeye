@@ -13,8 +13,8 @@ func RunBenchmarkSampleFirst1000(b *testing.B, sampleFactory sample.StageFactory
 	c := tests.GetBenchmarkCol()
 
 	options := sample.Options{
-		Scope: sample.First,
-		Limit: 1000,
+		Method: sample.FirstNDocuments,
+		Limit:  1000,
 	}
 
 	benchmarkStage(b, c, sampleFactory(&options), true)
@@ -27,8 +27,8 @@ func RunBenchmarkSampleLast1000(b *testing.B, sampleFactory sample.StageFactory)
 	c := tests.GetBenchmarkCol()
 
 	options := sample.Options{
-		Scope: sample.Last,
-		Limit: 1000,
+		Method: sample.LastNDocuments,
+		Limit:  1000,
 	}
 
 	benchmarkStage(b, c, sampleFactory(&options), true)
@@ -41,8 +41,8 @@ func RunBenchmarkSampleRandom1000(b *testing.B, sampleFactory sample.StageFactor
 	c := tests.GetBenchmarkCol()
 
 	options := sample.Options{
-		Scope: sample.Random,
-		Limit: 1000,
+		Method: sample.RandomNDocuments,
+		Limit:  1000,
 	}
 
 	benchmarkStage(b, c, sampleFactory(&options), true)
@@ -55,7 +55,7 @@ func RunBenchmarkSampleAll(b *testing.B, sampleFactory sample.StageFactory) {
 	c := tests.GetBenchmarkCol()
 
 	options := sample.Options{
-		Scope: sample.All,
+		Method: sample.AllDocuments,
 	}
 
 	benchmarkStage(b, c, sampleFactory(&options), true)

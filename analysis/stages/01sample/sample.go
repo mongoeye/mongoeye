@@ -12,25 +12,25 @@ import (
 type Options struct {
 	Match   bson.M
 	Project bson.M
-	Scope   AnalysisScope
+	Method  SampleMethod
 	Limit   uint64
 }
 
-// AnalysisScope defines the method of sampling.
-type AnalysisScope uint8
+// SampleMethod defines the method of sampling (all, first, last, random documents).
+type SampleMethod uint8
 
 const (
-	// All - analyse all documents in collection
-	All AnalysisScope = iota
+	// AllDocuments - analyse all documents in collection
+	AllDocuments SampleMethod = iota
 
-	// First - analyse first N documents in collection
-	First
+	// FirstNDocuments - analyse first N documents in collection
+	FirstNDocuments
 
-	// Last - analyse last N documents in collection
-	Last
+	// LastNDocuments - analyse last N documents in collection
+	LastNDocuments
 
-	// Random - analyse random N documents in collection
-	Random
+	// RandomNDocuments - analyse random N documents in collection
+	RandomNDocuments
 )
 
 // StageFactory prototype.

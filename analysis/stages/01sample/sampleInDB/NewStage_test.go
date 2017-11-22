@@ -33,12 +33,12 @@ func TestSampleInDB_All(t *testing.T) {
 	sampleTests.RunTestAll(t, NewStage)
 }
 
-func TestSampleInDB_InvalidScope(t *testing.T) {
-	sampleTests.RunTestInvalidScope(t, NewStage)
+func TestSampleInDB_InvalidSample(t *testing.T) {
+	sampleTests.RunTestInvalidSample(t, NewStage)
 }
 
-func TestSampleInDB_InvalidLimitWithAllScope(t *testing.T) {
-	sampleTests.RunTestInvalidLimitWithAllScope(t, NewStage)
+func TestSampleInDB_InvalidLimitWithAllSample(t *testing.T) {
+	sampleTests.RunTestInvalidLimitWithAllSample(t, NewStage)
 }
 
 func Benchmark_SampleFirst1000(b *testing.B) {

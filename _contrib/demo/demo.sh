@@ -59,50 +59,56 @@ pauseAfterExample
 example 2 'Analysis using the aggregation framework'
 run '--use-aggregation'
 comment "By default, analysis runs locally."
-comment "Flag ${BOLD}--use-aggregation${NORMAL} serve to run analysis directly in database."
+comment "Option ${BOLD}--use-aggregation${NORMAL} serve to run analysis directly in the database."
 pauseAfterExample
 
 # EXAMPLE 3
 example 3 'Analysis of all documents'
-run '--scope all'
-comment "Flag ${BOLD}--scope all${NORMAL} can be used to analyze all documents."
+run '--sample all'
+comment "Option ${BOLD}--sample all${NORMAL} can be used to analyze all documents."
 pauseAfterExample
 
 # EXAMPLE 4
 example 4 'Analysis of first 100 documents'
-run '--scope first:100'
-comment "For other options, see the flags ${BOLD}--match${NORMAL} and ${BOLD}--scope${NORMAL} in the help."
+run '--sample first:100'
+comment "For more info, see ${BOLD}--match${NORMAL}, ${BOLD}--sample${NORMAL} and ${BOLD}--project${NORMAL} in the help."
 pauseAfterExample
 
 # EXAMPLE 5
-example 5 'YAML output'
-run '--format yaml | head -n 29'
-comment "Use flag ${BOLD}--format yaml${NORMAL} to get results in YAML format."
+example 5 'Analyze only some fields'
+run "--project '{\"_id\": 0, \"rating\": 1}'"
+comment "Option ${BOLD}--project${NORMAL} can be used to include/exclude fields from analysis."
 pauseAfterExample
 
 # EXAMPLE 6
-example 6 'JSON output piped to an external tool'
+example 6 'YAML output'
+run '--format yaml | head -n 29'
+comment "Use option ${BOLD}--format yaml${NORMAL} to get results in YAML format."
+pauseAfterExample
+
+# EXAMPLE 7
+example 7 'JSON output piped to an external tool'
 run "--format json | jq '.fields[] | select(.name == \"rating\")'"
 comment "JSON output can be easily processed using external tools."
 pauseAfterExample
 
-# EXAMPLE 7
-example 7 'The frequency of values'
-run "--most-freq 3 --least-freq 2 --format json |\njq '.fields[] | select(.name == \"rating\") | .types[] | select(.type == \"double\")'"
-comment "Flags ${BOLD}--most-freq N${NORMAL} and ${BOLD}--least-freq N${NORMAL} return the most and least frequent values."
-pauseAfterExample
-
 # EXAMPLE 8
-example 8 'Histogram of value'
-run "--value-hist --value-hist-steps 10 --format json |\njq '.fields[] | select(.name == \"rating\") | .types[] | select(.type == \"double\") | .valueHistogram'"
-comment "Flag ${BOLD}--value-hist-steps N${NORMAL} set the maximum number of steps. Real step value is rounded."
+example 8 'The frequency of values'
+run "--most-freq 3 --least-freq 2 --format json |\njq '.fields[] | select(.name == \"rating\") | .types[] | select(.type == \"double\")'"
+comment "Options ${BOLD}--most-freq N${NORMAL} and ${BOLD}--least-freq N${NORMAL} return the most and least frequent values."
 pauseAfterExample
 
 # EXAMPLE 9
-example 9 'Histogram of weekday'
+example 9 'Histogram of value'
+run "--value-hist --value-hist-steps 10 --format json |\njq '.fields[] | select(.name == \"rating\") | .types[] | select(.type == \"double\") | .valueHistogram'"
+comment "Option ${BOLD}--value-hist-steps N${NORMAL} set the maximum number of steps. Real step value is rounded."
+pauseAfterExample
+
+# EXAMPLE 10
+example 10 'Histogram of weekday'
 run "--weekday-hist --format json |\njq '.fields[] | select(.name == \"_id\") | .types[]'"
 comment "ObjectId fields are processed as dates."
-comment "Flags ${BOLD}--hour-hist${NORMAL} and ${BOLD}--weekday-hist${NORMAL} serve to create a histogram of hour or weekday."
+comment "Options ${BOLD}--hour-hist${NORMAL} and ${BOLD}--weekday-hist${NORMAL} serve to create a histogram of hour or weekday."
 pauseAfterExample
 
 clear
