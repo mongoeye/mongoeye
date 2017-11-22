@@ -15,9 +15,9 @@ func NewStage(sampleOptions *sample.Options) *analysis.Stage {
 			// Create pipeline
 			p := expr.NewPipeline()
 
-			// Query
-			if len(sampleOptions.Query) != 0 {
-				p.AddStage("match", sampleOptions.Query)
+			// Match
+			if len(sampleOptions.Match) != 0 {
+				p.AddStage("match", sampleOptions.Match)
 			}
 
 			// Scope
@@ -36,6 +36,11 @@ func NewStage(sampleOptions *sample.Options) *analysis.Stage {
 				}
 			default:
 				panic("Invalid scope. Use one of the following: First, Last, Random, All.")
+			}
+
+			// Project
+			if len(sampleOptions.Project) != 0 {
+				p.AddStage("project", sampleOptions.Project)
 			}
 
 			return p

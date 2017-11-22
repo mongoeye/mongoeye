@@ -42,7 +42,8 @@ Mongoeye provides a quick overview of the data in your MongoDB database.
     * [Length histogram](#length-histogram)
     * [Weekday histogram](#weekday-histogram)
     * [Hour histogram](#hour-histogram)
- * [List of flags](#list-of-flags)
+ * [Scope of analysis](#scope-of-analysis)
+ * [List of flags and options](#list-of-flags-and-options)
  * [License](#license)
 
 ## Installation
@@ -305,7 +306,28 @@ First value is for interval `[ 00, 01 )`, last for interval `[ 23, 24 )`.
 hourHistogram: [47, 73, 18, 26, 30, 46, 91, 13, 28, 11, 52, 99, 76, 25, 94, 51, 87, 86, 19, 22, 11, 62, 28, 47]
 ```
 
-## List of flags
+## Scope of analysis
+
+*The scope of analysis is defined by the following options.*
+
+The **`--match`** option is applied as the first:
+  - it selects documents for the analysis using [$match aggregation](https://docs.mongodb.com/manual/reference/operator/aggregation/match/)
+  - value is a string in JSON format
+  - suitable for include/exclude documents from analysis
+  - by default, all documents are included (if the argument is not present)
+
+The **`--scope`** option is applied as the second:
+  - limits the number of documents using [$sort](https://docs.mongodb.com/manual/reference/operator/aggregation/sort/), [$limit](https://docs.mongodb.com/manual/reference/operator/aggregation/limit/) and [$sample](https://docs.mongodb.com/manual/reference/operator/aggregation/sample/) aggregations
+  - valid values are: `all`, `first:N`, `last:N`, `random:N`, where `N > 0`
+  - default value is `random:1000`
+
+The **`--project`** option is applied as the third:
+  - before the analysis it modifies document using [$project aggregation](https://docs.mongodb.com/manual/reference/operator/aggregation/project/)
+  - value is a string in JSON format
+  - suitable for include/exclude fields from analysis
+  - default is not applied (if the argument is not present)
+
+## List of flags and options
 
 #### Connection options
 ```
@@ -328,7 +350,8 @@ hourHistogram: [47, 73, 18, 26, 30, 46, 91, 13, 28, 11, 52, 99, 76, 25, 94, 51, 
 ```
     --db                  database for analysis
     --col                 collection for analysis
--q, --query               documents query (json)
+    --match               filter documents before analysis (json, $match aggregation)
+    --project             filter/project fields before analysis (json, $project aggregation)
 -s, --scope               all, first:N, last:N, random:N (default "random:1000")
 -d, --depth               max depth in nested documents (default 2)
 ```
