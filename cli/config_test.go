@@ -39,7 +39,7 @@ func TestGetConfig_Default(t *testing.T) {
 	assert.Equal(t, "", c.Collection)
 	assert.Equal(t, bson.M{}, c.Match)
 	assert.Equal(t, bson.M{}, c.Project)
-	assert.Equal(t, "random", c.Sample)
+	assert.Equal(t, "random", c.SampleMethod)
 	assert.Equal(t, uint64(1000), c.Limit)
 	assert.Equal(t, uint(2), c.Depth)
 	assert.Equal(t, false, c.MinMaxAvgValue)
@@ -126,7 +126,7 @@ func TestGetConfig_Env(t *testing.T) {
 	assert.Equal(t, "dataCol", c.Collection)
 	assert.Equal(t, bson.M{"user": "david"}, c.Match)
 	assert.Equal(t, bson.M{"user": float64(1)}, c.Project)
-	assert.Equal(t, "first", c.Sample)
+	assert.Equal(t, "first", c.SampleMethod)
 	assert.Equal(t, uint64(456), c.Limit)
 	assert.Equal(t, uint(5), c.Depth)
 	assert.Equal(t, true, c.MinMaxAvgValue)
@@ -216,7 +216,7 @@ func TestGetConfig_Flags(t *testing.T) {
 	assert.Equal(t, "dataCol", c.Collection)
 	assert.Equal(t, bson.M{"user": "david"}, c.Match)
 	assert.Equal(t, bson.M{"user": float64(1)}, c.Project)
-	assert.Equal(t, "first", c.Sample)
+	assert.Equal(t, "first", c.SampleMethod)
 	assert.Equal(t, uint64(123), c.Limit)
 	assert.Equal(t, uint(5), c.Depth)
 	assert.Equal(t, true, c.MinMaxAvgValue)
@@ -337,7 +337,7 @@ func TestGetConfig_Full(t *testing.T) {
 	assert.Equal(t, "dataCol", c.Collection)
 	assert.Equal(t, bson.M{"user": "david"}, c.Match)
 	assert.Equal(t, bson.M{"user": float64(1)}, c.Project)
-	assert.Equal(t, "first", c.Sample)
+	assert.Equal(t, "first", c.SampleMethod)
 	assert.Equal(t, uint64(123), c.Limit)
 	assert.Equal(t, uint(5), c.Depth)
 	assert.Equal(t, true, c.MinMaxAvgValue)
@@ -394,7 +394,7 @@ func TestGetConfig_Full2(t *testing.T) {
 	assert.Equal(t, "dataCol", c.Collection)
 	assert.Equal(t, bson.M{"user": "david"}, c.Match)
 	assert.Equal(t, bson.M{"user": float64(1)}, c.Project)
-	assert.Equal(t, "first", c.Sample)
+	assert.Equal(t, "first", c.SampleMethod)
 	assert.Equal(t, uint64(123), c.Limit)
 	assert.Equal(t, uint(5), c.Depth)
 	assert.Equal(t, true, c.MinMaxAvgValue)
@@ -604,10 +604,10 @@ func TestConfig_CreateAnalysisOptions_ConcurrencyAuto(t *testing.T) {
 
 func TestConfig_CreateSampleStageOptions(t *testing.T) {
 	c := Config{
-		Match:   bson.M{"key": "value"},
-		Project: bson.M{"key": 1},
-		Sample:  "all",
-		Limit:   0,
+		Match:        bson.M{"key": "value"},
+		Project:      bson.M{"key": 1},
+		SampleMethod: "all",
+		Limit:        0,
 	}
 
 	assert.Equal(t, &sample.Options{
@@ -618,7 +618,7 @@ func TestConfig_CreateSampleStageOptions(t *testing.T) {
 	}, c.CreateSampleStageOptions())
 
 	// sample: first
-	c.Sample = "first"
+	c.SampleMethod = "first"
 	c.Limit = 12345
 	assert.Equal(t, &sample.Options{
 		Match:   bson.M{"key": "value"},
@@ -628,7 +628,7 @@ func TestConfig_CreateSampleStageOptions(t *testing.T) {
 	}, c.CreateSampleStageOptions())
 
 	// sample: last
-	c.Sample = "last"
+	c.SampleMethod = "last"
 	assert.Equal(t, &sample.Options{
 		Match:   bson.M{"key": "value"},
 		Project: bson.M{"key": 1},
@@ -637,7 +637,7 @@ func TestConfig_CreateSampleStageOptions(t *testing.T) {
 	}, c.CreateSampleStageOptions())
 
 	// sample: random
-	c.Sample = "random"
+	c.SampleMethod = "random"
 	assert.Equal(t, &sample.Options{
 		Match:   bson.M{"key": "value"},
 		Project: bson.M{"key": 1},
@@ -646,7 +646,7 @@ func TestConfig_CreateSampleStageOptions(t *testing.T) {
 	}, c.CreateSampleStageOptions())
 
 	// invalid sample
-	c.Sample = "abc"
+	c.SampleMethod = "abc"
 	assert.Panics(t, func() {
 		c.CreateSampleStageOptions()
 	})

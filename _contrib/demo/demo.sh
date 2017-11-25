@@ -56,10 +56,10 @@ comment 'The default scope is random sample of 1000 documents.'
 pauseAfterExample
 
 # EXAMPLE 2
-example 2 'Analysis using the aggregation framework'
+example 2 'Analysis in the DB by aggregation framework'
 run '--use-aggregation'
 comment "By default, analysis runs locally."
-comment "Option ${BOLD}--use-aggregation${NORMAL} serve to run analysis directly in the database."
+comment "Option ${BOLD}--use-aggregation${NORMAL} serves to run analysis directly in the database."
 pauseAfterExample
 
 # EXAMPLE 3
@@ -71,13 +71,14 @@ pauseAfterExample
 # EXAMPLE 4
 example 4 'Analysis of first 100 documents'
 run '--sample first:100'
-comment "For more info, see ${BOLD}--match${NORMAL}, ${BOLD}--sample${NORMAL} and ${BOLD}--project${NORMAL} in the help."
+comment "For more info, see ${BOLD}--match${NORMAL}, ${BOLD}--sample${NORMAL} and ${BOLD}--project${NORMAL} options in the help."
 pauseAfterExample
 
 # EXAMPLE 5
-example 5 'Analyze only some fields'
-run "--project '{\"_id\": 0, \"rating\": 1}'"
-comment "Option ${BOLD}--project${NORMAL} can be used to include/exclude fields from analysis."
+example 5 'Project (exclude/include) document fields'
+run '--project "{\"_id\": 0, \"rating\": 1}"'
+comment "Option ${BOLD}--project${NORMAL} can be used to include/exclude fields from the analysis."
+comment "For more information, see \$project aggregation in the MongoDB documentation."
 pauseAfterExample
 
 # EXAMPLE 6

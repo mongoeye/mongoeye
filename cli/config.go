@@ -33,13 +33,13 @@ type Config struct {
 	AuthMechanism     string
 
 	// analysis options
-	Database   string
-	Collection string
-	Match      bson.M
-	Project    bson.M
-	Sample     string
-	Limit      uint64
-	Depth      uint
+	Database     string
+	Collection   string
+	Match        bson.M
+	Project      bson.M
+	SampleMethod string
+	Limit        uint64
+	Depth        uint
 
 	// statistics options
 	MinMaxAvgValue       bool
@@ -85,7 +85,7 @@ func (c *Config) CreateAnalysisOptions() *analysis.Options {
 // CreateSampleStageOptions generates sample options from config.
 func (c *Config) CreateSampleStageOptions() *sample.Options {
 	var sampleMethod sample.SampleMethod
-	switch c.Sample {
+	switch c.SampleMethod {
 	case "all":
 		sampleMethod = sample.AllDocuments
 	case "first":
@@ -165,7 +165,7 @@ func GetConfig(v *viper.Viper) (*Config, error) {
 	}
 
 	// Parse sample
-	sample, limit, err := parseSample(v)
+	sampleMethod, limit, err := parseSample(v)
 	if err != nil {
 		return nil, err
 	}
@@ -203,7 +203,7 @@ func GetConfig(v *viper.Viper) (*Config, error) {
 		Collection:           v.GetString("col"),
 		Match:                match,
 		Project:              project,
-		Sample:               sample,
+		SampleMethod:         sampleMethod,
 		Limit:                limit,
 		Depth:                uint(v.GetInt("depth")),
 		MinMaxAvgValue:       v.GetBool("value"),
@@ -287,11 +287,11 @@ func parseConnectionMode(v *viper.Viper) (mode mgo.Mode, err error) {
 	return
 }
 
-func parseSample(v *viper.Viper) (sample string, limit uint64, err error) {
-	sampleParts := strings.SplitN(strings.ToLower(v.GetString("sample")), ":", 2)
-	sample = sampleParts[0]
-	if len(sampleParts) > 1 {
-		i, e := strconv.ParseInt(sampleParts[1], 10, 64)
+func parseSample(v *viper.Viper) (sampleMethod string, limit uint64, err error) {
+	parts := strings.SplitN(strings.ToLower(v.GetString("sample")), ":", 2)
+	sampleMethod = parts[0]
+	if len(parts) > 1 {
+		i, e := strconv.ParseInt(parts[1], 10, 64)
 		if e != nil {
 			err = errors.New(
 				"Cannot parse a valid limit (integer) from 'sample' option.\nPlease enter a valid sample, eg. 'first:100'.",
@@ -326,7 +326,7 @@ func parseJsonArgument(v *viper.Viper, argument string) (out bson.M, err error) 
 	if len(raw) > 0 {
 		err = json.Unmarshal([]byte(raw), &out)
 		if err != nil {
-			err = fmt.Errorf("Invalid JSON in '%s' option.\nPlease enter a valid query.", argument)
+			err = fmt.Errorf("Invalid JSON in '%s' option: %s\n", argument, raw)
 		}
 	}
 
@@ -334,13 +334,13 @@ func parseJsonArgument(v *viper.Viper, argument string) (out bson.M, err error) 
 }
 
 func (c *Config) validate() error {
-	if !helpers.InStringSlice(c.Sample, []string{"all", "first", "last", "random"}) {
+	if !helpers.InStringSlice(c.SampleMethod, []string{"all", "first", "last", "random"}) {
 		return errors.New(
 			"Invalid value of 'sample' option.\nAllowed values are: 'all', 'first:N', 'last:N', 'random:N'.",
 		)
 	}
 
-	if c.Sample != "all" && c.Limit < 1 {
+	if c.SampleMethod != "all" && c.Limit < 1 {
 		return errors.New(
 			"Limit (N) in 'sample' option must be >= 1.",
 		)

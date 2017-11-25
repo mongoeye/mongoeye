@@ -734,7 +734,7 @@ func TestRun_IncompatibleWithSampleStage(t *testing.T) {
 func Test_checkCompatibility(t *testing.T) {
 	config := &Config{
 		UseAggregation: true,
-		Sample:         "random",
+		SampleMethod:   "random",
 	}
 
 	info := mgo.BuildInfo{
@@ -748,7 +748,7 @@ func Test_checkCompatibility(t *testing.T) {
 func Test_checkCompatibility_UnsupportedAggregationAlgorithm(t *testing.T) {
 	config := &Config{
 		UseAggregation: true,
-		Sample:         "all",
+		SampleMethod:   "all",
 	}
 
 	info := mgo.BuildInfo{
@@ -762,7 +762,7 @@ func Test_checkCompatibility_UnsupportedAggregationAlgorithm(t *testing.T) {
 func Test_checkCompatibility_UnsupportedSample(t *testing.T) {
 	config := &Config{
 		UseAggregation: false,
-		Sample:         "random",
+		SampleMethod:   "random",
 	}
 
 	info := mgo.BuildInfo{
