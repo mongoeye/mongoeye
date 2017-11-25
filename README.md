@@ -326,6 +326,8 @@ The **`--project`** option is applied as the third:
   - value is a string in JSON format
   - suitable for include/exclude fields from analysis
   - default is not applied (if the argument is not present)
+  
+***Note:** Be sure to escape JSON options correctly, eg. `--project "{\"Field\": 0}"`.*
 
 ## List of flags and options
 
