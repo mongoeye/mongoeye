@@ -13,7 +13,89 @@ import (
 	"time"
 )
 
-func TestFormat_TABLE(t *testing.T) {
+// https://github.com/mongoeye/mongoeye/issues/11
+func TestFormat_TABLE_OneItem(t *testing.T) {
+	color.NoColor = true
+
+	result := Result{
+		Plan:         "local",
+		Duration:     20 * time.Millisecond,
+		AllDocsCount: 1,
+		DocsCount:    1,
+		FieldsCount:  3,
+		Fields: analysis.Fields{
+			{
+				Name:  "_id",
+				Count: 1,
+				Level: 0,
+				Types: analysis.Types{
+					{
+						Name:  "objectId",
+						Count: 1,
+					},
+				},
+			},
+			{
+				Name:  "hello",
+				Count: 1,
+				Level: 0,
+				Types: analysis.Types{
+					{
+						Name:  "array",
+						Count: 1,
+					},
+				},
+			},
+			{
+				Name:  "hello.[]",
+				Count: 5,
+				Level: 1,
+				Types: analysis.Types{
+					{
+						Name:  "int",
+						Count: 2,
+					},
+					{
+						Name:  "double",
+						Count: 1,
+					},
+					{
+						Name:  "string",
+						Count: 2,
+					},
+				},
+			},
+		},
+	}
+
+	cmd := &cobra.Command{}
+	v := viper.New()
+	InitFlags(cmd, v, "env")
+
+	cmd.ParseFlags([]string{"cmd", "--format", "table"})
+	config, err := GetConfig(v)
+	assert.Equal(t, nil, err)
+
+	out, _ := Format(result, config)
+
+	expected := []string{
+		"         KEY         │ COUNT  │   %    ",
+		"───────────────────────────────────────",
+		"  all documents      │ 1      │        ",
+		"  analyzed documents │ 1      │ 100.0  ",
+		"                     │        │        ",
+		"  _id ➜ objectId     │ 1      │ 100.0  ",
+		"  hello ➜ array      │ 1      │ 100.0  ",
+		"  ├╴[array item]     │ 5      │        ",
+		"  │ │ ➜ int          │ 2      │  40.0  ",
+		"  │ │ ➜ double       │ 1      │  20.0  ",
+		"  └─┴╴➜ string       │ 2      │  40.0  \n",
+	}
+
+	assert.Equal(t, strings.Join(expected, "\n"), string(out))
+}
+
+func TestFormat_TABLE_Complex(t *testing.T) {
 	color.NoColor = true
 
 	result := Result{

@@ -273,7 +273,7 @@ func (f *TableFormatter) generateFieldLine(previous *analysis.Field, field *anal
 
 	b := bytes.NewBuffer(nil)
 	for i := uint(1); i <= field.Level; i++ {
-		if i > bound {
+		if i > bound && len(field.Types) == 1 {
 			// End of line
 			if i == field.Level {
 				if levelDiff > 1 {
@@ -315,12 +315,12 @@ func (f *TableFormatter) generateTypeLine(previous *analysis.Field, field *analy
 
 	b := bytes.NewBuffer(nil)
 	for i := uint(0); i <= field.Level; i++ {
-		if last && int(i) > bound {
+		if last && (int(i) > bound || next == nil) {
 			if levelDiff > 1 {
 				if i == field.Level {
 					b.WriteString(f.symbols.lineEndLastM)
 					continue
-				} else if int(i) == bound+1 {
+				} else if int(i) == bound+1 || next == nil {
 					b.WriteString(f.symbols.lineEndCommon)
 					continue
 				} else {

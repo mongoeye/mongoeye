@@ -17,7 +17,7 @@ func RunTestFirst(t *testing.T, sampleFactory sample.StageFactory) {
 
 	options := sample.Options{
 		Method: sample.FirstNDocuments,
-		Limit: 2,
+		Limit:  2,
 	}
 
 	expected := []interface{}{
@@ -43,7 +43,7 @@ func RunTestLast(t *testing.T, sampleFactory sample.StageFactory) {
 
 	options := sample.Options{
 		Method: sample.LastNDocuments,
-		Limit: 2,
+		Limit:  2,
 	}
 
 	expected := []interface{}{
@@ -69,7 +69,7 @@ func RunTestRandom(t *testing.T, sampleFactory sample.StageFactory) {
 
 	options := sample.Options{
 		Method: sample.RandomNDocuments,
-		Limit: 2,
+		Limit:  2,
 	}
 
 	out := analysisTests.RunStages(c, time.UTC, []*analysis.Stage{
@@ -132,7 +132,7 @@ func RunTestInvalidLimitWithAllSample(t *testing.T, sampleFactory sample.StageFa
 
 	options := sample.Options{
 		Method: sample.AllDocuments,
-		Limit: 1,
+		Limit:  1,
 	}
 
 	assert.Panics(t, func() {
