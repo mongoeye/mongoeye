@@ -6,7 +6,7 @@ DIRS = $(shell go list ./... | grep -v /vendor/ | sed 's~^github.com/mongoeye/mo
 all: fmt-fix lint test build
 
 get-deps:
-	go get github.com/kardianos/govendor github.com/kyoh86/richgo github.com/golang/lint github.com/alecthomas/gometalinter
+	go get golang.org/x/lint/golint github.com/kardianos/govendor github.com/kyoh86/richgo github.com/alecthomas/gometalinter
 	gometalinter --install
 
 fmt-check:
