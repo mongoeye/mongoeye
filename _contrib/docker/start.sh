@@ -16,7 +16,7 @@ source "env.sh"
 
 # Wait for MongoDB
 printf "\nWaiting until MongoDB become ready "
-max_attempts=30
+max_attempts=40
 attempt=0
 until mongo --quiet --eval "db.version()"  "$BENCHMARK_MONGO_URI" > /dev/null 2>&1
 do

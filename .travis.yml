@@ -10,7 +10,8 @@ services:
 env:
   matrix:
     - MONGODB_VERSION=unstable
-    - MONGODB_VERSION=3.5.10 COVERALLS="-service=travis-ci" BUILD=true
+    - MONGODB_VERSION=3.6 COVERALLS="-service=travis-ci" BUILD=true
+    - MONGODB_VERSION=3.5
     - MONGODB_VERSION=3.4
     - MONGODB_VERSION=3.2
     - MONGODB_VERSION=3.0
