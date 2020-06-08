@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+
 	"github.com/mongoeye/mongoeye/analysis"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -98,6 +99,9 @@ func InitFlags(cmd *cobra.Command, v *viper.Viper, envPrefix string) {
 	s.Bool("version", false, "show version")
 	s.BoolP("help", "h", false, "show this help")
 
+	//SSL options
+	s = flags.AddSection("ssl options").Set
+	s.Bool("ssl", false, "true - if ssl enabled or false - if disabled")
 	// Bind all flags to viper
 	all := cmd.Flags()
 	all.SortFlags = false

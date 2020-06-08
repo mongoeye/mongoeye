@@ -4,6 +4,12 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"io/ioutil"
+	"os"
+	"regexp"
+	"strings"
+	"testing"
+
 	"github.com/fatih/color"
 	"github.com/mongoeye/mongoeye/analysis"
 	"github.com/mongoeye/mongoeye/helpers"
@@ -13,11 +19,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"io/ioutil"
-	"os"
-	"regexp"
-	"strings"
-	"testing"
 )
 
 func TestNoOp(t *testing.T) {
@@ -238,6 +239,7 @@ func TestRun_Table(t *testing.T) {
 	color.NoColor = true
 
 	c := tests.SetupTestCol()
+
 	defer tests.TearDownTestCol(c)
 
 	c.Insert(bson.M{
@@ -257,6 +259,8 @@ func TestRun_Table(t *testing.T) {
 		"--db", c.Database.Name,
 		"--col", c.Name,
 		"--sample", "all",
+		"-u", "admin",
+		"-p", "12345",
 	})
 
 	config, _ := GetConfig(v)
@@ -296,10 +300,12 @@ func TestRun_Table_Color(t *testing.T) {
 	InitFlags(cmd, v, "env")
 	cmd.ParseFlags([]string{
 		"cmd",
-		"--host", tests.TestDbUri,
+		"--host", "localhost:27017",
 		"--db", c.Database.Name,
 		"--col", c.Name,
 		"--sample", "all",
+		"-u", "admin",
+		"-p", "12345",
 	})
 
 	config, _ := GetConfig(v)
@@ -334,6 +340,8 @@ func TestRun_Table_NoColor(t *testing.T) {
 		"--col", c.Name,
 		"--sample", "all",
 		"--no-color",
+		"-u", "admin",
+		"-p", "12345",
 	})
 
 	config, _ := GetConfig(v)
@@ -369,6 +377,8 @@ func TestRun_Table_File(t *testing.T) {
 		"--col", c.Name,
 		"--sample", "all",
 		"--file", tmpFile.Name(),
+		"-u", "admin",
+		"-p", "12345",
 	})
 
 	config, _ := GetConfig(v)
@@ -418,6 +428,8 @@ func TestRun_Json(t *testing.T) {
 		"--col", c.Name,
 		"--sample", "all",
 		"--format", "json",
+		"-u", "admin",
+		"-p", "12345",
 	})
 
 	config, _ := GetConfig(v)
@@ -488,6 +500,8 @@ func TestRun_Json_File(t *testing.T) {
 		"--file", tmpFile.Name(),
 		"--sample", "all",
 		"--format", "json",
+		"-u", "admin",
+		"-p", "12345",
 	})
 
 	config, _ := GetConfig(v)
@@ -565,6 +579,8 @@ func TestRun_Yaml(t *testing.T) {
 		"--col", c.Name,
 		"--sample", "all",
 		"--format", "yaml",
+		"-u", "admin",
+		"-p", "12345",
 	})
 
 	config, _ := GetConfig(v)
@@ -629,6 +645,8 @@ func TestRun_Yaml_File(t *testing.T) {
 		"--sample", "all",
 		"--file", tmpFile.Name(),
 		"--format", "yaml",
+		"-u", "admin",
+		"-p", "12345",
 	})
 
 	config, _ := GetConfig(v)

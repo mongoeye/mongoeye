@@ -1,18 +1,37 @@
 package cli
 
 import (
+	"crypto/tls"
 	"errors"
 	"fmt"
+	"net"
+	"strings"
+
 	"github.com/mongoeye/mongoeye/analysis"
 	"github.com/mongoeye/mongoeye/helpers"
 	"gopkg.in/mgo.v2"
-	"strings"
 )
 
 // Connect to MongoDB database and returns server info and session.
 func Connect(config *Config) (info mgo.BuildInfo, session *mgo.Session, collection *mgo.Collection, count int, err error) {
 	// Session
-	session, err = mgo.DialWithTimeout(config.Host, config.ConnectionTimeout)
+
+	dialinfo := mgo.DialInfo{}
+
+	dialinfo.Addrs = []string{config.Host}
+	dialinfo.Timeout = config.ConnectionTimeout
+	dialinfo.Database = config.Database
+	dialinfo.Mechanism = config.AuthMechanism
+	dialinfo.Username = config.User
+	dialinfo.Password = config.Password
+
+	if config.SSL {
+		dialinfo.DialServer = func(addr *mgo.ServerAddr) (net.Conn, error) {
+			return tls.Dial("tcp", addr.String(), &tls.Config{InsecureSkipVerify: true})
+		}
+	}
+	session, err = mgo.DialWithInfo(&dialinfo)
+	//	session, err = mgo.DialWithTimeout(config.Host, config.ConnectionTimeout)
 	if err != nil {
 		err = fmt.Errorf("Connection failed: %s.\n", err)
 		return

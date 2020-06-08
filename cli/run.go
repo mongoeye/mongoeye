@@ -3,11 +3,12 @@ package cli
 import (
 	"errors"
 	"fmt"
+	"io"
+	"os"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"gopkg.in/mgo.v2"
-	"io"
-	"os"
 )
 
 var noOp = func(cmd *cobra.Command, args []string) error { return nil }
@@ -137,6 +138,7 @@ func runAnalysis(out io.Writer, printInfo bool, allPlans plans, collection *mgo.
 
 // PreRun prints help, version and validate arguments.
 func PreRun(cmd *cobra.Command, v *viper.Viper, osArgs []string, args []string) error {
+
 	out := cmd.OutOrStdout()
 
 	// Help

@@ -2,9 +2,10 @@ package cli
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"os"
 )
 
 // NewCmd creates new root command.
@@ -26,10 +27,13 @@ func NewCmd(cmdName string, envPrefix string, appName string, appVersion string,
 		SilenceUsage:  true,
 		SilenceErrors: true,
 		PreRunE: func(cmd *cobra.Command, args []string) error {
+
 			return PreRun(cmd, v, os.Args, args)
+
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			config, err := GetConfig(v)
+
 			if err != nil {
 				return err
 			}

@@ -2,10 +2,11 @@ package cli
 
 import (
 	"bytes"
+	"testing"
+
 	"github.com/mongoeye/mongoeye/tests"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/mgo.v2/bson"
-	"testing"
 )
 
 func TestCmdRun_Analysis(t *testing.T) {
@@ -18,12 +19,15 @@ func TestCmdRun_Analysis(t *testing.T) {
 	cmd, _ := NewCmd("cmd", "env", "name", "version", "subtitle")
 	cmd.SetOutput(out)
 
+	//fmt.Println("database", c.Database.Name)
 	cmd.ParseFlags([]string{
 		"cmd",
-		"--host", tests.TestDbUri,
-		"--db", c.Database.Name,
-		"--col", c.Name,
+		"--host", "localhost:27017",
+		"--db", "company",
+		"--col", "company",
 		"--sample", "all",
+		"-u", "admin",
+		"-p", "12345",
 	})
 
 	err := cmd.Execute()

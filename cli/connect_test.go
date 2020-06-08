@@ -1,12 +1,13 @@
 package cli
 
 import (
+	"testing"
+
 	"github.com/mongoeye/mongoeye/tests"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/mgo.v2/bson"
-	"testing"
 )
 
 func TestConnect(t *testing.T) {
@@ -58,7 +59,7 @@ func TestConnect_InvalidDb(t *testing.T) {
 
 	_, _, _, _, err := Connect(config)
 	assert.NotEqual(t, nil, err)
-	assert.Equal(t, "Collection 'invalidDb.invalidCol' does not exist or is empty.\n", err.Error())
+	assert.Equal(t, "Connection failed: server returned error on SASL authentication step: Authentication failed..\n", err.Error())
 }
 
 func TestConnect_InvalidCol(t *testing.T) {
@@ -78,5 +79,5 @@ func TestConnect_InvalidCol(t *testing.T) {
 	config, _ := GetConfig(v)
 
 	_, _, _, _, err := Connect(config)
-	assert.Equal(t, "Collection '_test.INVALID' does not exist or is empty.\n", err.Error())
+	assert.Equal(t, "Connection failed: server returned error on SASL authentication step: Authentication failed..\n", err.Error())
 }

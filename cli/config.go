@@ -4,6 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"runtime"
+	"strconv"
+	"strings"
+	"time"
+
 	"github.com/mongoeye/mongoeye/analysis"
 	"github.com/mongoeye/mongoeye/analysis/stages/01sample"
 	"github.com/mongoeye/mongoeye/analysis/stages/02expand"
@@ -13,10 +18,6 @@ import (
 	"github.com/spf13/viper"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"runtime"
-	"strconv"
-	"strings"
-	"time"
 )
 
 // Config - app configuration.
@@ -40,6 +41,7 @@ type Config struct {
 	SampleMethod string
 	Limit        uint64
 	Depth        uint
+	SSL          bool
 
 	// statistics options
 	MinMaxAvgValue       bool
@@ -69,6 +71,7 @@ type Config struct {
 
 // CreateAnalysisOptions generates analysis options from config.
 func (c *Config) CreateAnalysisOptions() *analysis.Options {
+
 	concurrency := int(c.Concurrency)
 	if concurrency == 0 {
 		concurrency = runtime.NumCPU()
@@ -227,6 +230,7 @@ func GetConfig(v *viper.Viper) (*Config, error) {
 		BufferSize:           uint(v.GetInt("buffer")),
 		BatchSize:            uint(v.GetInt("batch")),
 		NoColor:              v.GetBool("no-color"),
+		SSL:                  v.GetBool("ssl"),
 	}
 
 	// --full = perform all available analyzes
@@ -288,6 +292,7 @@ func parseConnectionMode(v *viper.Viper) (mode mgo.Mode, err error) {
 }
 
 func parseSample(v *viper.Viper) (sampleMethod string, limit uint64, err error) {
+
 	parts := strings.SplitN(strings.ToLower(v.GetString("sample")), ":", 2)
 	sampleMethod = parts[0]
 	if len(parts) > 1 {
