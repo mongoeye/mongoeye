@@ -9,22 +9,25 @@ cd "$dir"
 source "env.sh"
 
 # Run containers
-docker-compose -f docker-compose.yml -p mongoeye_mongo up -d
+#docker-compose -f docker-compose.yml -p mongoeye_mongo up -d
+docker run --name mongoeye_mongo_test_server_1 --restart=always -d -p 27017:27017 mongo:3.6.3 mongod --noauth
 
 # Reload env
 source "env.sh"
 
 # Wait for MongoDB
+
 printf "\nWaiting until MongoDB become ready "
 max_attempts=40
 attempt=0
+
 until mongo --quiet --eval "db.version()"  "$BENCHMARK_MONGO_URI" > /dev/null 2>&1
 do
   if (( attempt > max_attempts )); then
     printf "\nCan't connect to server.\n"
     exit 1
   fi
-
+#
   printf "."
   sleep 1
 
@@ -32,10 +35,11 @@ do
 done
 printf "\n\n"
 
-# Print MongoDB version
+#Print MongoDB version
 DB_VERSION=`mongo --quiet --eval "db.version()" "$BENCHMARK_MONGO_URI"`
 echo "MongoDB started, version: $DB_VERSION"
 printf "\n"
+
 
 # Create admin user if not exists
 createAdminUser () {
@@ -43,6 +47,50 @@ createAdminUser () {
    echo "Creating admin user (admin, 12345), if not exists..."
    docker exec -i "$TEST_MONGO_CONTAINER" mongo --quiet --eval "db = db.getSiblingDB('admin'); if (db.getUsers().length == 0) { db.createUser({ user: 'admin', pwd: '12345', roles:['root'] } ) }"
 }
+
+# Create admin user if not exists
+createCompanyAdminUser () {
+   printf "\n"
+   echo "Creating admin user (admin, 12345), if not exists..."
+   docker exec -i "$TEST_MONGO_CONTAINER" mongo --quiet --eval "db = db.getSiblingDB('company'); if (db.getUsers().length == 0) { db.createUser({ user: 'admin', pwd: '12345', roles:['readWrite'] } ) }"
+}
+
+# Create admin user if not exists
+createCompany1000AdminUser () {
+   printf "\n"
+   echo "Creating admin user (admin, 12345), if not exists..."
+   docker exec -i "$TEST_MONGO_CONTAINER" mongo --quiet --eval "db = db.getSiblingDB('company1000'); if (db.getUsers().length == 0) { db.createUser({ user: 'admin', pwd: '12345', roles:['readWrite'] } ) }"
+}
+
+# Create admin user if not exists
+createCompany5000AdminUser () {
+   printf "\n"
+   echo "Creating admin user (admin, 12345), if not exists..."
+   docker exec -i "$TEST_MONGO_CONTAINER" mongo --quiet --eval "db = db.getSiblingDB('company5000'); if (db.getUsers().length == 0) { db.createUser({ user: 'admin', pwd: '12345', roles:['readWrite'] } ) }"
+}
+
+# Create admin user if not exists
+createRestaurantAdminUser () {
+   printf "\n"
+   echo "Creating admin user (admin, 12345), if not exists..."
+   docker exec -i "$TEST_MONGO_CONTAINER" mongo --quiet --eval "db = db.getSiblingDB('restaurant'); if (db.getUsers().length == 0) { db.createUser({ user: 'admin', pwd: '12345', roles:['readWrite'] } ) }"
+}
+
+# Create admin user if not exists
+createStudentAdminUser () {
+   printf "\n"
+   echo "Creating admin user (admin, 12345), if not exists..."
+   docker exec -i "$TEST_MONGO_CONTAINER" mongo --quiet --eval "db = db.getSiblingDB('students'); if (db.getUsers().length == 0) { db.createUser({ user: 'admin', pwd: '12345', roles:['readWrite'] } ) }"
+}
+
+# Create admin user if not exists
+createPeopleAdminUser () {
+   printf "\n"
+   echo "Creating admin user (admin, 12345), if not exists..."
+   docker exec -i "$TEST_MONGO_CONTAINER" mongo --quiet --eval "db = db.getSiblingDB('people'); if (db.getUsers().length == 0) { db.createUser({ user: 'admin', pwd: '12345', roles:['readWrite'] } ) }"
+}
+
+
 
 # There is a database of the given name? $dbName
 dbExists () {
@@ -84,5 +132,11 @@ dbExists "people"         || importArchive "../dataset/people.bson.gz" "people" 
 dbExists "db"     || importJSON    "../dataset/restaurant.json" "db" "col"
 
 createAdminUser
+createCompanyAdminUser
+createCompany1000AdminUser
+createCompany5000AdminUser
+createRestaurantAdminUser
+createStudentAdminUser
+createPeopleAdminUser
 
 printf "\nOK\n\n"
