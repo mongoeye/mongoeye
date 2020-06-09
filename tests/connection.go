@@ -1,11 +1,14 @@
 package tests
 
 import (
+	"crypto/tls"
 	"fmt"
-	"github.com/elgs/gostrgen"
-	"gopkg.in/mgo.v2"
+	"net"
 	"os"
 	"time"
+
+	"github.com/elgs/gostrgen"
+	"gopkg.in/mgo.v2"
 )
 
 // TestDbSession - connection to test database
@@ -38,10 +41,26 @@ func init() {
 	if err != nil {
 		panic(fmt.Errorf("Error: cannot get server info, msg: %s\n", err.Error()))
 	}
+
 }
 
 func connect(url string) *mgo.Session {
-	session, err := mgo.DialWithTimeout(url, time.Second)
+
+	dialinfo := mgo.DialInfo{}
+
+	dialinfo.Addrs = []string{url}
+	dialinfo.Timeout = time.Second
+
+	SSLFlag := false
+
+	if SSLFlag {
+		dialinfo.DialServer = func(addr *mgo.ServerAddr) (net.Conn, error) {
+			return tls.Dial("tcp", addr.String(), &tls.Config{InsecureSkipVerify: true})
+		}
+	}
+
+	//session, err := mgo.DialWithTimeout(url, time.Second)
+	session, err := mgo.DialWithInfo(&dialinfo)
 	if err != nil {
 		panic(fmt.Errorf("Error: cannot connect to: %s, msg: %s\n", url, err.Error()))
 	}
@@ -56,7 +75,6 @@ func connect(url string) *mgo.Session {
 	if err != nil {
 		panic(fmt.Errorf("Error: cannot ping to: %s, msg: %s\n", url, err.Error()))
 	}
-
 	session.SetSyncTimeout(20 * time.Minute)
 	session.SetSocketTimeout(5 * time.Minute)
 
@@ -69,6 +87,12 @@ func CreateTestCollection(s *mgo.Session) *mgo.Collection {
 	if err != nil {
 		panic(err)
 	}
+	err = s.DB("_test").UpsertUser(&mgo.User{
+		Username: "admin",
+		Password: "12345",
+		Roles:    []mgo.Role{"read"},
+	})
+	// = s.DB("_test").AddUser("admin", "12345", true)
 	return s.DB("_test").C("_test_" + random)
 }
 
@@ -89,5 +113,14 @@ func TearDownTestCol(c *mgo.Collection) {
 
 // GetBenchmarkCol gets collection for benchmarks.
 func GetBenchmarkCol() *mgo.Collection {
+	//err := BenchmarkDbSession.DB(BenchmarkDb).AddUser("admin", "12345", true)
+	err := BenchmarkDbSession.DB(BenchmarkDb).UpsertUser(&mgo.User{
+		Username: "admin",
+		Password: "12345",
+		Roles:    []mgo.Role{"read"},
+	})
+	if err != nil {
+		fmt.Println("error in user creation on benchmarkdb")
+	}
 	return BenchmarkDbSession.DB(BenchmarkDb).C(BenchmarkCol)
 }
