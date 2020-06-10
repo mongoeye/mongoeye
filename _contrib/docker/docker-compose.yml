@@ -1,8 +1,10 @@
-version: '3'
+version: '2'
 
 services:
   test_server:
-    image: mongo:3.6.3
-    command: mongod --bind-ip 0.0.0.0 --noprealloc --smallfiles --port 27017  --nojournal --oplogSize 16 --noauth
+    image: mongo:3.5.10
+    command: mongod --bind_ip 0.0.0.0 --noprealloc --smallfiles --port 27017  --nojournal --oplogSize 16 --noauth
     ports:
-      - "27017:27017"
+      - "5555:27017"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
