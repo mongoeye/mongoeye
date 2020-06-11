@@ -1,0 +1,51 @@
+Xft.rgba: none
+Xft.hintstyle: hintfull
+
+URxvt.scrollBar: false
+URxvt.transparent: true
+URxvt.internalBorder: 16
+
+URxvt.font: xft:RobotoMono:medium:pixelsize=27:antialias=true:hinting=true
+URxvt.boldFont: xft:RobotoMono:bold:pixelsize=27:antialias=true:hinting=true
+
+! special
+URxvt.foreground:   #f8f8f2
+URxvt.background:   #0a0a08
+URxvt.fadeColor:    #0a0a08
+URxvt.cursorColor:  #f8f8f2
+URxvt.fading: 0
+
+! black
+*.color0:       #272822
+*.color8:       #75715e
+
+! red
+*.color1:       #ff3541
+*.color9:       #ff3541
+
+! green
+*.color2:       #a6e22e
+*.color10:      #a6e22e
+
+! yellow
+*.color3:       #ffb300
+*.color11:      #ffb300
+
+! blue
+*.color4:       #1bb9ff
+*.color12:      #1bb9ff
+
+! magenta
+*.color5:       #ae81ff
+*.color13:      #ae81ff
+
+! cyan
+*.color1:       #ff3541
+*.color9:       #ff3541
+
+! white
+*.color7:       #f8f8f2
+*.color15:      #f9f8f5
+
+
+

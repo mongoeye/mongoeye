@@ -1,0 +1,7 @@
+# FROM: https://github.com/ozlerhakan/mongodb-json-files/blob/master/datasets/
+https://raw.githubusercontent.com/ozlerhakan/mongodb-json-files/master/datasets/people-bson.zip
+https://raw.githubusercontent.com/ozlerhakan/mongodb-json-files/master/datasets/companies.json
+https://raw.githubusercontent.com/ozlerhakan/mongodb-json-files/master/datasets/restaurant.json
+https://raw.githubusercontent.com/ozlerhakan/mongodb-json-files/master/datasets/students.json
+
+# FROM: https://data.opendatasoft.com

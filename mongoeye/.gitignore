@@ -1,0 +1,10 @@
+*.o
+*.a
+*.so
+*.out
+*.coverprofile
+
+.idea
+_release
+
+!.gitkeep
