@@ -62,8 +62,23 @@ func (set *threadSafeSet) IsSubset(other Set) bool {
 	return ret
 }
 
+func (set *threadSafeSet) IsProperSubset(other Set) bool {
+	o := other.(*threadSafeSet)
+
+	set.RLock()
+	defer set.RUnlock()
+	o.RLock()
+	defer o.RUnlock()
+
+	return set.s.IsProperSubset(&o.s)
+}
+
 func (set *threadSafeSet) IsSuperset(other Set) bool {
 	return other.IsSubset(set)
+}
+
+func (set *threadSafeSet) IsProperSuperset(other Set) bool {
+	return other.IsProperSubset(set)
 }
 
 func (set *threadSafeSet) Union(other Set) Set {
@@ -136,6 +151,16 @@ func (set *threadSafeSet) Cardinality() int {
 	return len(set.s)
 }
 
+func (set *threadSafeSet) Each(cb func(interface{}) bool) {
+	set.RLock()
+	for elem := range set.s {
+		if cb(elem) {
+			break
+		}
+	}
+	set.RUnlock()
+}
+
 func (set *threadSafeSet) Iter() <-chan interface{} {
 	ch := make(chan interface{})
 	go func() {
@@ -201,9 +226,21 @@ func (set *threadSafeSet) String() string {
 
 func (set *threadSafeSet) PowerSet() Set {
 	set.RLock()
-	ret := set.s.PowerSet()
+	unsafePowerSet := set.s.PowerSet().(*threadUnsafeSet)
 	set.RUnlock()
+
+	ret := &threadSafeSet{s: newThreadUnsafeSet()}
+	for subset := range unsafePowerSet.Iter() {
+		unsafeSubset := subset.(*threadUnsafeSet)
+		ret.Add(&threadSafeSet{s: *unsafeSubset})
+	}
 	return ret
+}
+
+func (set *threadSafeSet) Pop() interface{} {
+	set.Lock()
+	defer set.Unlock()
+	return set.s.Pop()
 }
 
 func (set *threadSafeSet) CartesianProduct(other Set) Set {

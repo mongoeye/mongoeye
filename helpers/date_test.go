@@ -1,9 +1,10 @@
 package helpers
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetTimezone(t *testing.T) {
@@ -22,10 +23,10 @@ func TestGetTimezone(t *testing.T) {
 	assert.Equal(t, true, timezoneNewYork.TimeZoneChanging)
 	assert.Equal(t, -18000000, timezoneNewYork.WinterTimeOffset)
 	assert.Equal(t, 11, timezoneNewYork.WinterTimeStartMonth)
-	assert.Equal(t, 1, timezoneNewYork.WinterTimeStartSunday)
+	assert.Equal(t, 0, timezoneNewYork.WinterTimeStartSunday)
 	assert.Equal(t, -14400000, timezoneNewYork.SummerTimeOffset)
 	assert.Equal(t, 3, timezoneNewYork.SummerTimeStartMonth)
-	assert.Equal(t, 2, timezoneNewYork.SummerTimeStartSunday)
+	assert.Equal(t, 1, timezoneNewYork.SummerTimeStartSunday)
 
 	Bratislava, _ := time.LoadLocation("Europe/Bratislava")
 	timezoneBratislava := GetTimezone(Bratislava)
@@ -35,5 +36,5 @@ func TestGetTimezone(t *testing.T) {
 	assert.Equal(t, LAST_SUNDAY, timezoneBratislava.WinterTimeStartSunday)
 	assert.Equal(t, 7200000, timezoneBratislava.SummerTimeOffset)
 	assert.Equal(t, 3, timezoneBratislava.SummerTimeStartMonth)
-	assert.Equal(t, LAST_SUNDAY, timezoneBratislava.SummerTimeStartSunday)
+	assert.Equal(t, -1, timezoneBratislava.SummerTimeStartSunday)
 }

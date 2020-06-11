@@ -1,8 +1,0 @@
-version: '3'
-
-services:
-  test_server:
-    image: mongo:3.6.3
-    command: mongod --bind-ip 0.0.0.0 --noprealloc --smallfiles --port 27017  --nojournal --oplogSize 16 --noauth
-    ports:
-      - "27017:27017"

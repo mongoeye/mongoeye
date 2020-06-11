@@ -1,9 +1,10 @@
 package expr
 
 import (
+	"sync"
+
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"sync"
 )
 
 // Pipeline represents stages of aggregation pipeline in MongoDB.

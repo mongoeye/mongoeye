@@ -22,7 +22,7 @@ test:
 	bash -c "source _contrib/docker/env.sh && _contrib/test.sh"
 
 coverage:
-	bash -c "source _contrib/docker/env.sh && _contrib/coverage.sh"
+		bash -c "source _contrib/docker/env.sh && _contrib/coverage.sh"
 
 benchmark:
 	go test -v -run=^$$ -bench=. -count=2 -benchtime=1s -benchmem -parallel=1 $(PACKAGES)
@@ -50,6 +50,3 @@ demo-gif:
 
 demo-asciinema:
 	bash -c "source _contrib/docker/env.sh && asciinema rec -t 'Mongoeye demo' -y -c ./_contrib/demo/demo.sh"
-
-
-

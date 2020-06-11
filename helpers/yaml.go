@@ -2,9 +2,10 @@ package helpers
 
 import (
 	"fmt"
-	"gopkg.in/yaml.v2"
 	"reflect"
 	"strings"
+
+	"gopkg.in/yaml.v2"
 )
 
 // GetYAMLFieldName gets yaml tag name from struct field.

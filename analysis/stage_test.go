@@ -49,7 +49,7 @@ func TestLinkStages_EmptyStage(t *testing.T) {
 			},
 		},
 		{
-		// empty
+			// empty
 		},
 		{
 			PipelineFactory: func(analysisOptions *Options) *expr.Pipeline {
