@@ -9,8 +9,8 @@ cd "$dir"
 source "env.sh"
 
 # Run containers
-#docker-compose -f docker-compose.yml -p mongoeye_mongo up -d
-docker run --name mongoeye_mongo_test_server_1 --restart=always -d -p 27017:27017 mongo:3.6.3 mongod --noauth
+docker-compose -f docker-compose.yml -p mongoeye_mongo up -d
+#docker run --name mongoeye_mongo_test_server_1 --restart=always -d -p 27017:27017 mongo:3.6.3 mongod --noauth
 
 # Reload env
 source "env.sh"
