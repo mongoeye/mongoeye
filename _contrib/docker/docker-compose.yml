@@ -23,6 +23,6 @@ services:
       args:
         - MONGODB_VERSION
     image: "dev/mongoeye-mongodb"
-    command: mongod --bind_ip 0.0.0.0 --noprealloc --smallfiles --port 27017  --nojournal --oplogSize 16 --noauth
+    command: mongod --bind_ip 0.0.0.0 --port 27017  --nojournal --oplogSize 16 --noauth
     volumes:
       - /etc/localtime:/etc/localtime:ro
