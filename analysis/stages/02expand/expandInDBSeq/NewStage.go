@@ -38,7 +38,7 @@ func NewStage(expandOptions *expand.Options) *analysis.Stage {
 				})
 
 				p.AddStage("unwind", bson.M{
-					"path": expr.Field(expand.BsonNested),
+					"path":                       expr.Field(expand.BsonNested),
 					"preserveNullAndEmptyArrays": true,
 				})
 			}

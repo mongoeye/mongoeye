@@ -1,10 +1,28 @@
-version: '2'
-
+version: "3"
 services:
-  test_server:
-    image: mongo:3.5.10
+  dev:
+    build:
+      context: ./go
+    image: "dev/mongoeye-go"
+    command: bash
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ../../:/code
+    depends_on:
+      - mongodb
+    environment:
+      TEST_MONGO_HOST: "mongodb"
+      TEST_MONGO_URI: "mongodb:27017"
+      BENCHMARK_MONGO_URI: "mongodb:27017"
+      BENCHMARK_DB: "company"  # or people, company, restaurant, student
+      BENCHMARK_COL: "company" # or people, company, restaurant, student
+
+  mongodb:
+    build:
+      context: ./mongo
+      args:
+        - MONGODB_VERSION
+    image: "dev/mongoeye-mongodb"
     command: mongod --bind_ip 0.0.0.0 --noprealloc --smallfiles --port 27017  --nojournal --oplogSize 16 --noauth
-    ports:
-      - "5555:27017"
     volumes:
       - /etc/localtime:/etc/localtime:ro
