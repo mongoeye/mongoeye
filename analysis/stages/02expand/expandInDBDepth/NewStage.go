@@ -26,7 +26,7 @@ func NewStage(expandOptions *expand.Options) *analysis.Stage {
 			// Expand nested fields to specified depth
 			for level := uint(0); level <= expandOptions.MaxDepth; level++ {
 				p.AddStage("unwind", bson.M{
-					"path": expr.Field(expand.BsonNested),
+					"path":                       expr.Field(expand.BsonNested),
 					"preserveNullAndEmptyArrays": true,
 				})
 				p.AddStage("replaceRoot", bson.M{

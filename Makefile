@@ -3,11 +3,16 @@
 PACKAGES = $(shell go list ./... | grep -v /vendor/)
 DIRS = $(shell go list ./... | grep -v /vendor/ | sed 's~^github.com/mongoeye/mongoeye~.~' | grep -v '^.$$')
 
+ci : get-deps coverage fmt-check lint
+
 all: fmt-fix lint test build
 
 get-deps:
-	go get golang.org/x/lint/golint github.com/kardianos/govendor github.com/kyoh86/richgo github.com/alecthomas/gometalinter
-	gometalinter --install
+	ls ./bin/gometalinter || curl -L https://git.io/vp6lP | sh
+	go get github.com/kyoh86/richgo
+	go get github.com/mattn/goveralls
+	go get golang.org/x/lint/golint
+	go mod vendor
 
 fmt-check:
 	gofmt -s -l main.go $(DIRS)
@@ -19,10 +24,10 @@ lint:
 	golint -min_confidence 0.85 -set_exit_status $(DIRS)
 
 test:
-	bash -c "source _contrib/docker/env.sh && _contrib/test.sh"
+	bash -c "_contrib/test.sh"
 
 coverage:
-	bash -c "source _contrib/docker/env.sh && _contrib/coverage.sh"
+	bash -c "_contrib/coverage.sh"
 
 benchmark:
 	go test -v -run=^$$ -bench=. -count=2 -benchtime=1s -benchmem -parallel=1 $(PACKAGES)
@@ -46,10 +51,10 @@ build-zip:
 	cd _release; zip -r mongoeye.zip mongoeye
 
 demo-gif:
-	bash -c "source _contrib/docker/env.sh && _contrib/demo/record-gif.sh"
+	bash -c "_contrib/demo/record-gif.sh"
 
 demo-asciinema:
-	bash -c "source _contrib/docker/env.sh && asciinema rec -t 'Mongoeye demo' -y -c ./_contrib/demo/demo.sh"
+	bash -c "asciinema rec -t 'Mongoeye demo' -y -c ./_contrib/demo/demo.sh"
 
 
 

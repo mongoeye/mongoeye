@@ -21,27 +21,13 @@ matrix:
   allow_failures:
     - env: MONGODB_VERSION=unstable
 
-install:
-  - go get github.com/kyoh86/richgo github.com/mattn/goveralls
-  - make get-deps
-
-before_script:
-  # Set MongoDB version to docker-compose.yml
-  - 'sed -i "s/image: mongo:.*/image: mongo:${MONGODB_VERSION}/g" _contrib/docker/docker-compose.yml'
-  # Set version according Git tag
-  - 'if [ -n "$TRAVIS_TAG" ]; then sed -i "s/const AppVersion = \"DEV\"/const AppVersion  = \"${TRAVIS_TAG}\"/g" main.go; fi'
-  # Start Docker containers
-  - _contrib/docker/start.sh
-  # Setup environment
-  - source _contrib/docker/env.sh
-
 script:
+  - cd _contrib/docker
+  - docker-compose build
   # Generate code coverage and deploy to coveralls.io
-  - make coverage
-  - make fmt-check
-  - make lint
+  - docker-compose run --rm dev make ci
   # Cross compilation
-  - if [ -n "$BUILD" ]; then make build; fi
+  - if [ -n "$BUILD" ]; then docker-compose run --rm dev make build; fi
 
 deploy:
   provider: releases
