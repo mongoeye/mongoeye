@@ -5,7 +5,7 @@ Schema and data analyzer for [MongoDB](https://www.mongodb.com) written in [Go](
 
 [![GoDoc](https://godoc.org/github.com/golang/gddo?status.svg)](https://godoc.org/github.com/mongoeye/mongoeye)
 [![Coverage Status](https://coveralls.io/repos/github/mongoeye/mongoeye/badge.svg?branch=master)](https://coveralls.io/github/mongoeye/mongoeye?branch=master)
-[![Build Status](https://travis-ci.org/mongoeye/mongoeye.svg?branch=master)](https://travis-ci.org/mongoeye/mongoeye)
+[![Build Status](https://travis-ci.com/mongoeye/mongoeye.svg?branch=master)](https://travis-ci.com/mongoeye/mongoeye)
 [![Go Report Card](https://goreportcard.com/badge/github.com/mongoeye/mongoeye)](https://goreportcard.com/report/github.com/mongoeye/mongoeye)
 
 ## Overview
