@@ -1,9 +1,5 @@
 sudo: required
 
-language: go
-go:
-  - 1.11.x
-
 services:
   - docker
 
@@ -31,6 +27,10 @@ script:
   - docker-compose run --rm dev make ci
   # Cross compilation
   - if [ -n "$BUILD" ]; then docker-compose run --rm dev make build; fi
+
+before_deploy:
+  - cd "$TRAVIS_BUILD_DIR"
+  - ls -alh "_release"
 
 deploy:
   provider: releases
