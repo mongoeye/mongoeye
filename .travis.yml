@@ -34,8 +34,7 @@ script:
 
 deploy:
   provider: releases
-  api_key:
-    secure: jH9ES27PI+GMMghY/2CpZXSVtufmuEnzr57S4EP+Rb0A575nuki5FG1HcWaqZpATj/DxlKVOuPah05z12Wo2ujC4LGwd7h2U6zl4JY5QzOl1dKmJzg/YcKyCj1XXnq0dLAFLOo4i+sUvCwll1EoToucaVr18bakGd2UqE9o7CiUCG+G1bInjCvpzppQuIGNxHKVLUhlb0WKNnLb38fnyUOjwYnl/wy56pBRpL6VsnGMELlV5iEc6oOG8eys1GI3f/NsnjkRYzItCiYUaNTge1XvL45MhZC+4Sng1aEFd9cw67umLrq/DwlW7lskIACOThsKDtJ738rnV/qeyvD7JJF5z7PGE/G2z0eNj6Zj5G4SDO7v/AAuJJ7x3wnkOXX3U7Krod6Eubj3Dwic/pxpuC2VkGhTkOkMnAnxkj+/g2bkJO6VDjNAYpa+L6vll/QCo88fPkBuAG+B6ZBPcFCqM/MsjbVgc9ddFVqpXnMgXBrJFUf0IXMwsdrfBaCY0jXOZF8tD27gCVpkA6BzXRVwh1y5C7a6jaI5AQhs88VsPYGfPp1rdLeLKXQJ6DUkhUs0wD63JM+thGNazCL3hCzpMogaImVx2Ht0DtLGiVUQA2HEpaM4z1GpaLBOn9xsjf5OE4UFo11swQHscEK1CNlPcpibJO6nudtt56PhF85C0Jl0=
+  api_key: $GITHUB_DEPLOY_TOKEN
   file:
     - _release/mongoeye.tar.gz
     - _release/mongoeye.zip
